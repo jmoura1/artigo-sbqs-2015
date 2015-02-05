@@ -1,0 +1,65 @@
+\begin{thebibliography}{}
+
+\bibitem[{ABPMP} 2012]{ABPMP}
+{ABPMP} (2012).
+\newblock {\em Guide to the Business Process Management Body of Knowledge (BPM
+  CBOK)}.
+\newblock Association of Business Process Management Professionals, 2nd
+  edition.
+
+\bibitem[BonitaSoft 2012]{BONITASOFT}
+BonitaSoft (2012).
+\newblock Bonitasoft open source workflow and bpm software.
+
+\bibitem[Chiavegatto et~al. 2013]{sbqs2013}
+Chiavegatto, R., Pinheiro, V., Vieira, A.~F., Clineu, J., Oliveira, E.~H.,
+  Barroso, E., Amorim, A., e Conte, T. (2013).
+\newblock Especificação e automação colaborativas de testes utilizando a
+  técnica {BDD}.
+\newblock In {\em XII Simpósio Brasileiro de Qualidade de Software}, pages
+  334--341.
+
+\bibitem[de~Moura et~al. 2013]{sbsi2013}
+de~Moura, J.~L., Lunardi, G.~M., Charão, A.~S., Barcelos, P.~P., e
+  de~Oliveira~Stein, B. (2013).
+\newblock Gestão de processos de negócio em curso de sistemas de
+  informação: Relato de experiência utilizando software livre.
+\newblock In {\em IX Simpósio Brasileiro de Sistemas de Informação}, pages
+  206--217.
+
+\bibitem[Graham e Fewster 2012]{graham2012experiences}
+Graham, D. e Fewster, M. (2012).
+\newblock {\em Experiences of Test Automation: Case Studies of Software Test
+  Automation}.
+\newblock Addison-Wesley.
+
+\bibitem[Ko 2009]{acmxrds2009}
+Ko, R. K.~L. (2009).
+\newblock A computer scientist's introductory guide to business process
+  management (bpm).
+\newblock {\em Crossroads}, 15(4):4:11--4:18.
+
+\bibitem[Kolawa e Huizinga 2007]{unittesting}
+Kolawa, A. e Huizinga, D. (2007).
+\newblock {\em Automated Defect Prevention: Best Practices in Software
+  Management}.
+\newblock Wiley-IEEE Computer Society Press.
+
+\bibitem[Nguyen et~al. 2003]{webtesting}
+Nguyen, H.~Q., Johnson, B., e Hackett, M. (2003).
+\newblock {\em Testing Applications on the Web: Test Planning for Mobile and
+  Internet-Based Systems}.
+\newblock Wiley.
+
+\bibitem[van~der Aalst 2013]{aalst2013survey}
+van~der Aalst, W. M.~P. (2013).
+\newblock Business process management: A comprehensive survey.
+\newblock {\em ISRN Software Engineering}, 2013(507984).
+
+\bibitem[Weske 2012]{weske}
+Weske, M. (2012).
+\newblock {\em Business Process Management: Concepts, Languages,
+  Architectures}.
+\newblock Springer, 2nd edition.
+
+\end{thebibliography}
