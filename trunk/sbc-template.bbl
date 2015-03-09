@@ -7,6 +7,18 @@
 \newblock Association of Business Process Management Professionals, 2nd
   edition.
 
+\bibitem[RIVEROL et~al.(2014)RIVEROL; DO~VALLE; CONTE]{riverolaplicando} RIVEROL, L. et~al\@. Aplicando Design e Avaliacao de Usabilidade para Melhorar a Qualidade de um Aplicativo Web Móvel.
+In: XIII SIMPÓSIO BRASILEIRO DE QUALIDADE DE SOFTWARE. \textbf{Anais{\ldots}} [S.l.:~s.n.], 2014.
+
+\bibitem[VALENTIM et~al.(2014)VALENTIM; RABELO; SILVA;
+  COUTINHO; MOTA; CONTE;]{valentimavaliando} VALENTIM, N. et~al\@. Avaliando a qualidade de um aplicativo web móvel através de um teste de usabilidade: um relato de experiência.
+  In: XIII SIMPÓSIO BRASILEIRO DE QUALIDADE DE SOFTWARE. \textbf{Anais{\ldots}} [S.l.:~s.n.], 2014.
+  
+  \bibitem[CHIAVEGATTO et~al.(2013)CHIAVEGATTO; PINHEIRO; VIEIRA;
+  CLINEU; HINTOR~OLIVEIRA; BARROSO; AMORIM; CONTE]{sbqs2013} CHIAVEGATTO, R. et~al\@. Especificação e Automação Colaborativas de Testes utilizando a técnica {BDD}.
+  In: XII SIMPÓSIO BRASILEIRO DE QUALIDADE DE SOFTWARE. \textbf{Anais{\ldots}} [S.l.:~s.n.], 2013. p.334--341.
+  
+  
 \bibitem[BonitaSoft 2012]{BONITASOFT}
 BonitaSoft (2012).
 \newblock Bonitasoft open source workflow and bpm software.
