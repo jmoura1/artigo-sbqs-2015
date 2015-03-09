@@ -117,6 +117,9 @@ A escolha do BOS deu-se principalmente por ser um software livre com reconhecime
 
 No planejamento dos testes automatizados, priorizou-se o teste de  etapas que de fato revelaram problemas durante a operação. Com isso, buscou-se verificar se os problemas poderiam ser facilmente identificados antes de colocar-se a aplicação em produção. Os testes escolhidos foram: (a) testes de carga, que são um tipo de teste de desempenho, visando avaliar o comportamento do sistema frente a um grande número de solicitações e (b) testes funcionais, a fim de verificar as saídas do sistema produzidas a partir de entradas pré-definidas. \textbf{Nenhum destes tipos de teste possui suporte no BPMS utilizado} (Bonita Open Solution), que inclui somente funcionalidades limitadas de simulação e depuração de execução dos processos. Assim, realizou-se um levantamento de ferramentas de teste disponíveis e selecionou-se as mais promissoras, antes de partir-se para o detalhamento e execução dos testes.
 
+%Este teste foi escolhido pois um dos problemas encontrados durante a implantação do processo testado foi a falha do sistema perante um grande acesso de usuários em um dia específico. Acredita-se que, utilizando um teste de carga, esta falha poderia ter sido prevista.
+
+
 %jmeter
 %-pq escolheu,
 %processo de teste nas duas
@@ -133,14 +136,67 @@ No planejamento dos testes automatizados, priorizou-se o teste de  etapas que de
 
 \begin{table}
 \centering
-\begin{tabular}{p{2cm}|p{2cm}|p{1cm}|p{7cm}}
-Nome & Licença & É Open Source?  \\\hline
-Bizagi & Community & Não \\\hline
-Process Maker & Community & Sim \\\hline
-Seed Sydle & Community & Sim \\\hline
-Appian & Enterprise (teste de 30 dias) & Não \\\hline
-Aura Portal & Enterprise & Não \\\hline
-Ultimus BPM & Enterprise & Não \\\hline
+\begin{tabular}{|p{2cm}|p{7cm}|p{7cm}|}
+  & Teste de Carga & Teste Funcional  \\\hline
+Descrição & 
+\begin{itemize}
+\item{teste de desempenho, visa avaliar o comportamento do sistema frente a um grande número de solicitações;}
+\item{durante a implantação do processo testado foi a falha do sistema perante um grande acesso de usuários em um dia específico.}
+\end{itemize}
+&
+\begin{itemize}
+\item{Teste que verifica as saídas do sistema produzidas a
+partir de entradas pré-definidas;}
+\item{durante a utilização do processo
+dentro da instituição, ocorreram alguns erros como: campo sem suporte a caracteres especiais,
+erro devido a nome de arquivos muito grandes, entre outros.}
+\end{itemize}
+ \\\hline
+Ferramentas &
+\begin{itemize}
+ \item{JMeter}
+ \begin{itemize}
+  \item{Ferramenta independente de plataformas;}
+  \item{Permite a criação de diversos usuários virtuais  para a execução dos testes.}
+  \end{itemize}
+\end{itemize}
+ & 
+\begin{itemize}
+\item{Selenium:Um de seus componenetes é um plugin para o navegador Firefox, capaz de registrar e reproduzir interações do usuário com o navegador, assim permitindo criar scripts de teste, sem escrita de código;}
+\item{Cucumber JVM:Ferramenta que executa descrições de teste, em texto simples, como testes automatizados.}
+\end{itemize} 
+ \\\hline
+ Processo de teste &
+ \begin{enumerate} 
+\item{Capturar requisições HTTP;}
+\item{Exportar requisições (Formato .jrxml para JMeter);}
+\item{Configurar Plano de teste (script);}
+\item{Executar teste (JMeter).}
+     \end{enumerate}  
+ &   
+\begin{enumerate}   
+ \item{Captura da execução no navegador  (Selenium);}
+ \item{Exportar código gerado  (Selenium);}
+       \item{Criar cenário de teste (Cucumber);}
+       \item{Criar as definições do passos de execução (Cucumber);}
+       \item{Criar métodos (Java);}
+       \item{Executar o teste (Selenium).}
+       \end{enumerate}  
+ \\\hline
+Informações gerais sobre os testes &   Foram executados testes simulando 1,50,100 e 200 usuários virtuais; Os testes foram executados na etapa de login e na execução da primeira tarefa do processo;
+ &  \\\hline
+BPMS Bonita Open Solution (BOS) & \begin{itemize}\item{Houveram problemas com a execução de requisições que utilizavam a tecnologia Google Web Toolkit (GWT);}
+\item{Em sistemas BPM as tarefas de um processo são interligadas e/ou dependentes entre si, no BOS existe uma chave que identifica cada execução do processo como única, e é criada no momento em que o usuário inicia o processo. Essa particularidade causou no problemas na execução dos testes e, para contorna-los, foi necessário estudar a fundo as requisições e o processo e utilizar opções da ferramenta JMeter bem como scripts para adaptar as requisições.}\end{itemize}
+ & \begin{itemize} 
+\item{A captura da execução funciona bem para a estrutura das páginas web da aplicação;}
+\item{Ao executar o teste, alguns erros ocorrem devido a ferramenta Selenium “Buscar” elementos que ainda não foram carregados na página. Isto pode ser resolvido a partir da inserção de pequenos scripts nos métodos.}
+ \end{itemize} \\\hline
+BPMS Activiti & Ocorreram os mesmos erros relativos à dependência entre as tarefas do processo, as chaves identificadoras foram encontradas, no entanto, foi impossível identificar em que requisição as mesmas eram geradas, não havia uma requisição
+cujo o retorno (resposta do servidor) contivesse as chaves utilizadas. Esta situação leva a crer
+que a geração das chaves identificadoras é feita internamente pelo BPMS, ou seja, não em uma
+requisição HTTP e, por sequência, esta não pode ser capturada e importada no Jmeter. & 
+Alguns elementos das páginas que compõem a aplicação não são capturados pelo Selenium, acredita-se que esse problema ocorra devido a estrutura da páginas web que pode conter elementos com os quais o Selenium não trabalhe bem como divs,frames e
+scrips, por exemplo. Para contornar esse problema, foi necessário estudar a estrutura das páginas que web, localizar os elementos faltantes e então adicionar o código para acessá-los nos respectivos métodos.\\\hline
 Activiti & Community & Sim \\\hline
 Intalio & Community e Enterprise & Sim \\\hline
 Tibco & Licença de desenvolvedor por 90 dias & Não \\\hline
