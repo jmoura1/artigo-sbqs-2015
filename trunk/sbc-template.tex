@@ -30,9 +30,6 @@ Universidade Federal de Santa Maria -- UFSM
 Este artigo aborda questões relacionadas ao teste automatizado de aplicações desenvolvidas com o apoio de sistemas de gestão de processos de negócio (Business Process Management Systems -- BPMS). Para isso, apresenta-se um relato de experiência de automação de testes de carga e de testes funcionais em uma aplicação de BPM, utilizando-se as ferramentas de código-aberto Apache JMeter e Selenium. A aplicação BPM é baseada na ferramenta Bonita Open Solution (BOS) e encontra-se implantada em uma instituição pública de ensino. Os resultados evidenciam limitações e oportunidades na automação de testes de aplicações de BPM.
 \end{resumo}
 
-
-
-
 \begin{abstract}
 This article discusses the automated testing of applications developed with the support of Business Process Management Systems -- BPMS. We present an experience report on the automation of load tests and functional tests over a real BPM application, using the Apache JMeter and Selenium open-source tools. The application is developed with a BPM suite named Bonita Open Solution (BOS) and is located in a public educational institution. Results show the limitations and opportunities in test automation of BPM applications.
 \end{abstract}
@@ -93,7 +90,7 @@ Assumindo que aplicações de BPM podem ser tratadas como software em geral, é 
 %http://blog.iprocess.com.br/2013/04/os-desafios-da-homologacao-de-processos-automatizados/
 
 
-\section{Processo Alvo dos Testes}
+\section{Processo Alvo dos Testes e ?...}
 Os testes realizados neste trabalho referem-se a um processo realizado com frequência em instituições de ensino superior, que é a apreciação de Atividades Complementares de Graduação (ACGs), ou seja, atividades que formam a parte flexível do currículo dos graduandos (participação em palestras, eventos, projetos, etc.). Em um trabalho anterior ~\cite{sbsi2013}, esse processo foi modelado e implantado utilizando a ferramenta Bonita Open Solution. Como mostra a Figura \ref{fig:diagrama}. É um processo complexo que permite analisar diversas funcionalidades dos BPMS e, justamente por já ter sido alvo de um trabalho, é um processo no qual já se tem uma grande experiência.
 
 \begin{figure}[ht]
@@ -103,22 +100,16 @@ Os testes realizados neste trabalho referem-se a um processo realizado com frequ
 \label{fig:diagrama}
 \end{figure}
 
+Devido ao tempo limitado para a conclusão deste trabalho, decidiu-se por escolher duas ferramentas para o estudo. Primeiramente, foi escolhida a ferramenta Bonita Open Solution, devido a esta já ter sido usada em um trabalho anterior ~\cite{sbsi2013} e, por isso, tem se uma vasta experiência nesta ferramenta.
 
-Bonita Open Solution (BOS)~\cite{BONITASOFT} é um BPMS desenvolvido em Java, pela empresa BonitaSoft, distribuído sob uma licença de software livre. A ferramenta oferece componentes tanto para a modelagem como para a execução e monitoramento de processos, numa abordagem integrada. 
-A escolha do BOS deu-se principalmente por ser um software livre com reconhecimento no mercado, capaz de atender alguns requisitos específicos da aplicação (em particular, integração com base de usuários LDAP existente e com sistema de gerenciamento de documentos).
+O Bonita Open Solution (BOS) é uma ferramenta distribuída sob uma licença de software livre, desenvolvida em Java, pela empresa BonitaSoft~\cite{BONITASOFT}. A ferramenta BOS oferece componentes tanto para a modelagem como para a implementação e transformação de processos. A modelagem e customização de processos é realizada através do Bonita Studio, um componente com interface gráfica tipo desktop que agrupa ferramentas de desenvolvimento. Também é possível agregar funcionalidades aos processos através de conectores que podem, inclusive, receber personalizações feitas através de códigos.
 
-%activiti?
-
+Analisand as ferramentas disponíveis e levando em conta os trabalhos e livros publicados ~\cite{rademakers2012activiti} que abordam o uso da ferramenta, o segundo software escolhido foi o Activiti. O Activiti ~\cite{ACTIVITI} é um BPMS de código aberto, distribuído sob a uma licença Apache, criado em Java e usa  BPMN 2.0 para a modelagem dos processos, ele pode ser executado em qualquer plataforma, servidor, cluster ou na nuvem. A ferramenta Activiti oferece componentes distintos para modelagem, implementação e execução de processos. A modelagem e customização dos processos é feita no Activiti Designer que é um plugin para a plataforma Eclipse, o que torna o ambiente de criação fácil de ser usado, a execução é feita no componente chamado Activiti Explorer.
 %tabelinha de caminhos? monografia metodologia.tex
-
-
 
 \section{Descrição e execução dos Testes}
 
 No planejamento dos testes automatizados, priorizou-se o teste de  etapas que de fato revelaram problemas durante a operação. Com isso, buscou-se verificar se os problemas poderiam ser facilmente identificados antes de colocar-se a aplicação em produção. Os testes escolhidos foram: (a) testes de carga, que são um tipo de teste de desempenho, visando avaliar o comportamento do sistema frente a um grande número de solicitações e (b) testes funcionais, a fim de verificar as saídas do sistema produzidas a partir de entradas pré-definidas. \textbf{Nenhum destes tipos de teste possui suporte no BPMS utilizado} (Bonita Open Solution), que inclui somente funcionalidades limitadas de simulação e depuração de execução dos processos. Assim, realizou-se um levantamento de ferramentas de teste disponíveis e selecionou-se as mais promissoras, antes de partir-se para o detalhamento e execução dos testes.
-
-%Este teste foi escolhido pois um dos problemas encontrados durante a implantação do processo testado foi a falha do sistema perante um grande acesso de usuários em um dia específico. Acredita-se que, utilizando um teste de carga, esta falha poderia ter sido prevista.
-
 
 %jmeter
 %-pq escolheu,
@@ -147,7 +138,7 @@ Descrição &
 \begin{itemize}
 \item{Teste que verifica as saídas do sistema produzidas a
 partir de entradas pré-definidas;}
-\item{durante a utilização do processo
+\item{Durante a utilização do processo
 dentro da instituição, ocorreram alguns erros como: campo sem suporte a caracteres especiais,
 erro devido a nome de arquivos muito grandes, entre outros.}
 \end{itemize}
@@ -183,9 +174,9 @@ Ferramentas &
        \item{Executar o teste (Selenium).}
        \end{enumerate}  
  \\\hline
-Informações gerais sobre os testes &   Foram executados testes simulando 1,50,100 e 200 usuários virtuais; Os testes foram executados na etapa de login e na execução da primeira tarefa do processo;
+Informações gerais sobre os testes & Foram executados testes simulando 1,50,100 e 200 usuários virtuais; Os testes foram executados na etapa de login e na execução da primeira tarefa do processo;
  &  \\\hline
-BPMS Bonita Open Solution (BOS) & \begin{itemize}\item{Houveram problemas com a execução de requisições que utilizavam a tecnologia Google Web Toolkit (GWT);}
+BPMS Bonita Open Solution (BOS) & \begin{itemize}\item{Houveram problemas com a execução de requisições que utilizavam a tecnologia Google Web Toolkit (GWT), foi resolvido atráves de estudo das requisições e utilização de ferramentas auxiliares para a captura \cite{BLAZEMETER};}
 \item{Em sistemas BPM as tarefas de um processo são interligadas e/ou dependentes entre si, no BOS existe uma chave que identifica cada execução do processo como única, e é criada no momento em que o usuário inicia o processo. Essa particularidade causou no problemas na execução dos testes e, para contorna-los, foi necessário estudar a fundo as requisições e o processo e utilizar opções da ferramenta JMeter bem como scripts para adaptar as requisições.}\end{itemize}
  & \begin{itemize} 
 \item{A captura da execução funciona bem para a estrutura das páginas web da aplicação;}
