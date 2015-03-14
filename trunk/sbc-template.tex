@@ -103,20 +103,60 @@ Devido ao tempo limitado para a conclusão deste trabalho, decidiu-se por escolh
 O Bonita Open Solution (BOS) é uma ferramenta distribuída sob uma licença de software livre, desenvolvida em Java, pela empresa BonitaSoft~\cite{BONITASOFT}. A ferramenta BOS oferece componentes tanto para a modelagem como para a implementação e transformação de processos. A modelagem e customização de processos é realizada através do Bonita Studio, um componente com interface gráfica tipo desktop que agrupa ferramentas de desenvolvimento. Também é possível agregar funcionalidades aos processos através de conectores que podem, inclusive, receber personalizações feitas através de códigos.
 
 Analisando as ferramentas disponíveis e levando em conta os trabalhos e livros publicados ~\cite{rademakers2012activiti} que abordam o uso da ferramenta, o segundo software escolhido foi o Activiti. O Activiti ~\cite{ACTIVITI} é um BPMS de código aberto, distribuído sob a uma licença Apache, criado em Java e usa  BPMN 2.0 para a modelagem dos processos, ele pode ser executado em qualquer plataforma, servidor, cluster ou na nuvem. A ferramenta Activiti oferece componentes distintos para modelagem, implementação e execução de processos. A modelagem e customização dos processos é feita no Activiti Designer que é um plugin para a plataforma Eclipse, o que torna o ambiente de criação fácil de ser usado, a execução é feita no componente chamado Activiti Explorer.
-%tabelinha de caminhos? monografia metodologia.tex
+
+
+Na Tabela \ref{tab:tabelaCaminhos} são exibidos todos os possíveis caminhos pelos quais o processo alvo dos testes poderia passar, sendo 'x' a representação de que o caminho passou pela determinada etapa do processo. Esta tabela foi criada durante a implantação da aplicação citada neste trabalho para auxiliar na execução dos testes (que foram executados manualmente quando a aplicação foi implantada).
+
+\begin{table}
+{\scriptsize
+\begin{tabular}{|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}
+\hline
+Aluno Solicita ACG & Anexar parecer tutor & Tutor avalia & Avisa aluno (indeferido) & Rela\-tor avalia & Cole\-giado avalia & Atu\-aliza BD & Secre\-taria avalia & Coorde\-nador avalia & Reuni\-ão presencial & Avisa aluno (indeferido) & Avisa aluno (aprovado) \\\hline
+x & x & - & - & x & x & x & - & - & - & - & x\\\hline
+x & x & - & - & x & x & - & - & - & x & x & -\\\hline
+x & x & - & - & x & x & - & - & - & x & - & x\\\hline
+x & x & - & - & x & - & - & - & - & x & - & x\\\hline
+x & x & - & - & x & - & - & - & - & x & x & -\\\hline
+x & - & x & x & - & - & - & - & - & - & - & -\\\hline
+x & - & x & - & x & x & x & - & - & - & - & x\\\hline
+x & - & x & - & x & x & - & - & - & x & x & -\\\hline
+x & - & x & - & x & x & - & - & - & x & - & x\\\hline
+x & - & x & - & x & - & - & - & - & x & - & x\\\hline
+x & - & x & - & x & - & - & - & - & x & x & -\\\hline
+x & - & - & - & x & x & x & - & - & - & - & x\\\hline
+x & - & - & - & x & x & - & - & - & x & x & -\\\hline
+x & - & - & - & x & x & - & - & - & x & - & x\\\hline
+x & - & - & - & x & - & - & - & - & x & - & x\\\hline
+x & - & - & - & x & - & - & - & - & x & x & -\\\hline
+x & - & - & - & - & - & - & x & - & - & - & x\\\hline
+x & - & - & - & - & - & - & x & x & - & - & x\\\hline
+x & - & - & - & - & - & - & x & x & x & - & x\\\hline
+x & - & - & - & - & - & - & x & x & x & x & -\\\hline
+\end{tabular}
+}
+\caption{Caminhos possíveis}
+\label{tab:tabelaCaminhos}
+\end{table}
+
 
 \section{Descrição e execução dos Testes}
 
 No planejamento dos testes automatizados, priorizou-se o teste de  etapas que de fato revelaram problemas durante a operação. Com isso, buscou-se verificar se os problemas poderiam ser facilmente identificados antes de colocar-se a aplicação em produção. Os testes escolhidos foram: (a) testes de carga, que são um tipo de teste de desempenho, visando avaliar o comportamento do sistema frente a um grande número de solicitações e (b) testes funcionais, a fim de verificar as saídas do sistema produzidas a partir de entradas pré-definidas. \textbf{Nenhum destes tipos de teste possui suporte no BPMS utilizado} (Bonita Open Solution), que inclui somente funcionalidades limitadas de simulação e depuração de execução dos processos. Assim, realizou-se um levantamento de ferramentas de teste disponíveis e selecionou-se as mais promissoras, antes de partir-se para o detalhamento e execução dos testes.
 
-%jmeter
-%-pq escolheu,
+\subsection{Teste de Carga}
+Para executar os testes de carga foi selecionada a ferramenta JMeter ~\cite{JMETER}, e escolha desta ferramenta para testar aplicações BPM deu-se por diversos motivos.
+
+Existem diversas ferramentas para automação de testes, especificamente se tratando de testes de carga e desempenho existem duas ferramentas próximas ao JMeter que são o The Grinder~\cite{GRINDER} e o WebLOAD~\cite{WEBLOAD}, ambas são ferramentas open source e tem diversas funcionalidades. No entanto, a maior desvantagem dessas ferramentas é que não existe a possibilidade de capturar as requisições que devemos testar de uma forma automática, todas requisições precisam ser inseridas manualmente no plano de teste. No JMeter existe a opção 'Servidor de Proxy' que permite capturar o tráfico de requisições e este é automaticamente transformado em requisições no plano de teste.
+
 %processo de teste nas duas
 %problemas com as duas ferramentas
 %resultados
 
-%selenium+cucumber
-%-pq escolheu
+\subsection{Teste Funcional}
+Para executar os testes funcionais, escolheu-se a ferramenta Selenium ~\cite{SELENIUM}. Esta ferramenta possui basicamente duas partes complementares: Selenium IDE e Selenium WebDriver. A primeira é um plugin para o navegador Firefox, capaz de registrar e reproduzir interações do usuário com o navegador, assim permitindo criar scripts de teste rapidamente, sem escrita de código.
+
+Durante a revisão bibliográfica, encontrou-se um trabalho apresentado no Simpósio Brasileiro de Qualidade de Software de 2013 \cite{sbqs2013} que utilizava o Selenium WebDriver aliado ao Cucumber-JVM \cite{CUCUMBER} para testar uma aplicação web, a partir desse trabalho decidiu-se utilizar a última na execução dos testes funcionais. O Cucumber é uma ferramenta que executa descrições de teste, em texto simples, como testes automatizados.
+
 %processo do teste nas duas
 %problemas com as duas
 %resultados
@@ -124,8 +164,9 @@ No planejamento dos testes automatizados, priorizou-se o teste de  etapas que de
 %tabela com informações gerais
 
 \begin{table}
+{\scriptsize
 \centering
-\begin{tabular}{|p{2cm}|p{7cm}|p{7cm}|}
+\begin{tabular}{|p{2cm}|p{6cm}|p{6cm}|}
   & Teste de Carga & Teste Funcional  \\\hline
 Descrição & 
 \begin{itemize}
@@ -173,13 +214,15 @@ Ferramentas &
        \end{enumerate}  
  \\\hlines
 \end{tabular}
-\caption{Levantamento sobre as ferramentas: Informações gerais}
+}
+\caption{Informações}
 \label{tab:bpms1}
 \end{table}
 
 
 
 \begin{table}
+{\scriptsize
 \centering
 \begin{tabular}{|p{2cm}|p{7cm}|p{7cm}|}
   & Teste de Carga & Teste Funcional  \\\hline
@@ -198,7 +241,8 @@ requisição HTTP e, por sequência, esta não pode ser capturada e importada no
 Alguns elementos das páginas que compõem a aplicação não são capturados pelo Selenium, acredita-se que esse problema ocorra devido a estrutura da páginas web que pode conter elementos com os quais o Selenium não trabalhe bem como divs,frames e
 scrips, por exemplo. Para contornar esse problema, foi necessário estudar a estrutura das páginas que web, localizar os elementos faltantes e então adicionar o código para acessá-los nos respectivos métodos.\\\hline
 \end{tabular}
-\caption{Levantamento sobre as ferramentas: Informações gerais}
+}
+\caption{Comportamento de cada tipo de teste em cada ferramenta}
 \label{tab:bpms2}
 \end{table}
 
@@ -206,7 +250,7 @@ scrips, por exemplo. Para contornar esse problema, foi necessário estudar a est
 \section{Trabalhos Relacionados}
 
 %artigos sbqs 2014
-%artigos sbqs 2013
+%artigos sbqs 2013 -> pegar do email que mandei pra andrea, pegar citação do meu tg
 
 %O teste de software voltado especificamente a aplicações de BPM é um assunto que pode ser considerado ainda em aberto. Atualmente, muitos trabalhos de pesquisa têm focado em etapas de monitoramento e otimização em BPM~\cite{Gambini:2011:AEC:2040283.2040300, Liu:2011:BAM:2040283.2040307, deLeoni:2012:AEL:2413516.2413525, Ramezani:2012:DIM:2413516.2413545}, que são etapas dedicadas a identificar e corrigir problemas. Embora exista alguma relação com testes em BPM, tratam-se geralmente de abordagens mais voltadas a aspectos de gestão, não de software . Por outro lado, um assunto que tem sido bastante abordado é o teste automatizado de aplicações orientadas a serviços Web~\cite{soatest2008}. Embora se trate de um nicho de teste de software, e mesmo que haja uma relação entre BPMS e serviços Web, acredita-se que esta abordagem não abarque toda a problemática do teste de aplicações de BPM. Na aplicação alvo deste trabalho, em particular, a abordagem orientada a serviços Web não poderia ser usada, pois o BPMS empregado baseia-se numa arquitetura que não expõe seus serviços.
 
