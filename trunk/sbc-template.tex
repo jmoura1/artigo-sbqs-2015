@@ -27,11 +27,11 @@ Universidade Federal de Santa Maria -- UFSM
 
 
 \begin{resumo}
-Este artigo aborda questões relacionadas ao teste automatizado de aplicações desenvolvidas com o apoio de sistemas de gestão de processos de negócio (Business Process Management Systems -- BPMS). Para isso, apresenta-se um relato de experiência de automação de testes de carga e de testes funcionais em uma aplicação de BPM, utilizando-se as ferramentas de código-aberto Apache JMeter e Selenium. A aplicação BPM é baseada na ferramenta Bonita Open Solution (BOS) e encontra-se implantada em uma instituição pública de ensino. Os resultados evidenciam limitações e oportunidades na automação de testes de aplicações de BPM.
+Este artigo aborda questões relacionadas ao teste automatizado de aplicações desenvolvidas com o apoio de sistemas de gestão de processos de negócio (Business Process Management Systems -- BPMS). Para isso, apresenta-se um relato de experiência de automação de testes de carga e de testes funcionais em uma aplicação de BPM, utilizando-se as ferramentas de código-aberto Apache JMeter e Selenium. Os resultados evidenciam limitações e oportunidades na automação de testes de aplicações de BPM.
 \end{resumo}
 
 \begin{abstract}
-This article discusses the automated testing of applications developed with the support of Business Process Management Systems -- BPMS. We present an experience report on the automation of load tests and functional tests over a real BPM application, using the Apache JMeter and Selenium open-source tools. The application is developed with a BPM suite named Bonita Open Solution (BOS) and is located in a public educational institution. Results show the limitations and opportunities in test automation of BPM applications.
+This article discusses the automated testing of applications developed with the support of Business Process Management Systems -- BPMS. We present an experience report on the automation of load tests and functional tests over a real BPM application, using the Apache JMeter and Selenium open-source tools. Results show the limitations and opportunities in test automation of BPM applications.
 \end{abstract}
 
 
@@ -44,8 +44,6 @@ Atualmente, a gestão de processos de negócio (\emph{Business Process Managemen
 Dentre os diversos BPMS disponíveis atualmente, é comum encontrar ferramentas com suporte a modelagem, configuração e execução de processos de negócio. Por outro lado, tarefas relacionadas à simulação, monitoramento, verificação e testes ainda são consideradas um desafio nesta área~\cite{aalst2013survey}. Em particular, o teste automatizado de aplicações de BPM é pouco abordado, tanto pela comunidade da área de BPM~\cite{aalst2013survey} como da área de testes de software~\cite{graham2012experiences}. Diante disso, estima-se que muitas organizações se limitem a testes manuais em suas aplicações de BPM. No entanto, a falta de automação nos testes pode levar a vários problemas durante a implementação e execução de processos de negócio, como baixa aderência aos requisitos, maior esforço dos desenvolvedores, desperdício de tempo e aumento do risco de duplicação de esforços e de erro humano. 
 
 Nesse contexto, o presente artigo relata uma experiência de automação de testes em uma aplicação de BPM desenvolvida para agilizar um processo em uma instituição pública de ensino. Todas as etapas do desenvolvimento da aplicação, utilizando o BPMS Bonita Open Solution (BOS), foram apresentadas em um trabalho precedente~\cite{sbsi2013}. 
-
-O artigo está organizado como segue: a Seção 2 apresenta brevemente alguns conceitos sobre BPM e tecnologias relacionadas, teste de software e sobre como esses tópicos se relacionam. Na sequência, a Seção 3 descreve o processo alvo das experiências e a aplicação construída no trabalho precedente. As seções 4 e 5 apresentam os testes realizados, incluindo a seleção de ferramentas e os resultados obtidos. A Seção 6 comenta trabalhos relacionados e é seguida da Seção 7, que faz as considerações finais e sugere trabalhos futuros.
 
 
 \section{BPM e Testes}
@@ -90,7 +88,7 @@ Assumindo que aplicações de BPM podem ser tratadas como software em geral, é 
 %http://blog.iprocess.com.br/2013/04/os-desafios-da-homologacao-de-processos-automatizados/
 
 
-\section{Processo Alvo dos Testes e ?...}
+\section{Processo alvo dos testes e ?}
 Os testes realizados neste trabalho referem-se a um processo realizado com frequência em instituições de ensino superior, que é a apreciação de Atividades Complementares de Graduação (ACGs), ou seja, atividades que formam a parte flexível do currículo dos graduandos (participação em palestras, eventos, projetos, etc.). Em um trabalho anterior ~\cite{sbsi2013}, esse processo foi modelado e implantado utilizando a ferramenta Bonita Open Solution. Como mostra a Figura \ref{fig:diagrama}. É um processo complexo que permite analisar diversas funcionalidades dos BPMS e, justamente por já ter sido alvo de um trabalho, é um processo no qual já se tem uma grande experiência.
 
 \begin{figure}[ht]
@@ -104,7 +102,7 @@ Devido ao tempo limitado para a conclusão deste trabalho, decidiu-se por escolh
 
 O Bonita Open Solution (BOS) é uma ferramenta distribuída sob uma licença de software livre, desenvolvida em Java, pela empresa BonitaSoft~\cite{BONITASOFT}. A ferramenta BOS oferece componentes tanto para a modelagem como para a implementação e transformação de processos. A modelagem e customização de processos é realizada através do Bonita Studio, um componente com interface gráfica tipo desktop que agrupa ferramentas de desenvolvimento. Também é possível agregar funcionalidades aos processos através de conectores que podem, inclusive, receber personalizações feitas através de códigos.
 
-Analisand as ferramentas disponíveis e levando em conta os trabalhos e livros publicados ~\cite{rademakers2012activiti} que abordam o uso da ferramenta, o segundo software escolhido foi o Activiti. O Activiti ~\cite{ACTIVITI} é um BPMS de código aberto, distribuído sob a uma licença Apache, criado em Java e usa  BPMN 2.0 para a modelagem dos processos, ele pode ser executado em qualquer plataforma, servidor, cluster ou na nuvem. A ferramenta Activiti oferece componentes distintos para modelagem, implementação e execução de processos. A modelagem e customização dos processos é feita no Activiti Designer que é um plugin para a plataforma Eclipse, o que torna o ambiente de criação fácil de ser usado, a execução é feita no componente chamado Activiti Explorer.
+Analisando as ferramentas disponíveis e levando em conta os trabalhos e livros publicados ~\cite{rademakers2012activiti} que abordam o uso da ferramenta, o segundo software escolhido foi o Activiti. O Activiti ~\cite{ACTIVITI} é um BPMS de código aberto, distribuído sob a uma licença Apache, criado em Java e usa  BPMN 2.0 para a modelagem dos processos, ele pode ser executado em qualquer plataforma, servidor, cluster ou na nuvem. A ferramenta Activiti oferece componentes distintos para modelagem, implementação e execução de processos. A modelagem e customização dos processos é feita no Activiti Designer que é um plugin para a plataforma Eclipse, o que torna o ambiente de criação fácil de ser usado, a execução é feita no componente chamado Activiti Explorer.
 %tabelinha de caminhos? monografia metodologia.tex
 
 \section{Descrição e execução dos Testes}
@@ -173,7 +171,18 @@ Ferramentas &
        \item{Criar métodos (Java);}
        \item{Executar o teste (Selenium).}
        \end{enumerate}  
- \\\hline
+ \\\hlines
+\end{tabular}
+\caption{Levantamento sobre as ferramentas: Informações gerais}
+\label{tab:bpms1}
+\end{table}
+
+
+
+\begin{table}
+\centering
+\begin{tabular}{|p{2cm}|p{7cm}|p{7cm}|}
+  & Teste de Carga & Teste Funcional  \\\hline
 Informações gerais sobre os testes & Foram executados testes simulando 1,50,100 e 200 usuários virtuais; Os testes foram executados na etapa de login e na execução da primeira tarefa do processo;
  &  \\\hline
 BPMS Bonita Open Solution (BOS) & \begin{itemize}\item{Houveram problemas com a execução de requisições que utilizavam a tecnologia Google Web Toolkit (GWT), foi resolvido atráves de estudo das requisições e utilização de ferramentas auxiliares para a captura \cite{BLAZEMETER};}
@@ -188,10 +197,6 @@ que a geração das chaves identificadoras é feita internamente pelo BPMS, ou s
 requisição HTTP e, por sequência, esta não pode ser capturada e importada no Jmeter. & 
 Alguns elementos das páginas que compõem a aplicação não são capturados pelo Selenium, acredita-se que esse problema ocorra devido a estrutura da páginas web que pode conter elementos com os quais o Selenium não trabalhe bem como divs,frames e
 scrips, por exemplo. Para contornar esse problema, foi necessário estudar a estrutura das páginas que web, localizar os elementos faltantes e então adicionar o código para acessá-los nos respectivos métodos.\\\hline
-Activiti & Community & Sim \\\hline
-Intalio & Community e Enterprise & Sim \\\hline
-Tibco & Licença de desenvolvedor por 90 dias & Não \\\hline
-Bonita Open Solution & Community & Sim \\\hline
 \end{tabular}
 \caption{Levantamento sobre as ferramentas: Informações gerais}
 \label{tab:bpms2}
@@ -199,38 +204,23 @@ Bonita Open Solution & Community & Sim \\\hline
 
 
 \section{Trabalhos Relacionados}
-%outros casos semelhantes:
-%artigos que usaram -JMeter,
+
+%artigos sbqs 2014
+%artigos sbqs 2013
 
 %O teste de software voltado especificamente a aplicações de BPM é um assunto que pode ser considerado ainda em aberto. Atualmente, muitos trabalhos de pesquisa têm focado em etapas de monitoramento e otimização em BPM~\cite{Gambini:2011:AEC:2040283.2040300, Liu:2011:BAM:2040283.2040307, deLeoni:2012:AEL:2413516.2413525, Ramezani:2012:DIM:2413516.2413545}, que são etapas dedicadas a identificar e corrigir problemas. Embora exista alguma relação com testes em BPM, tratam-se geralmente de abordagens mais voltadas a aspectos de gestão, não de software . Por outro lado, um assunto que tem sido bastante abordado é o teste automatizado de aplicações orientadas a serviços Web~\cite{soatest2008}. Embora se trate de um nicho de teste de software, e mesmo que haja uma relação entre BPMS e serviços Web, acredita-se que esta abordagem não abarque toda a problemática do teste de aplicações de BPM. Na aplicação alvo deste trabalho, em particular, a abordagem orientada a serviços Web não poderia ser usada, pois o BPMS empregado baseia-se numa arquitetura que não expõe seus serviços.
 
-
 %No que diz respeito a relatos de experiência e estudos de caso, costuma haver espaço para isso em conferências internacionais sobre BPM e engenharia de software. Conforme van der Aalst (2013), em uma análise de várias edições da International Conference on Business Process Management, há muitos artigos que descrevem esforços de implementação e estudos de caso. No entanto, vários deles envolvem software que não é disponível ao leitor ou casos que são deliberadamente vagos~\cite{aalst2013survey}. No Brasil, conferências como o Simpósio Brasileiro de Sistemas de Informação e o Simpósio Brasileiro de Engenharia de Software incluem BPM e testes de software entre seus tópicos de interesse mas, até onde foi possível verificar, ainda não foram publicados trabalhos associando esses dois tópicos.
-
-%Monitoramento: Business Artifact-Centric Modeling for Real-Time Performance Monitoring
-%Verificação:
-%Aligning Event Logs and Declarative Process Models for Conformance Checking.
-%Massimiliano De Leoni, Fabrizio Maria Maggi and Wil van der Aalst
-%Context-Aware Compliance Checking.
-%Jan Martijn Van Der Werf, Eric Verbeek and Wil Van Der Aalst
-%Where Did I Misbehave? Diagnostic Information in Compliance ...
-
-
-
 
 %Embora o termo ``teste'' não seja frequente na literatura sobre BPM, o ciclo de vida de aplicações de BPM inclui as etapas de monitoramento e otimização, que se dedicam a identificar e corrigir problemas~\cite{weske}. Tal visão do ciclo de vida é comumente voltada a aspectos de gestão, não de tecnologia (software). Mesmo assim, acreditamos que o teste de software relacione-se particularmente com essas etapas e, de forma geral, possa contribuir significativamente para o sucesso de aplicações de BPM.
 
-
 %O artigo 'Um estudo sobre testes de desempenho com aplicação prática utilizando a ferramenta JMeter' (referencia) descreve o resultado de um estudo sobre testes de desempenho aplicado teste de desempenho aplicado em uma arquitetura e-commerce hipotética utilizando o JMeter. Diferentemente do presente trabalho, este artigo não possui usuários e um sistema real para ser analisado, sendo seu o objetivo analisar os dados para o desenvolvimento de um aplicativo, não para a melhoria do sistema.
-
 
 %selenium e JMeter
 %No trabalho “A Test Automation Framework Based on Web” \cite{wang2012test} é relatada a criação de um framework para teste automatizado de aplicações web, utilizando as ferramentas Selenium e JMeter. Os resultados do trabalho demonstram que as ferramentas ajudam, bem como o framework, ajudam a melhorar a qualidade do software e a aumentar a eficiência do desenvolvimento.
 
-
 %testes com Selenium;
 %O artigo “Automating functional tests using Selenium”\cite{holmes2006automating} é um relato de experiência utilizando o Selenium para testes automatizados e descreve as dificuldades e aprendizados com esta ferramenta, como tempo para escrever os scripts de teste bem como integração. Entretanto, os testes são baseados em aplicações Web simples e não em BPM. De fato não foram encontrados artigos que unissem BPM e a ferramenta Selenium para testar processos.
-
 
 %trabalhos mais teoricos sobre teste de BPM (possivelmente citar na Seção 2)
 %No white-paper “Performance Testing of Business Process Management (BPM) aplications using JMeter” \cite{} é um artigo teórico que defende a importância do teste de performance nas aplicações baseadas em BPM, para evitar a falha dos processos no ambiente de produção, bem como defende o uso do JMeter para implementar os testes levantando várias justificativas, dentre elas o fato de ser uma ferramenta gratuita que tem tantas funcionalidades quanto ferramentas pagas. Diferente do nosso trabalho, este não possui um ambiente em produção ou um processo real, com problemas reais, para efetuar o teste com o JMeter. O trabalho apenas trata da importância dos testes e sobre a potencialidade do JMeter.
