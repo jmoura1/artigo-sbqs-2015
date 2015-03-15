@@ -148,9 +148,20 @@ Para executar os testes de carga foi selecionada a ferramenta JMeter ~\cite{JMET
 
 Existem diversas ferramentas para automação de testes, especificamente se tratando de testes de carga e desempenho existem duas ferramentas próximas ao JMeter que são o The Grinder~\cite{GRINDER} e o WebLOAD~\cite{WEBLOAD}, ambas são ferramentas open source e tem diversas funcionalidades. No entanto, a maior desvantagem dessas ferramentas é que não existe a possibilidade de capturar as requisições que devemos testar de uma forma automática, todas requisições precisam ser inseridas manualmente no plano de teste. No JMeter existe a opção 'Servidor de Proxy' que permite capturar o tráfico de requisições e este é automaticamente transformado em requisições no plano de teste.
 
-%processo de teste nas duas
-%problemas com as duas ferramentas
+O processo para realizar o teste. em ambos os BPMS, utilizando o JMeter é composto por 4 etapas e pode ser visto na Tabela \ref{tab:bpms1}.Na Tabela \ref{tab:bpms2} são exibidas as principais observações sobre o comportamento dos testes em cada BPMS. Ocorrem dois principais problemas na execução do teste de carga em ambas as ferramentas: (a) Captura e interpretação das requisições que utilizam a tecnologia GWT e (b) dependência entre as tarefas do processo cuja implementação muda conforme o BPMS. 
+
+No caso deste segundo problema, no BOS existe uma chave identificadora de sessão que é gerada no momento em que usuário acessa o sistema e outra chave identificadora de instância, ou seja, identifica cada execução do processo como única, e é criada no momento em que o usuário inicia o processo. Para executar o teste com sucesso, foi necessário localizar a requisição em que essas chaves são geradas, utilizar a ferramenta "Extrator de Expressão Regular" do JMeter para obter o valor da chave. Já na ferramenta Acitivi foi impossível identificar em que requisição as mesmas eram geradas, pois não havia uma requisição cujo o retorno (resposta do servidor) contivesse as chaves utilizadas. Esta situação leva a crer que a geração das chaves identificadoras é feita internamente pelo BPMS, ou seja, não em uma requisição HTTP e, por sequência, esta não pode ser capturada e importada no Jmeter.
+
+%No caso do teste de carga, foi encontrado um problema para capturar e interpretar requisições que utilizavam a tecnologia GWT (Google Web Toolkit), este problema foi a causa do teste de diferentes ferramentas de captura de requisições e, nesse caso, obteve-se sucesso por meio do uso combinado do servidor proxy do JMeter, com seu recurso de visualização do cabeçalho das requisições e com o BlazeMeter Chrome Extension para capturar as requisições. Outros softwares utilizados para capturar as requisições não suportavam o tratamento a requisições que utilizavam GWT e/ou não permitiam exportar as requisições capturadas diretamente para o formato aceito pelo JMeter (precisavam se inseridas manualmente).
+
+%Outro problema, também exibido na Tabela \ref{tab:bpms2}, ocorreu devido a uma particularidade de sistemas BPM, em que várias tarefas de um processo são dependentes entre si e a forma como isso é implementado muda conforme o sistema. No BOS existe uma chave identificadora de sessão que é gerada no momento em que usuário acessa o sistema e outra chave identificadora de instância, ou seja, identifica cada execução do processo como única, e é criada no momento em que o usuário inicia o processo. Para executar o teste com sucesso, foi necessário localizar a requisição em que essas chaves são geradas, utilizar a ferramenta "Extrator de Expressão Regular" do JMeter para obter o valor da chave, guardar o valor obtido em uma variável do JMeter e então substituir os valores por esta variável em todas as requisições que utilizam as chaves, esta etapa exigiu um estudo mais aprofundado da implementação do processo no BOS e também foi trabalhosa.
+
+%No caso da ferramenta Activiti, as chaves identificadoras também foram encontradas, no entanto, foi impossível identificar em que requisição as mesmas eram geradas, de fato na primeira requisição capturada as chaves já são utilizadas/enviadas ao servidor no contéudo da requisição, ou seja, não havia uma requisição cujo o retorno (resposta do servidor) contivesse as chaves utilizadas. Esta situação leva a crer que a geração das chaves identificadoras é feita internamente pelo BPMS, ou seja, não em uma requisição HTTP e, por sequência, esta não pode ser capturada e importada no Jmeter.
+
+
+%pode testar com o bonita e com o activiti não
 %resultados
+
 
 \subsection{Teste Funcional}
 Para executar os testes funcionais, escolheu-se a ferramenta Selenium ~\cite{SELENIUM}. Esta ferramenta possui basicamente duas partes complementares: Selenium IDE e Selenium WebDriver. A primeira é um plugin para o navegador Firefox, capaz de registrar e reproduzir interações do usuário com o navegador, assim permitindo criar scripts de teste rapidamente, sem escrita de código.
@@ -168,15 +179,12 @@ Durante a revisão bibliográfica, encontrou-se um trabalho apresentado no Simp�
 \centering
 \begin{tabular}{|p{2cm}|p{6cm}|p{6cm}|}
   & Teste de Carga & Teste Funcional  \\\hline
-Descrição & 
+Motivo da escolha & 
 \begin{itemize}
-\item{teste de desempenho, visa avaliar o comportamento do sistema frente a um grande número de solicitações;}
-\item{durante a implantação do processo testado foi a falha do sistema perante um grande acesso de usuários em um dia específico.}
+\item{Durante a implantação do processo testado foi a falha do sistema perante um grande acesso de usuários em um dia específico.}
 \end{itemize}
 &
 \begin{itemize}
-\item{Teste que verifica as saídas do sistema produzidas a
-partir de entradas pré-definidas;}
 \item{Durante a utilização do processo
 dentro da instituição, ocorreram alguns erros como: campo sem suporte a caracteres especiais,
 erro devido a nome de arquivos muito grandes, entre outros.}
@@ -250,7 +258,7 @@ scrips, por exemplo. Para contornar esse problema, foi necessário estudar a est
 \section{Trabalhos Relacionados}
 
 %artigos sbqs 2014
-%artigos sbqs 2013 -> pegar do email que mandei pra andrea, pegar citação do meu tg
+%artigos sbqs 2013 -
 
 %O teste de software voltado especificamente a aplicações de BPM é um assunto que pode ser considerado ainda em aberto. Atualmente, muitos trabalhos de pesquisa têm focado em etapas de monitoramento e otimização em BPM~\cite{Gambini:2011:AEC:2040283.2040300, Liu:2011:BAM:2040283.2040307, deLeoni:2012:AEL:2413516.2413525, Ramezani:2012:DIM:2413516.2413545}, que são etapas dedicadas a identificar e corrigir problemas. Embora exista alguma relação com testes em BPM, tratam-se geralmente de abordagens mais voltadas a aspectos de gestão, não de software . Por outro lado, um assunto que tem sido bastante abordado é o teste automatizado de aplicações orientadas a serviços Web~\cite{soatest2008}. Embora se trate de um nicho de teste de software, e mesmo que haja uma relação entre BPMS e serviços Web, acredita-se que esta abordagem não abarque toda a problemática do teste de aplicações de BPM. Na aplicação alvo deste trabalho, em particular, a abordagem orientada a serviços Web não poderia ser usada, pois o BPMS empregado baseia-se numa arquitetura que não expõe seus serviços.
 
