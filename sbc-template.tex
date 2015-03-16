@@ -210,10 +210,39 @@ Durante a revisão bibliográfica, encontrou-se um trabalho apresentado no Simp�
 O processo para a execução do teste funcional é composto por seis etapas: Captura da execução no navegador (Selenium), Exportar código gerado (Selenium), Criar cenário de teste (Cucumber), Criar as definições dos passos do teste (Cucumber), Criar os métodos para cada passo (Java) e Executar o teste (Selenium).
 
 
-%problemas com as duas
-%resultados
+Algumas personalizações são necessárias para a execução do teste funcional, a maioria delas ocorre nas etapas de exportação/execução do teste. Em ambos os BPMS, ao executar o teste gravado, ocorrem erros pois o Selenium não encontra os campos que ele mesmo capturou. Isto ocorre pois os campos estão localizados dentre de \emph{iframes} que, no momento da captura da interação, não exibem problemas mas na execução acabam por "esconder" os campos, assim é necessário utilizar uma função para "acessar" o \emph{iframe}, como pode ser visto na Figura \ref{fig:codigobos}, antes de selecionar o elemento desejado.
 
+A Figura \ref{fig:codigobos} exibe duas "personalizações" no código gerado pelo Selenium IDE, a primeira (em vermelho) é uma linha de código que faz com que o driver "aguarde"  60 segundos antes de procurar pelo campo a ser selecionado. Isto evita que o driver busque por um campo, antes da página ser carregada, e não o encontre (o que causa erro na execução dos teste). A segunda linha de código, em verde, exibe o código que "acessa" o \emph{iframe}, através da ID, antes de executar a ação e isto também evita que o driver não encontre o elemento no momento do teste.
 
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.99\textwidth]{figuras/codigo.png}
+\caption{Métodos Java}
+\label{fig:codigobos}
+\end{figure}
+
+%Como o processo testado é o mesmo nos dois BPMS, o cenário de teste também é o mesmo. O cenário nada mais é do que a definição, em ordem de execução, dos passos que são executados na aplicação bem como  os resultados esperados. A Figura \ref{fig:cenariobos} exibe o cenário utilizado nos testes em questão.
+
+%\begin{figure}[ht]
+%\centering
+%\includegraphics[width=.50\textwidth]{figuras/cenario.png}
+%\caption{Cenário de teste}
+%\label{fig:cenariobos}
+%\end{figure}
+
+Além dos problemas comuns as duas ferramentas citados acima, a ferramenta Activiti demonstrou um outro problema. Diferente da gravação com o BOS, o Selenium IDE não captura toda a interação do usuário com a aplicação, de fato, na etapa de login a IDE captura apenas o acesso a página e o "clique" ao botão de login, ou seja, não captura o preenchimento dos campos "Usuário" e "Senha". Este problema se repete com alguns outros elementos durante a gravação de teste, acredita-se que esse problema ocorra devido a estrutura da página web em questão, estrutura esta que pode conter elementos com os quais o Selenium não trabalhe bem como \emph{divs},\emph{frames} e \emph{scrips}, por exemplo. No entanto, este problema não impossibilita a criação e execução do teste.
+
+Como o processo alvo do teste é o mesmo, a definição do cenário utilizada para o teste do Activiti foi muito semelhante a utilizada no BOS. Na criação dos métodos correspondentes a cada etapa do processo foi utilizado o código do gerado pelo Selenium IDE mas, como esta não captura todas as interações, a execução do teste falha. Para contornar esse problema, foi necessário estudar a estrutura das páginas que web, localizar os elementos faltantes e então adicionar o código para acessá-los nos respectivos métodos.
+
+\subsubsection{Resultados}
+
+O teste funcional da ferramenta Bonita Open Solution e da ferramenta Activiti mostrou-se mais viável do que o teste de carga, o teste funcional não utiliza chaves identificadoras ou \emph{ids}, como ocorre no teste com o Jmeter, já que uma boa parcela do teste é executada no lado cliente, o que facilita o processo de teste. Pode-se dizer que este teste atingiu todos seus objetivos pois permitiu executar a interação do usuário, bem como criar o código para simular diferentes entradas e testar o a aplicação de diversas formas.
+
+O teste funcional também não é dependente da implementação do BPMS, são necessárias poucas modificações no código gerado e a realização destas é possível apenas inspecionando a estrutura das páginas web.
+
+O Cucumber-JVM torna a implementação dos testes mais rápida e menos trabalhosa, já que a utilização de cenários auxilia na implementação do teste de forma a diminuir a quantidade de código que precisaria ser escrita sem o uso de uma ferramenta como esta.
+
+O teste funcional com o Selenium+Cucumber pode encontrar problemas ao testar várias tarefas ou todos os possíveis fluxos do processo alvo pois, como já foi citado, é necessário fazer algumas modificações no código gerado pelo Selenium e essas modificações, dependendo do volume de tarefas/fluxos, podem ser muito trabalhosas ou até inviabilizar o teste.
 
 \section{Trabalhos Relacionados}
 
