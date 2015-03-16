@@ -6,9 +6,7 @@
 \usepackage{url}  % para usar URLs nas referencias
 \sloppy
 
-
 \title{Automação de Testes em Aplicações de BPM:\\ um Relato de Experiência}
-
 
 \author{Jessica Lasch de Moura\inst{1},
 Andrea Schwertner Charão\inst{1}}
@@ -16,15 +14,9 @@ Andrea Schwertner Charão\inst{1}}
 Universidade Federal de Santa Maria -- UFSM
 \email{\{jmoura, andrea\}@inf.ufsm.br}}
 
-
-
 \begin{document}
 
-
 \maketitle
-
-
-
 
 \begin{resumo}
 Este artigo aborda questões relacionadas ao teste automatizado de aplicações desenvolvidas com o apoio de sistemas de gestão de processos de negócio (Business Process Management Systems -- BPMS). Para isso, apresenta-se um relato de experiência de automação de testes de carga e de testes funcionais em uma aplicação de BPM, utilizando-se as ferramentas de código-aberto Apache JMeter e Selenium. Os resultados evidenciam limitações e oportunidades na automação de testes de aplicações de BPM.
@@ -33,9 +25,6 @@ Este artigo aborda questões relacionadas ao teste automatizado de aplicações 
 \begin{abstract}
 This article discusses the automated testing of applications developed with the support of Business Process Management Systems -- BPMS. We present an experience report on the automation of load tests and functional tests over a real BPM application, using the Apache JMeter and Selenium open-source tools. Results show the limitations and opportunities in test automation of BPM applications.
 \end{abstract}
-
-
-
 
 \section{Introdução}
 
@@ -182,24 +171,7 @@ scrips, por exemplo. Para contornar esse problema, foi necessário estudar a est
 \label{tab:bpms2}
 \end{table}
 
-%processos de teste
-% \begin{enumerate} 
-%\item{Capturar requisições HTTP;}
-%\item{Exportar requisições (Formato .jrxml para JMeter);}
-%\item{Configurar Plano de teste (script);}
-%\item{Executar teste (JMeter).}
-%     \end{enumerate}  
-% &   
-%\begin{enumerate}   
-% \item{Captura da execução no navegador  (Selenium);}
-% \item{Exportar código gerado  (Selenium);}
-%       \item{Criar cenário de teste (Cucumber);}
-%       \item{Criar as definições do passos de execução (Cucumber);}
-%       \item{Criar métodos (Java);}
-%       \item{Executar o teste (Selenium).}
-%       \end{enumerate}  
-       
-O processo para realizar o teste. em ambos os BPMS, utilizando o JMeter é composto por 4 etapas e pode ser visto na Tabela \ref{tab:bpms1}.Na Tabela \ref{tab:bpms2} são exibidas as principais observações sobre o comportamento dos testes em cada BPMS. Ocorrem dois principais problemas na execução do teste de carga em ambas as ferramentas: (a) Captura e interpretação das requisições que utilizam a tecnologia GWT e (b) dependência entre as tarefas do processo cuja implementação muda conforme o BPMS. 
+O processo para realizar o teste, em ambos os BPMS, consiste de quatro etapas: Capturar as requisições HTTP, Exportar requisições (Formato .jrxml para JMeter), Configurar o script de plano de teste e, por fim, Executar o teste no JMeter. Na Tabela \ref{tab:bpms2} são exibidas as principais observações sobre o comportamento dos testes em cada BPMS. Ocorrem dois principais problemas na execução do teste de carga em ambas as ferramentas: (a) Captura e interpretação das requisições que utilizam a tecnologia GWT e (b) dependência entre as tarefas do processo cuja implementação muda conforme o BPMS. 
 
 No caso deste segundo problema, no BOS existe uma chave identificadora de sessão que é gerada no momento em que usuário acessa o sistema e outra chave identificadora de instância, ou seja, identifica cada execução do processo como única, e é criada no momento em que o usuário inicia o processo. Para executar o teste com sucesso, foi necessário localizar a requisição em que essas chaves são geradas, utilizar a ferramenta "Extrator de Expressão Regular" do JMeter para obter o valor da chave. Já na ferramenta Acitivi foi impossível identificar em que requisição as mesmas eram geradas, pois não havia uma requisição cujo o retorno (resposta do servidor) contivesse as chaves utilizadas. Esta situação leva a crer que a geração das chaves identificadoras é feita internamente pelo BPMS, ou seja, não em uma requisição HTTP e, por sequência, esta não pode ser capturada e importada no Jmeter.
 
@@ -235,7 +207,9 @@ Para executar os testes funcionais, escolheu-se a ferramenta Selenium ~\cite{SEL
 
 Durante a revisão bibliográfica, encontrou-se um trabalho apresentado no Simpósio Brasileiro de Qualidade de Software de 2013 \cite{sbqs2013} que utilizava o Selenium WebDriver aliado ao Cucumber-JVM \cite{CUCUMBER} para testar uma aplicação web, a partir desse trabalho decidiu-se utilizar a última na execução dos testes funcionais. O Cucumber é uma ferramenta que executa descrições de teste, em texto simples, como testes automatizados.
 
-%processo do teste nas duas
+O processo para a execução do teste funcional é composto por seis etapas: Captura da execução no navegador (Selenium), Exportar código gerado (Selenium), Criar cenário de teste (Cucumber), Criar as definições dos passos do teste (Cucumber), Criar os métodos para cada passo (Java) e Executar o teste (Selenium).
+
+
 %problemas com as duas
 %resultados
 
