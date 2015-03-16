@@ -209,7 +209,6 @@ Durante a revisão bibliográfica, encontrou-se um trabalho apresentado no Simp�
 
 O processo para a execução do teste funcional é composto por seis etapas: Captura da execução no navegador (Selenium), Exportar código gerado (Selenium), Criar cenário de teste (Cucumber), Criar as definições dos passos do teste (Cucumber), Criar os métodos para cada passo (Java) e Executar o teste (Selenium).
 
-
 Algumas personalizações são necessárias para a execução do teste funcional, a maioria delas ocorre nas etapas de exportação/execução do teste. Em ambos os BPMS, ao executar o teste gravado, ocorrem erros pois o Selenium não encontra os campos que ele mesmo capturou. Isto ocorre pois os campos estão localizados dentre de \emph{iframes} que, no momento da captura da interação, não exibem problemas mas na execução acabam por "esconder" os campos, assim é necessário utilizar uma função para "acessar" o \emph{iframe}, como pode ser visto na Figura \ref{fig:codigobos}, antes de selecionar o elemento desejado.
 
 A Figura \ref{fig:codigobos} exibe duas "personalizações" no código gerado pelo Selenium IDE, a primeira (em vermelho) é uma linha de código que faz com que o driver "aguarde"  60 segundos antes de procurar pelo campo a ser selecionado. Isto evita que o driver busque por um campo, antes da página ser carregada, e não o encontre (o que causa erro na execução dos teste). A segunda linha de código, em verde, exibe o código que "acessa" o \emph{iframe}, através da ID, antes de executar a ação e isto também evita que o driver não encontre o elemento no momento do teste.
@@ -221,18 +220,18 @@ A Figura \ref{fig:codigobos} exibe duas "personalizações" no código gerado pe
 \label{fig:codigobos}
 \end{figure}
 
-%Como o processo testado é o mesmo nos dois BPMS, o cenário de teste também é o mesmo. O cenário nada mais é do que a definição, em ordem de execução, dos passos que são executados na aplicação bem como  os resultados esperados. A Figura \ref{fig:cenariobos} exibe o cenário utilizado nos testes em questão.
+Como o processo testado é o mesmo nos dois BPMS, o cenário de teste também é o mesmo. O cenário nada mais é do que a definição, em ordem de execução, dos passos que são executados na aplicação bem como  os resultados esperados. A Figura \ref{fig:cenariobos} exibe o cenário utilizado nos testes em questão.
 
-%\begin{figure}[ht]
-%\centering
-%\includegraphics[width=.50\textwidth]{figuras/cenario.png}
-%\caption{Cenário de teste}
-%\label{fig:cenariobos}
-%\end{figure}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.50\textwidth]{figuras/cenario.png}
+\caption{Cenário de teste}
+\label{fig:cenariobos}
+\end{figure}
 
-Além dos problemas comuns as duas ferramentas citados acima, a ferramenta Activiti demonstrou um outro problema. Diferente da gravação com o BOS, o Selenium IDE não captura toda a interação do usuário com a aplicação, de fato, na etapa de login a IDE captura apenas o acesso a página e o "clique" ao botão de login, ou seja, não captura o preenchimento dos campos "Usuário" e "Senha". Este problema se repete com alguns outros elementos durante a gravação de teste, acredita-se que esse problema ocorra devido a estrutura da página web em questão, estrutura esta que pode conter elementos com os quais o Selenium não trabalhe bem como \emph{divs},\emph{frames} e \emph{scrips}, por exemplo. No entanto, este problema não impossibilita a criação e execução do teste.
+Além dos problemas comuns as duas ferramentas citados acima, a ferramenta Activiti demonstrou um outro problema. Diferente da gravação com o BOS, o Selenium IDE não captura toda a interação do usuário com a aplicação, de fato, na etapa de login a IDE captura apenas o acesso a página e o "clique" ao botão de login, ou seja, não captura o preenchimento dos campos "Usuário" e "Senha". Este problema se repete com alguns outros elementos durante a gravação de teste, acredita-se que esse problema ocorra devido a estrutura da página web em questão, estrutura esta que pode conter elementos com os quais o Selenium não trabalhe bem como \emph{divs},\emph{frames} e \emph{scripts}, por exemplo. No entanto, este problema não impossibilita a criação e execução do teste.
 
-Como o processo alvo do teste é o mesmo, a definição do cenário utilizada para o teste do Activiti foi muito semelhante a utilizada no BOS. Na criação dos métodos correspondentes a cada etapa do processo foi utilizado o código do gerado pelo Selenium IDE mas, como esta não captura todas as interações, a execução do teste falha. Para contornar esse problema, foi necessário estudar a estrutura das páginas que web, localizar os elementos faltantes e então adicionar o código para acessá-los nos respectivos métodos.
+Na criação dos métodos correspondentes a cada etapa do processo foi utilizado o código do gerado pelo Selenium IDE mas, como esta não captura todas as interações, a execução do teste falha. Para contornar esse problema, foi necessário estudar a estrutura das páginas que web, localizar os elementos faltantes e então adicionar o código para acessá-los nos respectivos métodos.
 
 \subsubsection{Resultados}
 
@@ -267,13 +266,25 @@ O teste funcional com o Selenium+Cucumber pode encontrar problemas ao testar vá
 %No white-paper “Performance Testing of Business Process Management (BPM) aplications using JMeter” \cite{} é um artigo teórico que defende a importância do teste de performance nas aplicações baseadas em BPM, para evitar a falha dos processos no ambiente de produção, bem como defende o uso do JMeter para implementar os testes levantando várias justificativas, dentre elas o fato de ser uma ferramenta gratuita que tem tantas funcionalidades quanto ferramentas pagas. Diferente do nosso trabalho, este não possui um ambiente em produção ou um processo real, com problemas reais, para efetuar o teste com o JMeter. O trabalho apenas trata da importância dos testes e sobre a potencialidade do JMeter.
 
 \section{Conclusão}
-Neste trabalho, foram conduzidas experiências de teste de software em uma aplicação real de BPM, que encontra-se implantada em uma instituição pública de ensino. Na delimitação o trabalho, focou-se em dois tipos de teste: testes de carga e testes funcionais. Na indisponibilidade de ferramentas específicas para o teste de aplicações de BPM, buscou-se selecionar ferramentas consagradas na área de teste de software.
+Um dos objetivos deste trabalho era explorar soluções para teste automatizado de aplicações em BPM, pode se dizer que esse objetivo foi atingido pois, durante a execução do trabalho, foi possível obter várias conclusões sobre o teste automatizado deste tipo de software.
 
-As experiências de testes de carga mostraram que uma ferramenta típica para este propósito (Apache JMeter), mesmo não sendo integrada ao BPMS, tornou possível atingir os objetivos dos testes. Em particular, conseguiu-se determinar um nível de carga em que o tempo de resposta seria muito alto para os usuários da aplicação de BPM.
+Uma das abordagens adotadas foi de que, por aplicações BPM serem aplicações WEB, poderiam ser tratadas e testadas como um software em geral, utilizando ferramentas consagradas para tal. De fato, esta abordagem mostrou algumas desvantagens e dificuldades relacionadas a particularidades das aplicações BPM.
 
-Por outro lado, os testes funcionais, mesmo utilizando uma ferramenta popular (Selenium), não atingiram plenamente os objetivos. Esses resultados sugerem que a automação deste tipo de teste não seja uma tarefa trivial em aplicações de BPM, principalmente pela falta de ferramentas adequadas e alinhadas com o ciclo de vida de BPM.
+Sobre o ponto de vista do teste de carga, este tipo de teste mostrou-se útil para explicar, e poderia ter sido usado para prever, falhas ocorridas no sistema que deu origem a este trabalho que foi criado utilizando o BPMS Bonita Open Solution. Também mostrou-se um teste trabalhoso para ser executado dependendo do número de tarefas a serem testadas e também inviável, dependendo do BPMS escolhido. A experiência com duas ferramentas fortaleceu essa conclusão pois ocorreram duas situações distinas, com o Bonita Open Solution o teste mostrou-se válido porém, com o BPMS Activiti o teste foi impossível de ser executado. O BPMS deve ser avaliado antes da execução do teste para verificar se este é vantajoso ou não.
 
-Embora as experiências não tenham sido exaustivas, acredita-se que constituam uma contribuição para profissionais e pesquisadores interessados dedicados aos tópicos de BPM e teste de software. Como trabalhos futuros, pode-se destacar a exploração de ferramentas de geração de casos de teste, na hipótese de que possam ajudar a alinhar os testes com as saídas e entradas do processo. Outra via que merece ser explorada são os testes de regressão, para auxiliar a encontrar possíveis problemas após alterações no processo, que podem ser frequentes dependendo do caso.
+Quanto ao teste funcional, a abordagem obteve maior sucesso na execução dos teste já que não há tanto dependência das ferramentas durante a criação dos testes. O maior problema encontrado foi que a tarefa de teste pode vir a ser muito trabalhosa, principalmente quando deseja-se testar todas tarefas e fluxos possíveis que um processo de negócio pode ter.
+%\begin{figure}[ht]
+%\centering
+%\includegraphics[width=.99\textwidth]{figuras/tabelaCaminhos.png}
+%\caption{Possíveis caminhos}
+%\label{fig:tabelaCaminhos}
+%\end{figure}
+Nas ferramentas abordadas no neste trabalho ou nas ferramentas estudadas e tabeladas, não foi encontrado nenhum tipo de suporte a teste automatizado dos processos, uma particularidade dos processos é que estes podem possuir diversos caminhos e estes caminhos precisam ser testados. Na Tabela \ref{tab:tabelaCaminhos} foram exibidos cujos testes foram executados manualmente e, com base no estudo executado neste trabalho e nas ferramentas estudadas, pode-se afirmar que atualmente é muito difícil encontrar um BPMS com suporte a este tipo de teste.
+
+Com o aprofundamento nas ferramentas abordadas nesse trabalho, bem como com o estudo realizado para escolhe-las, pode se afirmar que o campo de teste automatizado em ferramentas BPMS ainda é muito pouco explorado mas, como foi visto na aplicação citada, aplicações BPM estão suscetíveis a erros tanto quanto outras aplicações e poderiam se beneficiar com o avanço desta área.
+
+Como trabalhos futuros, pode-se destacar a continuação exploração de ferramentas de geração de casos de teste, na hipótese de que possam ajudar a alinhar os testes com as saídas e entradas do processo. Outra via que merece ser explorada são os testes de regressão, para auxiliar a encontrar possíveis problemas após alterações no processo, que podem ser frequentes dependendo do caso.
+
 
 \bibliographystyle{sbc}
 \bibliography{sbc-template}
