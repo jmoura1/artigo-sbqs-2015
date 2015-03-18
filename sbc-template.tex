@@ -153,12 +153,11 @@ dentro da instituição, ocorreram alguns erros como: campo sem suporte a caract
 erro devido a nome de arquivos muito grandes, entre outros.}
 \end{itemize}
  \\\hline
-BPMS Bonita Open Solution (BOS) & \begin{itemize}\item{Houveram problemas com a execução de requisições que utilizavam a tecnologia Google Web Toolkit (GWT), foi resolvido atráves de estudo das requisições e utilização de ferramentas auxiliares para a captura \cite{BLAZEMETER};}
-\item{Em sistemas BPM as tarefas de um processo são interligadas e/ou dependentes entre si, no BOS existe uma chave que identifica cada execução do processo como única, e é criada no momento em que o usuário inicia o processo. Essa particularidade causou no problemas na execução dos testes e, para contorna-los, foi necessário estudar a fundo as requisições e o processo e utilizar opções da ferramenta JMeter bem como scripts para adaptar as requisições.}\end{itemize}
- & \begin{itemize} 
-\item{A captura da execução funciona bem para a estrutura das páginas web da aplicação;}
-\item{Ao executar o teste, alguns erros ocorrem devido a ferramenta Selenium “Buscar” elementos que ainda não foram carregados na página. Isto pode ser resolvido a partir da inserção de pequenos scripts nos métodos.}
- \end{itemize} \\\hline
+BPMS Bonita Open Solution (BOS) & Houveram problemas com a execução de requisições que utilizavam a tecnologia Google Web Toolkit (GWT), foi resolvido atráves de estudo das requisições e utilização de ferramentas auxiliares para a captura \cite{BLAZEMETER};
+
+Em sistemas BPM as tarefas de um processo são interligadas e/ou dependentes entre si, essa particularidade causou no problemas na execução dos testes e, para contorna-los, foi necessário estudar a fundo as requisições;
+ & 
+Ao executar o teste, alguns erros ocorrem devido a ferramenta Selenium “Buscar” elementos que ainda não foram carregados na página. Isto pode ser resolvido a partir da inserção de pequenos scripts nos métodos.\\\hline
 BPMS Activiti & Ocorreram os mesmos erros relativos à dependência entre as tarefas do processo, as chaves identificadoras foram encontradas, no entanto, foi impossível identificar em que requisição as mesmas eram geradas, não havia uma requisição
 cujo o retorno (resposta do servidor) contivesse as chaves utilizadas. Esta situação leva a crer
 que a geração das chaves identificadoras é feita internamente pelo BPMS, ou seja, não em uma
@@ -187,16 +186,32 @@ No caso deste segundo problema, no BOS existe uma chave identificadora de sessã
 \subsubsection{Resultados}
 Com o objetivo de obter o comportamento do sistema em diferentes níveis de carga, foram executados testes com 1, 50, 100 e 200 usuários virtuais e foram analisadas as requisições referentes aos seguintes passos: efetuar login, exibir a página inicial do BOS, selecionar o processo, exibir o formulário inicial e enviar o formulário preenchido. Os testes foram executados em um servidor com 24 GB de RAM e 2 processadores Intel Xeon E5520, com 4 núcleos. Foi possível executar o teste de carga apenas na ferramenta Bonita Open Solution, pois o software Activiti demonstrou os problemas relatados acima.
 
-Reproduzindo o teste com um usuário virtual, nas requisições correspondentes a login, exibição da página inicial, seleção do processo, exibição do formulário inicial e envio do formulário preenchido, a média do tempo de resposta foi de, respectivamente, 126, 32, 38, 80 e 73 milissegundos. A média do tempo de resposta total foi de 75 milissegundos e o desvio padrão foi igual a 21.  Aumentando o número de usuários virtuais para cinquenta os valores do tempo de resposta subiram para 597, 191, 179, 368 e 152 milissegundos, a média foi igual a 329 milissegundos e o desvio padrão 401. Com 100 usuários o aumento do tempo de resposta fica ainda mais visível, sendo 1972, 571, 552, 760 e 694 milissegundos, com média 774 milissegundos e desvio padrão de 1449.
+%Reproduzindo o teste com um usuário virtual, nas requisições correspondentes a login, exibição da página inicial, seleção do processo, exibição do formulário inicial e envio do formulário preenchido, a média do tempo de resposta foi de, respectivamente, 126, 32, 38, 80 e 73 milissegundos. A média do tempo de resposta total foi de 75 milissegundos e o desvio padrão foi igual a 21.  Aumentando o número de usuários virtuais para cinquenta os valores do tempo de resposta subiram para 597, 191, 179, 368 e 152 milissegundos, a média foi igual a 329 milissegundos e o desvio padrão 401. Com 100 usuários o aumento do tempo de resposta fica ainda mais visível, sendo 1972, 571, 552, 760 e 694 milissegundos, com média 774 milissegundos e desvio padrão de 1449.
 
-\begin{figure}[ht]
+
+\begin{table}
+{\scriptsize
 \centering
-\includegraphics[width=.99\textwidth]{figuras/grafico200.jpg}
-\caption{Resultado dos testes de carga com 200 usuários no JMeter.}
-\label{fig:carga200}
-\end{figure}
+\begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+ Etapa x Usuários & Login & Pág. Inicial & Seleção processo & Form. Inicial & Enviar form. \\\hline
+1 & 126 & 32 & 38 & 80 & 73\\\hline
+50 & 597 & 191 & 179 & 368 & 152\\\hline
+100 & 1972 & 571 & 552 & 760 & 694\\\hline
+200 & 10.149 & 3.239 & 934 & 2.122 & 1.918\\\hline
+\end{tabular}
+}
+\caption{Tempos médios de resposta (em milissegundos) em cada etapa e quantidade de usuários}
+\label{tab:resultadoCarga}
+\end{table}
 
-A saída da execução do teste com 200 usuários pode ser visualizada na Figura \ref{fig:carga200}. Simulando 200 usuários virtuais, o tempo de resposta médio na requisição que executa o login no sistema foi de 10.149 milissegundos, ou seja, aproximadamente 10 segundos, o que pode ser considerado um tempo de resposta alto. Os tempos de resposta para exibição da página inicial, início do processo de solicitação, exibição do formulário e envio do formulário foram de, respectivamente, 3.239, 934, 2.122 e 1.918 milissegundos, a média de tempo de resposta para todas requisições foi de 3.111 milissegundos (ou seja, 3 segundos), e o desvio padrão foi de 13.088. Além dos altos tempos de resposta, o teste com 200 usuários virtuais apresentou taxas de erro, em algumas requisições, que não foram encontradas com um número menor de usuários. Por exemplo, a requisição que executou login apresentou uma taxa de 2\% de erro e, ao todo, todas requisições obtiveram uma taxa de 7.82\%, o que é preocupante.
+%\begin{figure}[ht]
+%\centering
+%\includegraphics[width=.99\textwidth]{figuras/grafico200.jpg}
+%\caption{Resultado dos testes de carga com 200 usuários no JMeter.}
+%\label{fig:carga200}
+%\end{figure}
+
+Os resultados, em milissegundos, de cada etapa com a variação do número de usuários pode ser visto na Tabela \ref{tab:resultadoCarga}. Os resultados mais alarmantes são os que retratam 200 usuários virtuais, o tempo de resposta médio na requisição que executa o login no sistema foi de 10.149 milissegundos, ou seja, aproximadamente 10 segundos, o que pode ser considerado um tempo de resposta alto. A média de tempo de resposta para todas requisições foi de 3.111 milissegundos (ou seja, 3 segundos), e o desvio padrão foi de 13.088. Além dos altos tempos de resposta, o teste com 200 usuários virtuais apresentou taxas de erro, em algumas requisições, que não foram encontradas com um número menor de usuários. Por exemplo, a requisição que executou login apresentou uma taxa de 2\% de erro e, ao todo, todas requisições obtiveram uma taxa de 7.82\%, o que é preocupante.
 
 De forma geral, portanto, este teste atingiu seus objetivos e serve para explicar um problema que ocorreu no sistema em execução que foi a falha do sistema, onde alguns arquivos foram corrompidos, bem como um tempo de espera muito alto para o aluno acessar o formulário de solicitação. Outro ponto importante é que este teste foi executado apenas no login e na primeira tarefa do processo alvo e, mesmo assim, a tarefa de teste já foi trabalhosa pelo fato de exigir uma análise profunda das requisições para executar os testes com sucesso. A captura destas etapas, utilizando o BlazeMeter, resultou em uma média de 100 requisições, considerando que deseja-se fazer o teste de outra etapa/gargalo que esteja localizada mais ao meio do processo a captura desta pode gerar muitas requisições o que tornaria difícil a análise de todas requisições para substituir as chaves geradas e, assim, tornaria inviável essa abordagem de teste. 
 
@@ -209,25 +224,19 @@ Durante a revisão bibliográfica, encontrou-se um trabalho apresentado no Simp�
 
 O processo para a execução do teste funcional é composto por seis etapas: Captura da execução no navegador (Selenium), Exportar código gerado (Selenium), Criar cenário de teste (Cucumber), Criar as definições dos passos do teste (Cucumber), Criar os métodos para cada passo (Java) e Executar o teste (Selenium).
 
-Algumas personalizações são necessárias para a execução do teste funcional, a maioria delas ocorre nas etapas de exportação/execução do teste. Em ambos os BPMS, ao executar o teste gravado, ocorrem erros pois o Selenium não encontra os campos que ele mesmo capturou. Isto ocorre pois os campos estão localizados dentre de \emph{iframes} que, no momento da captura da interação, não exibem problemas mas na execução acabam por "esconder" os campos, assim é necessário utilizar uma função para "acessar" o \emph{iframe}, como pode ser visto na Figura \ref{fig:codigobos}, antes de selecionar o elemento desejado.
+Como o processo testado é o mesmo nos dois BPMS, o cenário de teste também é o mesmo. O cenário nada mais é do que a definição, em ordem de execução, dos passos que são executados na aplicação bem como  os resultados esperados.
 
-A Figura \ref{fig:codigobos} exibe duas "personalizações" no código gerado pelo Selenium IDE, a primeira (em vermelho) é uma linha de código que faz com que o driver "aguarde"  60 segundos antes de procurar pelo campo a ser selecionado. Isto evita que o driver busque por um campo, antes da página ser carregada, e não o encontre (o que causa erro na execução dos teste). A segunda linha de código, em verde, exibe o código que "acessa" o \emph{iframe}, através da ID, antes de executar a ação e isto também evita que o driver não encontre o elemento no momento do teste.
+Algumas personalizações são necessárias para a execução com sucesso do teste funcional, a maioria delas ocorre nas etapas de exportação/execução do teste. Em ambos os BPMS, ao executar o teste gravado, ocorrem erros pois o Selenium não encontra os campos que ele mesmo capturou. Isto ocorre pois os campos estão localizados dentre de \emph{iframes} que, no momento da captura da interação, não exibem problemas mas na execução acabam por "esconder" os campos, assim é necessário utilizar uma função para "acessar" o \emph{iframe} antes de selecionar o elemento desejado, garantindo que não ocorra erro durante a execução.
 
-\begin{figure}[ht]
-\centering
-\includegraphics[width=.99\textwidth]{figuras/codigo.png}
-\caption{Métodos Java}
-\label{fig:codigobos}
-\end{figure}
+%A Figura \ref{fig:codigobos} exibe duas "personalizações" no código gerado pelo Selenium IDE, a primeira (em vermelho) é uma linha de código que faz com que o driver "aguarde"  60 segundos antes de procurar pelo campo a ser selecionado. Isto evita que o driver busque por um campo, antes da página ser carregada, e não o encontre (o que causa erro na execução dos teste). A segunda linha de código, em verde, exibe o código que "acessa" o \emph{iframe}, através da ID, antes de executar a ação e isto também evita que o driver não encontre o elemento no momento do teste.
 
-Como o processo testado é o mesmo nos dois BPMS, o cenário de teste também é o mesmo. O cenário nada mais é do que a definição, em ordem de execução, dos passos que são executados na aplicação bem como  os resultados esperados. A Figura \ref{fig:cenariobos} exibe o cenário utilizado nos testes em questão.
 
-\begin{figure}[ht]
-\centering
-\includegraphics[width=.50\textwidth]{figuras/cenario.png}
-\caption{Cenário de teste}
-\label{fig:cenariobos}
-\end{figure}
+%\begin{figure}[ht]
+%\centering
+%\includegraphics[width=.50\textwidth]{figuras/cenario.png}
+%\caption{Cenário de teste}
+%\label{fig:cenariobos}
+%\end{figure}
 
 Além dos problemas comuns as duas ferramentas citados acima, a ferramenta Activiti demonstrou um outro problema. Diferente da gravação com o BOS, o Selenium IDE não captura toda a interação do usuário com a aplicação, de fato, na etapa de login a IDE captura apenas o acesso a página e o "clique" ao botão de login, ou seja, não captura o preenchimento dos campos "Usuário" e "Senha". Este problema se repete com alguns outros elementos durante a gravação de teste, acredita-se que esse problema ocorra devido a estrutura da página web em questão, estrutura esta que pode conter elementos com os quais o Selenium não trabalhe bem como \emph{divs},\emph{frames} e \emph{scripts}, por exemplo. No entanto, este problema não impossibilita a criação e execução do teste.
 
