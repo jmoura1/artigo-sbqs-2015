@@ -139,38 +139,21 @@ Existem diversas ferramentas para automação de testes, especificamente se trat
 
 \begin{table}
 {\scriptsize
-\centering
-\begin{tabular}{|p{2cm}|p{7cm}|p{7cm}|}
-  & Teste de Carga & Teste Funcional  \\\hline
-Motivo da escolha & 
-\begin{itemize}
-\item{Durante a implantação do processo testado foi a falha do sistema perante um grande acesso de usuários em um dia específico.}
-\end{itemize}
-&
-\begin{itemize}
-\item{Durante a utilização do processo
-dentro da instituição, ocorreram alguns erros como: campo sem suporte a caracteres especiais,
-erro devido a nome de arquivos muito grandes, entre outros.}
-\end{itemize}
- \\\hline
-BPMS Bonita Open Solution (BOS) & Houveram problemas com a execução de requisições que utilizavam a tecnologia Google Web Toolkit (GWT), foi resolvido atráves de estudo das requisições e utilização de ferramentas auxiliares para a captura \cite{BLAZEMETER};
-
-Em sistemas BPM as tarefas de um processo são interligadas e/ou dependentes entre si, essa particularidade causou no problemas na execução dos testes e, para contorna-los, foi necessário estudar a fundo as requisições;
- & 
-Ao executar o teste, alguns erros ocorrem devido a ferramenta Selenium “Buscar” elementos que ainda não foram carregados na página. Isto pode ser resolvido a partir da inserção de pequenos scripts nos métodos.\\\hline
-BPMS Activiti & Ocorreram os mesmos erros relativos à dependência entre as tarefas do processo, as chaves identificadoras foram encontradas, no entanto, foi impossível identificar em que requisição as mesmas eram geradas, não havia uma requisição
-cujo o retorno (resposta do servidor) contivesse as chaves utilizadas. Esta situação leva a crer
-que a geração das chaves identificadoras é feita internamente pelo BPMS, ou seja, não em uma
-requisição HTTP e, por sequência, esta não pode ser capturada e importada no Jmeter. & 
-Alguns elementos das páginas que compõem a aplicação não são capturados pelo Selenium, acredita-se que esse problema ocorra devido a estrutura da páginas web que pode conter elementos com os quais o Selenium não trabalhe bem como divs,frames e
-scrips, por exemplo. Para contornar esse problema, foi necessário estudar a estrutura das páginas que web, localizar os elementos faltantes e então adicionar o código para acessá-los nos respectivos métodos.\\\hline
+\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
+\hline
+ & BOS & Activiti \\\hline
+Tecnologias web que causaram problemas no teste (?) & GWT e Ajax & GWT e Ajax\\\hline
+Foi possível capturar e exportar as requisições HTTP? & Sim (BlazeMeter trata as tecnologias problemáticas) & Sim (BlazeMeter trata as tecnologias problemáticas)\\\hline
+Foi possível identificar a dependência das tarefas? & Sim & Não\\\hline
+Foi possível configurar e executar os testes? & Sim & Não\\\hline
 \end{tabular}
 }
-\caption{Comportamento de cada tipo de teste em cada ferramenta}
-\label{tab:bpms2}
+\caption{Teste de carga}
+\label{tab:testeCarga}
 \end{table}
 
-O processo para realizar o teste, em ambos os BPMS, consiste de quatro etapas: Capturar as requisições HTTP, Exportar requisições (Formato .jrxml para JMeter), Configurar o script de plano de teste e, por fim, Executar o teste no JMeter. Na Tabela \ref{tab:bpms2} são exibidas as principais observações sobre o comportamento dos testes em cada BPMS. Ocorrem dois principais problemas na execução do teste de carga em ambas as ferramentas: (a) Captura e interpretação das requisições que utilizam a tecnologia GWT e (b) dependência entre as tarefas do processo cuja implementação muda conforme o BPMS. 
+
+O processo para realizar o teste, em ambos os BPMS, consiste de quatro etapas: Capturar as requisições HTTP, Exportar requisições (Formato .jrxml para JMeter), Configurar o script de plano de teste e, por fim, Executar o teste no JMeter. Ocorrem dois principais problemas na execução do teste de carga em ambas as ferramentas: (a) Captura e interpretação das requisições que utilizam a tecnologia GWT e (b) dependência entre as tarefas do processo cuja implementação muda conforme o BPMS. 
 
 No caso deste segundo problema, no BOS existe uma chave identificadora de sessão que é gerada no momento em que usuário acessa o sistema e outra chave identificadora de instância, ou seja, identifica cada execução do processo como única, e é criada no momento em que o usuário inicia o processo. Para executar o teste com sucesso, foi necessário localizar a requisição em que essas chaves são geradas, utilizar a ferramenta "Extrator de Expressão Regular" do JMeter para obter o valor da chave. Já na ferramenta Acitivi foi impossível identificar em que requisição as mesmas eram geradas, pois não havia uma requisição cujo o retorno (resposta do servidor) contivesse as chaves utilizadas. Esta situação leva a crer que a geração das chaves identificadoras é feita internamente pelo BPMS, ou seja, não em uma requisição HTTP e, por sequência, esta não pode ser capturada e importada no Jmeter.
 
@@ -220,7 +203,27 @@ Um fator importante também é que, pelo fato das requisições terem de ser ana
 \subsection{Teste Funcional}
 Para executar os testes funcionais, escolheu-se a ferramenta Selenium ~\cite{SELENIUM}. Esta ferramenta possui basicamente duas partes complementares: Selenium IDE e Selenium WebDriver. A primeira é um plugin para o navegador Firefox, capaz de registrar e reproduzir interações do usuário com o navegador, assim permitindo criar scripts de teste rapidamente, sem escrita de código.
 
+
+\begin{table}
+{\scriptsize
+\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
+\hline
+ & BOS & Activiti \\\hline
+Componentes WEB & HTML, CSS, Ajax & HTML, CSS, Ajax \\\hline
+Captura da interação do usuário utilizando o Selenium & Total & Parcial (necessitou de inserção manual de alguns campos) \\\hline
+Reconhecimento da captura SEM alteração de código & Parcial & Parcial \\\hline
+Reconhecimento da captura COM alteração de código & Total & Total \\\hline
+Foi possível criar o cenário e executar o teste? & Sim & Sim \\\hline
+\end{tabular}
+}
+\caption{Teste funcional}
+\label{tab:testeFuncional}
+\end{table}
+
+
+
 Durante a revisão bibliográfica, encontrou-se um trabalho apresentado no Simpósio Brasileiro de Qualidade de Software de 2013 \cite{sbqs2013} que utilizava o Selenium WebDriver aliado ao Cucumber-JVM \cite{CUCUMBER} para testar uma aplicação web, a partir desse trabalho decidiu-se utilizar a última na execução dos testes funcionais. O Cucumber é uma ferramenta que executa descrições de teste, em texto simples, como testes automatizados.
+
 
 O processo para a execução do teste funcional é composto por seis etapas: Captura da execução no navegador (Selenium), Exportar código gerado (Selenium), Criar cenário de teste (Cucumber), Criar as definições dos passos do teste (Cucumber), Criar os métodos para cada passo (Java) e Executar o teste (Selenium).
 
