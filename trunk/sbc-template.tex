@@ -139,12 +139,13 @@ Existem diversas ferramentas para automação de testes, especificamente se trat
 
 \begin{table}
 {\scriptsize
-\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
+\begin{tabular}{|p{5cm}|p{4cm}|p{4cm}|}
 \hline
  & BOS & Activiti \\\hline
-Tecnologias web que causaram problemas no teste (?) & GWT e Ajax & GWT e Ajax\\\hline
-Foi possível capturar e exportar as requisições HTTP? & Sim (BlazeMeter trata as tecnologias problemáticas) & Sim (BlazeMeter trata as tecnologias problemáticas)\\\hline
-Foi possível identificar a dependência das tarefas? & Sim & Não\\\hline
+Captura das requisições usando apenas JMeter & Problemas com GWT & Problemas com GWT\\\hline
+Foi possível capturar e exportar as requisições HTTP? & Sim (Utilizando BlazeMeter) & Sim (Utilizando BlazeMeter)\\\hline
+Ocorreu problema com dependência das tarefas do processo? & Sim & Sim \\\hline
+Foi possível identificar a solução para a dependência das tarefas? & Sim & Não\\\hline
 Foi possível configurar e executar os testes? & Sim & Não\\\hline
 \end{tabular}
 }
@@ -206,21 +207,20 @@ Para executar os testes funcionais, escolheu-se a ferramenta Selenium ~\cite{SEL
 
 \begin{table}
 {\scriptsize
-\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
+\begin{tabular}{|p{5cm}|p{4cm}|p{4cm}|}
 \hline
  & BOS & Activiti \\\hline
 Componentes WEB & HTML, CSS, Ajax & HTML, CSS, Ajax \\\hline
 Captura da interação do usuário utilizando o Selenium & Total & Parcial (necessitou de inserção manual de alguns campos) \\\hline
-Reconhecimento da captura SEM alteração de código & Parcial & Parcial \\\hline
-Reconhecimento da captura COM alteração de código & Total & Total \\\hline
+Foi possível exportar o código gerado pelo Selenium? & Sim & Sim \\\hline
+Reconhecimento de todos os campos capturados SEM alteração de código & Parcial & Parcial \\\hline
+Reconhecimento de todos os campos capturados COM alteração de código & Total & Total \\\hline
 Foi possível criar o cenário e executar o teste? & Sim & Sim \\\hline
 \end{tabular}
 }
 \caption{Teste funcional}
 \label{tab:testeFuncional}
 \end{table}
-
-
 
 Durante a revisão bibliográfica, encontrou-se um trabalho apresentado no Simpósio Brasileiro de Qualidade de Software de 2013 \cite{sbqs2013} que utilizava o Selenium WebDriver aliado ao Cucumber-JVM \cite{CUCUMBER} para testar uma aplicação web, a partir desse trabalho decidiu-se utilizar a última na execução dos testes funcionais. O Cucumber é uma ferramenta que executa descrições de teste, em texto simples, como testes automatizados.
 
