@@ -1,5 +1,9 @@
 \begin{thebibliography}{}
 
+\bibitem[ACT 2014]{ACTIVITI}
+ (2014).
+\newblock Activiti bpms.
+
 \bibitem[{ABPMP} 2012]{ABPMP}
 {ABPMP} (2012).
 \newblock {\em Guide to the Business Process Management Body of Knowledge (BPM
@@ -7,18 +11,6 @@
 \newblock Association of Business Process Management Professionals, 2nd
   edition.
 
-\bibitem[RIVEROL et~al.(2014)RIVEROL; DO~VALLE; CONTE]{riverolaplicando} RIVEROL, L. et~al\@. Aplicando Design e Avaliacao de Usabilidade para Melhorar a Qualidade de um Aplicativo Web Móvel.
-In: XIII SIMPÓSIO BRASILEIRO DE QUALIDADE DE SOFTWARE. \textbf{Anais{\ldots}} [S.l.:~s.n.], 2014.
-
-\bibitem[VALENTIM et~al.(2014)VALENTIM; RABELO; SILVA;
-  COUTINHO; MOTA; CONTE;]{valentimavaliando} VALENTIM, N. et~al\@. Avaliando a qualidade de um aplicativo web móvel através de um teste de usabilidade: um relato de experiência.
-  In: XIII SIMPÓSIO BRASILEIRO DE QUALIDADE DE SOFTWARE. \textbf{Anais{\ldots}} [S.l.:~s.n.], 2014.
-  
-  \bibitem[CHIAVEGATTO et~al.(2013)CHIAVEGATTO; PINHEIRO; VIEIRA;
-  CLINEU; HINTOR~OLIVEIRA; BARROSO; AMORIM; CONTE]{sbqs2013} CHIAVEGATTO, R. et~al\@. Especificação e Automação Colaborativas de Testes utilizando a técnica {BDD}.
-  In: XII SIMPÓSIO BRASILEIRO DE QUALIDADE DE SOFTWARE. \textbf{Anais{\ldots}} [S.l.:~s.n.], 2013. p.334--341.
-  
-  
 \bibitem[BonitaSoft 2012]{BONITASOFT}
 BonitaSoft (2012).
 \newblock Bonitasoft open source workflow and bpm software.
@@ -45,23 +37,16 @@ Graham, D. e Fewster, M. (2012).
   Automation}.
 \newblock Addison-Wesley.
 
+\bibitem[JMeter 2012]{JMETER}
+JMeter (2012).
+\newblock Aplicação desktop projetada para testes de carga e medidas de
+  performance.
+
 \bibitem[Ko 2009]{acmxrds2009}
 Ko, R. K.~L. (2009).
 \newblock A computer scientist's introductory guide to business process
   management (bpm).
 \newblock {\em Crossroads}, 15(4):4:11--4:18.
-
-\bibitem[Kolawa e Huizinga 2007]{unittesting}
-Kolawa, A. e Huizinga, D. (2007).
-\newblock {\em Automated Defect Prevention: Best Practices in Software
-  Management}.
-\newblock Wiley-IEEE Computer Society Press.
-
-\bibitem[Nguyen et~al. 2003]{webtesting}
-Nguyen, H.~Q., Johnson, B., e Hackett, M. (2003).
-\newblock {\em Testing Applications on the Web: Test Planning for Mobile and
-  Internet-Based Systems}.
-\newblock Wiley.
 
 \bibitem[van~der Aalst 2013]{aalst2013survey}
 van~der Aalst, W. M.~P. (2013).

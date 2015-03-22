@@ -6,6 +6,10 @@
 \usepackage{url}  % para usar URLs nas referencias
 \sloppy
 
+% Relatos de experiência: artigos de alta qualidade descrevendo e analisando a aplicação de processos, métodos ou ferramentas de qualidade de software, contextualizando a experiência e mostrando os resultados obtidos e lições aprendidas, em uma experiência prática com contribuição para a indústria de software
+% max de 8 paginas
+%http://www.softex.br/wp-content/uploads/2013/09/Como-escrever-um-relato-de-experi%C3%AAncia.pdf
+
 \title{Automação de Testes em Aplicações de BPMS:\\ um Relato de Experiência}
 
 \author{Jessica Lasch de Moura\inst{1},
@@ -19,8 +23,9 @@ Universidade Federal de Santa Maria -- UFSM
 \maketitle
 
 \begin{resumo}
-Este artigo relata uma experiência de teste automatizado de uma aplicação desenvolvida com o apoio de sistemas de gestão de processos de negócio (Business Process Management Systems -- BPMS). Para isso, implementou-se um mesmo processo em dois diferentes BPMS: Bonita e Activiti, e buscou-se submeter este processo a dois tipos de teste: testes de carga e testes funcionais, utilizando-se as ferramentas de teste Apache JMeter, Cucumber e Selenium. Os resultados evidenciam limitações e oportunidades na automação de testes deste tipo de aplicação.
+Este artigo relata uma experiência de teste automatizado de uma aplicação desenvolvida com o apoio de sistemas de gestão de processos de negócio (Business Process Management Systems -- BPMS). Para isso, implementou-se um mesmo processo em dois diferentes BPMS: Bonita e Activiti. Buscou-se submeter este processo a dois tipos de teste: testes de carga e testes funcionais, utilizando-se as ferramentas de teste Apache JMeter, Cucumber e Selenium. Os resultados evidenciam limitações e oportunidades na automação de testes deste tipo de aplicação.
 \end{resumo}
+% limitações, oportunidades e ... (o que deu certo e o que não deu)
 
 \begin{abstract}
 This article discusses the automated testing of applications developed with the support of Business Process Management Systems -- BPMS. We present an experience report on the automation of load tests and functional tests over a real BPM application, using the Apache JMeter and Selenium open-source tools. Results show the limitations and opportunities in test automation of BPM applications.
@@ -28,7 +33,7 @@ This article discusses the automated testing of applications developed with the 
 
 \section{Introdução}
 
-Atualmente, a gestão de processos de negócio (\emph{Business Process Management} -- BPM) tem suscitado o interesse de empresas e da comunidade científica, tanto por seus benefícios como por seus desafios. Designa-se por BPM o conjunto de conceitos, métodos e técnicas para suportar a modelagem, administração, configuração e análise de processos de negócio~\cite{weske, aalst2013survey}. Associados a isso, surgiram os sistemas BPM (\emph{Business Process Management Systems} ou \emph{Suites} -- BPMS), que são ferramentas de software para apoio ao ciclo de vida da gestão de processos de negócio. Tais ferramentas, quando bem aplicadas, têm o potencial de alavancar aumentos de produtividade e redução de custos nos mais variados tipos de organizações. 
+A gestão de processos de negócio (\emph{Business Process Management} -- BPM) tem suscitado o interesse de empresas e da comunidade científica, tanto por seus benefícios como por seus desafios. Designa-se por BPM o conjunto de conceitos, métodos e técnicas para suportar a modelagem, administração, configuração e análise de processos de negócio~\cite{weske, aalst2013survey}. Associados a isso, surgiram os sistemas BPM (\emph{Business Process Management Systems} ou \emph{Suites} -- BPMS), que são ferramentas de software para apoio ao ciclo de vida da gestão de processos de negócio. Tais ferramentas, quando bem aplicadas, têm o potencial de alavancar aumentos de produtividade e redução de custos nos mais variados tipos de organizações. 
 
 Dentre os diversos BPMS disponíveis atualmente, é comum encontrar ferramentas com suporte a modelagem, configuração e execução de processos de negócio. Por outro lado, tarefas relacionadas à simulação, monitoramento, verificação e testes ainda são consideradas um desafio nesta área~\cite{aalst2013survey}. Em particular, o teste automatizado de aplicações de BPM é pouco abordado, tanto pela comunidade da área de BPM~\cite{aalst2013survey} como da área de testes de software~\cite{graham2012experiences}. Diante disso, estima-se que muitas organizações se limitem a testes manuais em suas aplicações de BPM. No entanto, a falta de automação nos testes pode levar a vários problemas durante a implementação e execução de processos de negócio, como baixa aderência aos requisitos, maior esforço dos desenvolvedores, desperdício de tempo e aumento do risco de duplicação de esforços e de erro humano. 
 
@@ -81,52 +86,60 @@ Em testes de software, há muitas tarefas que podem ser trabalhosas e propensas 
 %http://blog.iprocess.com.br/2013/04/os-desafios-da-homologacao-de-processos-automatizados/
 
 
-\section{Processo alvo dos testes e ?}
-Os testes realizados neste trabalho referem-se a um processo realizado com frequência em instituições de ensino superior, que é a apreciação de Atividades Complementares de Graduação (ACGs), ou seja, atividades que formam a parte flexível do currículo dos graduandos (participação em palestras, eventos, projetos, etc.). Em um trabalho anterior ~\cite{sbsi2013}, esse processo foi modelado e implantado utilizando a ferramenta Bonita Open Solution. Como mostra a Figura \ref{fig:diagrama}. É um processo complexo que permite analisar diversas funcionalidades dos BPMS e, justamente por já ter sido alvo de um trabalho, é um processo no qual já se tem uma grande experiência.
+\section{Aplicação Alvo de Testes}
+
+A aplicação alvo deste trabalho refere-se a um processo frequente em instituições de ensino superior: a apreciação de Atividades Complementares de Graduação (ACGs), ou seja, atividades que formam a parte flexível do currículo de graduandos (participação em palestras, eventos, projetos, etc.). Em um trabalho anterior ~\cite{sbsi2013}, apresentou-se a modelagem e implantação desse processo. Sua representação em BPMN, na Figura \ref{fig:diagrama}, revela um total de 12 tarefas distribuídas em 5 divisões de responsabilidade, com diversos fluxos condicionais, gerando cerca de 20 caminhos possíveis para o processo.
+
+No trabalho anterior, implementou-se o processo com a ferramenta Bonita Open Solution~\cite{BONITASOFT}, um BPMS de código aberto reconhecido no mundo corporativo\~cite{gartner, forrester}. O sistema resultante foi submetido a testes funcionais realizados manualmente, além de testes de aceitação realizados com um grupo de usuários reais. Entretanto, com algumas semanas em operação, o sistema revelou problemas: instâncias do processo falharam devido a entradas inesperadas, serviços não foram restabelecidos corretamente após serem interrompidos e houve sobrecarga devido ao grande número de casos abertos numa data limite.
+
+% capaz de apoiar desde a modelagem até a implantação do processo.
+
+%a ferramenta Bonita Open Solution. Como mostra a Figura \ref{fig:diagrama}. É um processo complexo que permite analisar diversas funcionalidades dos BPMS e, justamente por já ter sido alvo de um trabalho, é um processo no qual já se tem uma grande experiência.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=.99\textwidth]{imagens/processo.png}
-\caption{Diagrama da modelagem do processo}
+\caption{Diagrama em BPMN do processo}
 \label{fig:diagrama}
 \end{figure}
 
-Devido ao tempo limitado para a conclusão deste trabalho, decidiu-se por escolher duas ferramentas para o estudo. Primeiramente, foi escolhida a ferramenta Bonita Open Solution, devido a esta já ter sido usada em um trabalho anterior ~\cite{sbsi2013} e, por isso, tem se uma vasta experiência nesta ferramenta.O Bonita Open Solution (BOS) é uma ferramenta distribuída sob uma licença de software livre, desenvolvida em Java, pela empresa BonitaSoft~\cite{BONITASOFT}.% A ferramenta BOS oferece componentes tanto para a modelagem como para a implementação e transformação de processos. A modelagem e customização de processos é realizada através do Bonita Studio, um componente com interface gráfica tipo desktop que agrupa ferramentas de desenvolvimento. Também é possível agregar funcionalidades aos processos através de conectores que podem, inclusive, receber personalizações feitas através de códigos.
+Devido ao tempo limitado para a conclusão deste trabalho, decidiu-se por escolher duas ferramentas para o estudo. Primeiramente, foi escolhida a ferramenta Bonita Open Solution, devido a esta já ter sido usada em um trabalho anterior ~\cite{sbsi2013} e, por isso, tem se uma vasta experiência nesta ferramenta. O Bonita Open Solution (BOS) é uma ferramenta distribuída sob uma licença de software livre, desenvolvida em Java, pela empresa BonitaSoft~\cite{BONITASOFT}.% A ferramenta BOS oferece componentes tanto para a modelagem como para a implementação e transformação de processos. A modelagem e customização de processos é realizada através do Bonita Studio, um componente com interface gráfica tipo desktop que agrupa ferramentas de desenvolvimento. Também é possível agregar funcionalidades aos processos através de conectores que podem, inclusive, receber personalizações feitas através de códigos.
 
-Analisando as ferramentas disponíveis e levando em conta os trabalhos e livros publicados ~\cite{rademakers2012activiti} que abordam o uso da ferramenta, o segundo software escolhido foi o Activiti. O Activiti ~\cite{ACTIVITI} é um BPMS de código aberto, distribuído sob a uma licença Apache, criado em Java e usa  BPMN 2.0 para a modelagem dos processos, ele pode ser executado em qualquer plataforma, servidor, cluster ou na nuvem. %A ferramenta Activiti oferece componentes distintos para modelagem, implementação e execução de processos. A modelagem e customização dos processos é feita no Activiti Designer que é um plugin para a plataforma Eclipse, o que torna o ambiente de criação fácil de ser usado, a execução é feita no componente chamado Activiti Explorer.
+Analisando as ferramentas disponíveis e levando em conta os trabalhos e livros publicados ~\cite{rademakers2012activiti} que abordam o uso da ferramenta, o segundo software escolhido foi o Activiti. O Activiti ~\cite{ACTIVITI} é um BPMS de código aberto, distribuído sob uma licença Apache, criado em Java e usa  BPMN 2.0 para a modelagem dos processos, ele pode ser executado em qualquer plataforma, servidor, cluster ou na nuvem. %A ferramenta Activiti oferece componentes distintos para modelagem, implementação e execução de processos. A modelagem e customização dos processos é feita no Activiti Designer que é um plugin para a plataforma Eclipse, o que torna o ambiente de criação fácil de ser usado, a execução é feita no componente chamado Activiti Explorer.
 
-Na Tabela \ref{tab:tabelaCaminhos} são exibidos todos os possíveis caminhos pelos quais o processo alvo dos testes poderia passar, sendo 'x' a representação de que o caminho passou pela determinada etapa do processo. Esta tabela foi criada durante a implantação da aplicação citada neste trabalho para auxiliar na execução dos testes (que foram executados manualmente quando a aplicação foi implantada).
+%Na Tabela \ref{tab:tabelaCaminhos} são exibidos todos os possíveis caminhos pelos quais o processo alvo dos testes poderia passar, sendo 'x' a representação de que o caminho passou pela determinada etapa do processo. Esta tabela foi criada durante a implantação da aplicação citada neste trabalho para auxiliar na execução dos testes (que foram executados manualmente quando a aplicação foi implantada).
 
-\begin{table}
-{\scriptsize
-\begin{tabular}{|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}
-\hline
-Aluno Solicita ACG & Anexar parecer tutor & Tutor avalia & Avisa aluno (indeferido) & Rela\-tor avalia & Cole\-giado avalia & Atu\-aliza BD & Secre\-taria avalia & Coorde\-nador avalia & Reuni\-ão presencial & Avisa aluno (indeferido) & Avisa aluno (aprovado) \\\hline
-x & x & - & - & x & x & x & - & - & - & - & x\\\hline
-x & x & - & - & x & x & - & - & - & x & x & -\\\hline
-x & x & - & - & x & x & - & - & - & x & - & x\\\hline
-x & x & - & - & x & - & - & - & - & x & - & x\\\hline
-x & x & - & - & x & - & - & - & - & x & x & -\\\hline
-x & - & x & x & - & - & - & - & - & - & - & -\\\hline
-x & - & x & - & x & x & x & - & - & - & - & x\\\hline
-x & - & x & - & x & x & - & - & - & x & x & -\\\hline
-x & - & x & - & x & x & - & - & - & x & - & x\\\hline
-x & - & x & - & x & - & - & - & - & x & - & x\\\hline
-x & - & x & - & x & - & - & - & - & x & x & -\\\hline
-x & - & - & - & x & x & x & - & - & - & - & x\\\hline
-x & - & - & - & x & x & - & - & - & x & x & -\\\hline
-x & - & - & - & x & x & - & - & - & x & - & x\\\hline
-x & - & - & - & x & - & - & - & - & x & - & x\\\hline
-x & - & - & - & x & - & - & - & - & x & x & -\\\hline
-x & - & - & - & - & - & - & x & - & - & - & x\\\hline
-x & - & - & - & - & - & - & x & x & - & - & x\\\hline
-x & - & - & - & - & - & - & x & x & x & - & x\\\hline
-x & - & - & - & - & - & - & x & x & x & x & -\\\hline
-\end{tabular}
-}
-\caption{Caminhos possíveis}
-\label{tab:tabelaCaminhos}
-\end{table}
+
+%\begin{table}
+%{\scriptsize
+%\begin{tabular}{|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}
+%\hline
+%Aluno Solicita ACG & Anexar parecer tutor & Tutor avalia & Avisa aluno (indeferido) & Rela\-tor avalia & Cole\-giado avalia & Atu\-aliza BD & Secre\-taria avalia & Coorde\-nador avalia & Reuni\-ão presencial & Avisa aluno (indeferido) & Avisa aluno (aprovado) \\\hline
+%x & x & - & - & x & x & x & - & - & - & - & x\\\hline
+%x & x & - & - & x & x & - & - & - & x & x & -\\\hline
+%x & x & - & - & x & x & - & - & - & x & - & x\\\hline
+%x & x & - & - & x & - & - & - & - & x & - & x\\\hline
+%x & x & - & - & x & - & - & - & - & x & x & -\\\hline
+%x & - & x & x & - & - & - & - & - & - & - & -\\\hline
+%x & - & x & - & x & x & x & - & - & - & - & x\\\hline
+%x & - & x & - & x & x & - & - & - & x & x & -\\\hline
+%x & - & x & - & x & x & - & - & - & x & - & x\\\hline
+%x & - & x & - & x & - & - & - & - & x & - & x\\\hline
+%x & - & x & - & x & - & - & - & - & x & x & -\\\hline
+%x & - & - & - & x & x & x & - & - & - & - & x\\\hline
+%x & - & - & - & x & x & - & - & - & x & x & -\\\hline
+%x & - & - & - & x & x & - & - & - & x & - & x\\\hline
+%x & - & - & - & x & - & - & - & - & x & - & x\\\hline
+%x & - & - & - & x & - & - & - & - & x & x & -\\\hline
+%x & - & - & - & - & - & - & x & - & - & - & x\\\hline
+%x & - & - & - & - & - & - & x & x & - & - & x\\\hline
+%x & - & - & - & - & - & - & x & x & x & - & x\\\hline
+%x & - & - & - & - & - & - & x & x & x & x & -\\\hline
+%\end{tabular}
+%}
+%\caption{Caminhos possíveis}
+%\label{tab:tabelaCaminhos}
+%\end{table}
 
 
 \section{Descrição e Execução dos Testes}
