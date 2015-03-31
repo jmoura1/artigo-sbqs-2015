@@ -88,7 +88,7 @@ Em testes de software, há muitas tarefas que podem ser trabalhosas e propensas 
 
 \section{Aplicação Alvo de Testes}
 
-A aplicação alvo deste trabalho refere-se a um processo frequente em instituições de ensino superior: a apreciação de Atividades Complementares de Graduação (ACGs), ou seja, atividades que formam a parte flexível do currículo de graduandos (participação em palestras, eventos, projetos, etc.). Em um trabalho anterior ~\cite{sbsi2013}, apresentou-se a modelagem e implantação desse processo. Sua representação em BPMN, na Figura \ref{fig:diagrama}, revela um total de 12 tarefas distribuídas em 5 divisões de responsabilidade, com diversos fluxos condicionais, gerando cerca de 20 caminhos possíveis para o processo.
+A aplicação alvo deste trabalho refere-se a um processo comum em instituições de ensino superior: a apreciação de Atividades Complementares de Graduação (ACGs), ou seja, atividades que formam a parte flexível do currículo de graduandos (participação em palestras, eventos, projetos, etc.). Em um trabalho anterior ~\cite{sbsi2013}, apresentou-se a modelagem e implantação desse processo. Sua representação em BPMN, na Figura \ref{fig:diagrama}, revela um total de 11 tarefas distribuídas em 5 divisões de responsabilidade, com diversos fluxos condicionais, gerando mais de 15 caminhos possíveis para o processo.
 
 No trabalho anterior, implementou-se o processo com a ferramenta Bonita Open Solution~\cite{BONITASOFT}, um BPMS de código aberto reconhecido no mundo corporativo\~cite{gartner, forrester}. O sistema resultante foi submetido a testes funcionais realizados manualmente, além de testes de aceitação realizados com um grupo de usuários reais. Entretanto, com algumas semanas em operação, o sistema revelou problemas: instâncias do processo falharam devido a entradas inesperadas, serviços não foram restabelecidos corretamente após serem interrompidos e houve sobrecarga devido ao grande número de casos abertos numa data limite.
 
@@ -99,7 +99,7 @@ No trabalho anterior, implementou-se o processo com a ferramenta Bonita Open Sol
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1.1\textwidth]{figuras/processo.png}
-\caption{Diagrama em BPMN do processo}
+\caption{Diagrama do processo em BPMN}
 \label{fig:diagrama}
 \end{figure}
 
