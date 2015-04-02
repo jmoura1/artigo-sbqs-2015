@@ -1,19 +1,11 @@
 \begin{thebibliography}{}
 
-\bibitem[ACT 2014]{ACTIVITI}
- (2014).
-\newblock Activiti bpms.
-
 \bibitem[{ABPMP} 2012]{ABPMP}
 {ABPMP} (2012).
 \newblock {\em Guide to the Business Process Management Body of Knowledge (BPM
   CBOK)}.
 \newblock Association of Business Process Management Professionals, 2nd
   edition.
-
-\bibitem[BonitaSoft 2012]{BONITASOFT}
-BonitaSoft (2012).
-\newblock Bonitasoft open source workflow and bpm software.
 
 \bibitem[Chiavegatto et~al. 2013]{sbqs2013}
 Chiavegatto, R., Pinheiro, V., Vieira, A.~F., Clineu, J., Oliveira, E.~H.,
@@ -40,11 +32,6 @@ Graham, D. e Fewster, M. (2012).
 \newblock {\em Experiences of Test Automation: Case Studies of Software Test
   Automation}.
 \newblock Addison-Wesley.
-
-\bibitem[JMeter 2012]{JMETER}
-JMeter (2012).
-\newblock Aplicação desktop projetada para testes de carga e medidas de
-  performance.
 
 \bibitem[Ko 2009]{acmxrds2009}
 Ko, R. K.~L. (2009).
