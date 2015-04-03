@@ -159,7 +159,7 @@ No planejamento de testes automatizados, priorizou-se o teste de etapas que de f
 %Com isso, buscou-se verificar se os problemas poderiam ser facilmente identificados antes de colocar-se a aplicação em produção. 
 Os testes escolhidos foram: (a) testes de carga, que são um tipo de teste de desempenho, visando avaliar o comportamento do sistema frente a um grande número de solicitações e (b) testes funcionais, a fim de verificar as saídas do sistema produzidas a partir de entradas pré-definidas. \textbf{Nenhum destes tipos de teste possui suporte nos BPMS Bonita e Activiti}, que incluem somente funcionalidades limitadas de simulação e depuração de execução dos processos. Assim, realizou-se um levantamento de ferramentas externas aos BPMS, destinadas ao teste de aplicações Web. Selecionou-se as julgadas mais promissoras, antes de partir-se para o detalhamento e execução dos testes.
 
-\subsection{Teste de Carga}
+\subsection{Testes de Carga}
 
 Testes de carga em aplicações Web são tipicamente realizados gerando-se múltiplas requisições HTTP ao servidor, de forma controlada. Para isso, uma etapa crítica é a identificação das requisições que devem ser geradas. Existem diversas ferramentas que se propõem a facilitar este tipo de teste, dentre as quais pode-se citar: JMeter\footnote{Apache JMeter. Disponível em: www.jmeter.apache.org.}, The Grinder\footnote{The Grinder. Disponível em: www.grinder.sourceforge.net/.} e WebLOAD\footnote{WebLOAD. Disponível em: radview.com/webload-download/.}. Todas são ferramentas \emph{open source} e possuem diversas opções, mas escolheu-se a ferramenta JMeter pela sua funcionalidade de captura de requisições, por meio da opção "proxy server"".
 
@@ -168,27 +168,27 @@ Testes de carga em aplicações Web são tipicamente realizados gerando-se múlt
 
 
 
-Um teste da aplicação com JMeter consiste em quatro etapas: capturar as requisições HTTP, exportar requisições (formato .jrxml para JMeter), configurar o plano de teste e, por fim, executar o teste no JMeter. Dependendo do BPMS utilizado, a aplicação gera diferentes requisições HTTP que precisam ser identificadas e interpretadas, para serem reproduzidas automaticamente. O emprego de tecnologias Web com processamento assíncrono, do lado do cliente, pode dificultar esta etapa, pois uma ação do usuário pode não gerar imediatamente uma requisição ao servidor. Além disso, em aplicações de BPMS, diversos usuários atuam sobre diferentes etapas de um mesmo processo, de modo que as requisições HTTP carregam chaves identificando usuários e processos.
+Um teste da aplicação com JMeter consiste em quatro etapas: capturar as requisições HTTP, exportar requisições (formato .jrxml para JMeter), configurar o plano de teste e, por fim, executar o teste no JMeter. Dependendo do BPMS utilizado, a aplicação gera diferentes requisições HTTP que precisam ser identificadas e interpretadas, para serem reproduzidas automaticamente. O emprego de tecnologias Web com processamento assíncrono, do lado do cliente, pode dificultar esta etapa, pois uma ação do usuário pode não gerar imediatamente uma requisição ao servidor. Além disso, em aplicações de BPMS, diversos usuários atuam sobre diferentes tarefas de um mesmo processo, de modo que as requisições HTTP carregam chaves identificando usuários e processos.
 
 %Ocorrem dois principais problemas na execução do teste de carga em ambas as ferramentas: (a) Captura e interpretação das requisições que utilizam a tecnologia GWT e (b) dependência entre as tarefas do processo, cuja implementação muda conforme o BPMS. 
 
 No caso da aplicação criada com Bonita, verificou-se que existe uma chave identificadora de sessão que é gerada no momento em que usuário acessa o sistema e outra chave identificadora de instância, ou seja, que identifica cada execução do processo como única, sendo criada pelo servidor no momento em que o usuário inicia o processo. Para executar os testes, portanto, foi necessário localizar a requisição em que essas chaves são geradas e utilizar a ferramenta "Extrator de Expressão Regular" do JMeter para obter seus valores. Já na aplicação criada com Activiti, foi inviável identificar a requisição em que as chaves são geradas, pois não há uma requisição cujo retorno (resposta do servidor) contenha valores de chaves. Esta situação leva a crer que a geração das chaves identificadoras é feita internamente pelo BPMS, ou seja, não em uma requisição HTTP e, por consequência, esta não pode ser capturada e reproduzida no JMeter.
 
-\begin{table}
-{\scriptsize
-\begin{tabular}{|p{5cm}|p{4cm}|p{4cm}|}
-\hline
- & BOS & Activiti \\\hline
-Captura das requisições usando apenas JMeter & Problemas com GWT & Problemas com GWT\\\hline
-Foi possível capturar e exportar as requisições HTTP? & Sim (Utilizando BlazeMeter) & Sim (Utilizando BlazeMeter)\\\hline
-Ocorreu problema com dependência das tarefas do processo? & Sim & Sim \\\hline
-Foi possível identificar a solução para a dependência das tarefas? & Sim & Não\\\hline
-Foi possível configurar e executar os testes? & Sim & Não\\\hline
-\end{tabular}
-}
-\caption{Teste de carga}
-\label{tab:testeCarga}
-\end{table}
+%\begin{table}
+%{\scriptsize
+%\begin{tabular}{|p{5cm}|p{4cm}|p{4cm}|}
+%\hline
+% & BOS & Activiti \\\hline
+%Captura das requisições usando apenas JMeter & Problemas com GWT & Problemas com GWT\\\hline
+%Foi possível capturar e exportar as requisições HTTP? & Sim (Utilizando BlazeMeter) & Sim (Utilizando BlazeMeter)\\\hline
+%Ocorreu problema com dependência das tarefas do processo? & Sim & Sim \\\hline
+%Foi possível identificar a solução para a dependência das tarefas? & Sim & Não\\\hline
+%Foi possível configurar e executar os testes? & Sim & Não\\\hline
+%\end{tabular}
+%}
+%\caption{Teste de carga}
+%\label{tab:testeCarga}
+%\end{table}
 
 
 
@@ -201,24 +201,30 @@ Foi possível configurar e executar os testes? & Sim & Não\\\hline
 
 %pode testar com o bonita e com o activiti não
 %resultados
-\subsubsection{Resultados}
-Com o objetivo de obter o comportamento do sistema em diferentes níveis de carga, foram executados testes com 1, 50, 100 e 200 usuários virtuais e foram analisadas as requisições referentes aos seguintes passos: efetuar login, exibir a página inicial do BOS, selecionar o processo, exibir o formulário inicial e enviar o formulário preenchido. Os testes foram executados em um servidor com 24 GB de RAM e 2 processadores Intel Xeon E5520, com 4 núcleos. Foi possível executar o teste de carga apenas na ferramenta Bonita Open Solution, pois o software Activiti demonstrou os problemas relatados acima.
+\subsubsection{Resultados de Testes com JMeter}
+
+Devido aos problemas relatados na seção anterior, os testes de carga só puderam ser realizados com a aplicação criada com Bonita BPM. A fim de testar o comportamento do sistema com diferentes níveis de carga, foram executados testes com 1, 50, 100 e 200 usuários virtuais e foram analisadas as requisições referentes às etapas: efetuar login, exibir a página inicial do Bonita, selecionar o processo, exibir o formulário inicial (Aluno solicita ACG) e enviar o formulário preenchido. Os testes foram executados em um servidor com 24 GB de RAM e 2 processadores Intel Xeon E5520, com 4 núcleos. 
 
 %Reproduzindo o teste com um usuário virtual, nas requisições correspondentes a login, exibição da página inicial, seleção do processo, exibição do formulário inicial e envio do formulário preenchido, a média do tempo de resposta foi de, respectivamente, 126, 32, 38, 80 e 73 milissegundos. A média do tempo de resposta total foi de 75 milissegundos e o desvio padrão foi igual a 21.  Aumentando o número de usuários virtuais para cinquenta os valores do tempo de resposta subiram para 597, 191, 179, 368 e 152 milissegundos, a média foi igual a 329 milissegundos e o desvio padrão 401. Com 100 usuários o aumento do tempo de resposta fica ainda mais visível, sendo 1972, 571, 552, 760 e 694 milissegundos, com média 774 milissegundos e desvio padrão de 1449.
 
 
+
+
+Os tempos de resposta de cada etapa, em função do número de usuários, podem ser vistos na Tabela \ref{tab:resultadoCarga}. Os resultados mais alarmantes são para 200 usuários virtuais, em que o tempo médio de resposta na requisição de login foi de 10.149 ms, ou seja, aproximadamente 10 s, o que é um tempo de resposta alto. A média de tempo de resposta para todas requisições foi de 3.111 ms (ou seja, 3 s), e o desvio padrão foi de 13.088. Além dos altos tempos de resposta, o teste com 200 usuários virtuais apresentou taxas de erro, em algumas requisições, que não foram encontradas com um número menor de usuários. Por exemplo, a requisição que executou login apresentou uma taxa de 2\% de erro e, ao todo, as requisições obtiveram uma taxa de erro de 7.82\%.
+
 \begin{table}
 {\scriptsize
 \centering
-\begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
- Etapa x Usuários & Login & Pág. Inicial & Seleção processo & Form. Inicial & Enviar form. \\\hline
+\begin{tabular}{p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}}
+\hline
+Usuários & Login & Pág. Inicial & Seleção Processo & Form. Inicial & Enviar form. \\\hline
 1 & 126 & 32 & 38 & 80 & 73\\\hline
 50 & 597 & 191 & 179 & 368 & 152\\\hline
 100 & 1972 & 571 & 552 & 760 & 694\\\hline
 200 & 10.149 & 3.239 & 934 & 2.122 & 1.918\\\hline
 \end{tabular}
 }
-\caption{Tempos médios de resposta (em milissegundos) em cada etapa e quantidade de usuários}
+\caption{Tempos médios de resposta, em milissegundos}
 \label{tab:resultadoCarga}
 \end{table}
 
@@ -229,13 +235,13 @@ Com o objetivo de obter o comportamento do sistema em diferentes níveis de carg
 %\label{fig:carga200}
 %\end{figure}
 
-Os resultados, em milissegundos, de cada etapa com a variação do número de usuários pode ser visto na Tabela \ref{tab:resultadoCarga}. Os resultados mais alarmantes são os que retratam 200 usuários virtuais, o tempo de resposta médio na requisição que executa o login no sistema foi de 10.149 milissegundos, ou seja, aproximadamente 10 segundos, o que pode ser considerado um tempo de resposta alto. A média de tempo de resposta para todas requisições foi de 3.111 milissegundos (ou seja, 3 segundos), e o desvio padrão foi de 13.088. Além dos altos tempos de resposta, o teste com 200 usuários virtuais apresentou taxas de erro, em algumas requisições, que não foram encontradas com um número menor de usuários. Por exemplo, a requisição que executou login apresentou uma taxa de 2\% de erro e, ao todo, todas requisições obtiveram uma taxa de 7.82\%, o que é preocupante.
+De forma geral, portanto, o teste de carga com JMeter atingiu seus objetivos e pode ajudar a explicar a sobrecarga que ocorreu com a aplicação em produção, quando muitos alunos tentaram acessar o formulário inicial numa data limite. No entanto, é importante ressaltar que este teste foi executado apenas em etapas iniciais do processo e, mesmo assim, já foi trabalhoso por exigir uma análise profunda das requisições HTTP para executar os testes com sucesso. Ao todo, foram capturadas cerca de 100 requisições só nestas etapas, portanto estima-se que o teste de uma tarefa mais ao final do processo possa se tornar inviável com JMeter, por exigir a identificação e interpretação de muitas requisições. Outra observação importante, nesta experiência, é que esta abordagem de teste sofre com a dependência das tecnologias Web empregadas pelo BPMS.
 
-De forma geral, portanto, este teste atingiu seus objetivos e serve para explicar um problema que ocorreu no sistema em execução que foi a falha do sistema, onde alguns arquivos foram corrompidos, bem como um tempo de espera muito alto para o aluno acessar o formulário de solicitação. Outro ponto importante é que este teste foi executado apenas no login e na primeira tarefa do processo alvo e, mesmo assim, a tarefa de teste já foi trabalhosa pelo fato de exigir uma análise profunda das requisições para executar os testes com sucesso. A captura destas etapas, utilizando o BlazeMeter\footnote{BlazeMeter. Disponível em: www.blazemeter.com.}, resultou em uma média de 100 requisições, considerando que deseja-se fazer o teste de outra etapa/gargalo que esteja localizada mais ao meio do processo a captura desta pode gerar muitas requisições o que tornaria difícil a análise de todas requisições para substituir as chaves geradas e, assim, tornaria inviável essa abordagem de teste. 
+%A captura destas etapas, utilizando o BlazeMeter\footnote{BlazeMeter. Disponível em: www.blazemeter.com.}, resultou em uma média de 100 requisições, considerando que deseja-se fazer o teste de outra etapa/gargalo que esteja localizada mais ao meio do processo a captura desta pode gerar muitas requisições o que tornaria difícil a análise de todas requisições para substituir as chaves geradas e, assim, tornaria inviável essa abordagem de teste. 
 
-Um fator importante também é que, pelo fato das requisições terem de ser analisadas para ser possível executar o teste e também ser necessário localizar a forma como a ferramenta BPMS implementa a dependência entre as etapas do processo, essa abordagem de teste pode tornar-se muito dependente do BPMS. Esta ideia é fortalecida pela impossibilidade de executar o teste na ferramenta Activiti afinal, dependendo da ferramenta, pode ser muito trabalhoso executar o teste, pode não ser possível executar o teste ou ainda pode ser possível e vantajoso, como ocorreu com o Bonita Open Solution.
+%Um fator importante também é que, pelo fato das requisições terem de ser analisadas para ser possível executar o teste e também ser necessário localizar a forma como a ferramenta BPMS implementa a dependência entre as etapas do processo, essa abordagem de teste pode tornar-se muito dependente do BPMS. Esta ideia é fortalecida pela impossibilidade de executar o teste na ferramenta Activiti afinal, dependendo da ferramenta, pode ser muito trabalhoso executar o teste, pode não ser possível executar o teste ou ainda pode ser possível e vantajoso, como ocorreu com o Bonita Open Solution.
 
-\subsection{Teste Funcional}
+\subsection{Testes Funcionais}
 Para executar os testes funcionais, escolheu-se a ferramenta Selenium\footnote{Selenium. Disponível em: www.seleniumhq.org.}. Esta ferramenta possui basicamente duas partes complementares: Selenium IDE e Selenium WebDriver. A primeira é um plugin para o navegador Firefox, capaz de registrar e reproduzir interações do usuário com o navegador, assim permitindo criar scripts de teste rapidamente, sem escrita de código.
 
 
