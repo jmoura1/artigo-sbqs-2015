@@ -235,41 +235,28 @@ Usuários & Login & Pág. Inicial & Seleção Processo & Form. Inicial & Enviar 
 %\label{fig:carga200}
 %\end{figure}
 
-De forma geral, portanto, o teste de carga com JMeter atingiu seus objetivos e pode ajudar a explicar a sobrecarga que ocorreu com a aplicação em produção, quando muitos alunos tentaram acessar o formulário inicial numa data limite. No entanto, é importante ressaltar que este teste foi executado apenas em etapas iniciais do processo e, mesmo assim, já foi trabalhoso por exigir uma análise profunda das requisições HTTP para executar os testes com sucesso. Ao todo, foram capturadas cerca de 100 requisições só nestas etapas, portanto estima-se que o teste de uma tarefa mais ao final do processo possa se tornar inviável com JMeter, por exigir a identificação e interpretação de muitas requisições. Outra observação importante, nesta experiência, é que esta abordagem de teste sofre com a dependência das tecnologias Web empregadas pelo BPMS.
+De forma geral, portanto, o teste de carga com JMeter atingiu seus objetivos e ajuda a explicar a sobrecarga que ocorreu com a aplicação em produção, quando muitos alunos tentaram acessar o formulário inicial numa data limite. No entanto, é importante ressaltar que este teste foi executado apenas em etapas iniciais do processo e, mesmo assim, já foi trabalhoso por exigir uma análise profunda das requisições HTTP para executar os testes com sucesso. Ao todo, foram capturadas cerca de 100 requisições só nestas etapas, portanto estima-se que o teste de uma tarefa mais ao final do processo possa se tornar inviável com JMeter, por exigir a identificação e interpretação de muitas requisições. Outra observação importante, nesta experiência, é que esta abordagem de teste sofre com a dependência das tecnologias Web empregadas pelo BPMS.
 
 %A captura destas etapas, utilizando o BlazeMeter\footnote{BlazeMeter. Disponível em: www.blazemeter.com.}, resultou em uma média de 100 requisições, considerando que deseja-se fazer o teste de outra etapa/gargalo que esteja localizada mais ao meio do processo a captura desta pode gerar muitas requisições o que tornaria difícil a análise de todas requisições para substituir as chaves geradas e, assim, tornaria inviável essa abordagem de teste. 
 
 %Um fator importante também é que, pelo fato das requisições terem de ser analisadas para ser possível executar o teste e também ser necessário localizar a forma como a ferramenta BPMS implementa a dependência entre as etapas do processo, essa abordagem de teste pode tornar-se muito dependente do BPMS. Esta ideia é fortalecida pela impossibilidade de executar o teste na ferramenta Activiti afinal, dependendo da ferramenta, pode ser muito trabalhoso executar o teste, pode não ser possível executar o teste ou ainda pode ser possível e vantajoso, como ocorreu com o Bonita Open Solution.
 
 \subsection{Testes Funcionais}
-Para executar os testes funcionais, escolheu-se a ferramenta Selenium\footnote{Selenium. Disponível em: www.seleniumhq.org.}. Esta ferramenta possui basicamente duas partes complementares: Selenium IDE e Selenium WebDriver. A primeira é um plugin para o navegador Firefox, capaz de registrar e reproduzir interações do usuário com o navegador, assim permitindo criar scripts de teste rapidamente, sem escrita de código.
+
+Para executar os testes funcionais, escolheu-se a ferramenta Selenium Web Driver\footnote{Selenium. Disponível em: www.seleniumhq.org.}, aliada ao Cucumber-JVM\footnote{Cucumber-JVM. Disponível em:www.github.com/cucumber/cucumber-jvm.} para descrição dos testes. A escolha foi motivada por um trabalho que apresentou resultados satisfatórios no teste de aplicações Web com essas ferramentas~\cite{sbqs2013}.
+
+%Esta ferramenta possui basicamente duas partes complementares: Selenium IDE e Selenium WebDriver. A primeira é um plugin para o navegador Firefox, capaz de registrar e reproduzir interações do usuário com o navegador, assim permitindo criar scripts de teste rapidamente, sem escrita de código.
 
 
-\begin{table}
-{\scriptsize
-\begin{tabular}{|p{5cm}|p{4cm}|p{4cm}|}
-\hline
- & BOS & Activiti \\\hline
-Componentes WEB & HTML, CSS, Ajax & HTML, CSS, Ajax \\\hline
-Captura da interação do usuário utilizando o Selenium & Total & Parcial (necessitou de inserção manual de alguns campos) \\\hline
-Foi possível exportar o código gerado pelo Selenium? & Sim & Sim \\\hline
-Reconhecimento de todos os campos capturados SEM alteração de código & Parcial & Parcial \\\hline
-Reconhecimento de todos os campos capturados COM alteração de código & Total & Total \\\hline
-Foi possível criar o cenário e executar o teste? & Sim & Sim \\\hline
-\end{tabular}
-}
-\caption{Teste funcional}
-\label{tab:testeFuncional}
-\end{table}
-
-Durante a revisão bibliográfica, encontrou-se um trabalho apresentado no Simpósio Brasileiro de Qualidade de Software de 2013 \cite{sbqs2013} que utilizava o Selenium WebDriver aliado ao Cucumber-JVM\footnote{Cucumber-JVM. Disponível em:www.github.com/cucumber/cucumber-jvm.} para testar uma aplicação web, a partir desse trabalho decidiu-se utilizar a última na execução dos testes funcionais. O Cucumber é uma ferramenta que executa descrições de teste, em texto simples, como testes automatizados.
+%Durante a revisão bibliográfica, encontrou-se um trabalho apresentado no Simpósio Brasileiro de Qualidade de Software de 2013 \cite{sbqs2013} que utilizava o Selenium WebDriver aliado ao Cucumber-JVM\footnote{Cucumber-JVM. Disponível em:www.github.com/cucumber/cucumber-jvm.} para testar uma aplicação web, a partir desse trabalho decidiu-se utilizar a última na execução dos testes funcionais. O Cucumber é uma ferramenta que executa descrições de teste, em texto simples, como testes automatizados.
 
 
-O processo para a execução do teste funcional é composto por seis etapas: Captura da execução no navegador (Selenium), Exportar código gerado (Selenium), Criar cenário de teste (Cucumber), Criar as definições dos passos do teste (Cucumber), Criar os métodos para cada passo (Java) e Executar o teste (Selenium).
+Com estas ferramentas, o processo para a execução de um teste funcional é composto das seguintes etapas: captura da interação do usuário com o navegador (Selenium IDE), exportação do código gerado (Selenium IDE), criação do cenário de teste (Cucumber), criação das definições dos passos do teste (Cucumber), criação dos métodos para cada passo (Java) e execução do teste (Selenium WebDriver). O cenário de teste é a definição, em ordem de execução, dos passos que são executados na aplicação, bem como dos resultados esperados. Para este trabalho, definiu-se um cenário em que o aluno faz login e preenche 2 formulários referentes à primeira tarefa do processo (Aluno solicita ACG). Para este cenário, foram criados métodos fornecendo diferentes entradas nos formulários. Como o processo testado é o mesmo em ambos os BPMS, o cenário de teste também é o mesmo. 
 
-Como o processo testado é o mesmo nos dois BPMS, o cenário de teste também é o mesmo. O cenário nada mais é do que a definição, em ordem de execução, dos passos que são executados na aplicação bem como  os resultados esperados.
+%A captura
+%Algumas personalizações são necessárias para a execução com sucesso do teste funcional, a maioria delas ocorre nas etapas de exportação/execução do teste. 
 
-Algumas personalizações são necessárias para a execução com sucesso do teste funcional, a maioria delas ocorre nas etapas de exportação/execução do teste. Em ambos os BPMS, ao executar o teste gravado, ocorrem erros pois o Selenium não encontra os campos que ele mesmo capturou. Isto ocorre pois os campos estão localizados dentre de \emph{iframes} que, no momento da captura da interação, não exibem problemas mas na execução acabam por "esconder" os campos, assim é necessário utilizar uma função para "acessar" o \emph{iframe} antes de selecionar o elemento desejado, garantindo que não ocorra erro durante a execução.
+Para as aplicações de ambos os BPMS, inicialmente ocorreram erros na execução dos testes, relativos à localização de campos nos formulários Web. Verificou-se que os campos estavam localizados dentro de um \emph{iframe} e, embora a captura da interação ocorresse sem problemas, o código gerado não selecionava o \emph{iframe} e por isso não encontrava o campo. Assim, foi necessário utilizar um método do Selenium para acessar o \emph{iframe} antes de selecionar o elemento desejado.
 
 %A Figura \ref{fig:codigobos} exibe duas "personalizações" no código gerado pelo Selenium IDE, a primeira (em vermelho) é uma linha de código que faz com que o driver "aguarde"  60 segundos antes de procurar pelo campo a ser selecionado. Isto evita que o driver busque por um campo, antes da página ser carregada, e não o encontre (o que causa erro na execução dos teste). A segunda linha de código, em verde, exibe o código que "acessa" o \emph{iframe}, através da ID, antes de executar a ação e isto também evita que o driver não encontre o elemento no momento do teste.
 
@@ -281,19 +268,38 @@ Algumas personalizações são necessárias para a execução com sucesso do tes
 %\label{fig:cenariobos}
 %\end{figure}
 
-Além dos problemas comuns as duas ferramentas citados acima, a ferramenta Activiti demonstrou um outro problema. Diferente da gravação com o BOS, o Selenium IDE não captura toda a interação do usuário com a aplicação, de fato, na etapa de login a IDE captura apenas o acesso a página e o "clique" ao botão de login, ou seja, não captura o preenchimento dos campos "Usuário" e "Senha". Este problema se repete com alguns outros elementos durante a gravação de teste, acredita-se que esse problema ocorra devido a estrutura da página web em questão, estrutura esta que pode conter elementos com os quais o Selenium não trabalhe bem como \emph{divs},\emph{frames} e \emph{scripts}, por exemplo. No entanto, este problema não impossibilita a criação e execução do teste.
+Na aplicação com Activiti, ocorreu também um outro problema. Diferente do que ocorreu com os formulários Web gerados pelo Bonita, o Selenium IDE não capturou toda a interação do usuário com a aplicação. De fato, na etapa de login, o Selenium capturou apenas o acesso à página e o "clique" ao botão de login, ou seja, não capturou o preenchimento dos campos "Usuário" e "Senha". Este problema se repetiu com alguns outros elementos do formulário Web durante a gravação da interação. Acredita-se que o problema ocorra devido à estrutura das página Web, que pode conter elementos que o Selenium não identifique automaticamente, tais como \emph{divs}, \emph{frames} e \emph{scripts}, por exemplo. No entanto, isso não impossibilita a criação e execução dos testes. Para contornar o problema, foi necessário estudar a estrutura das páginas Web em questão, localizar os elementos faltantes e então adicionar o código para acessá-los nos respectivos métodos.
 
-Na criação dos métodos correspondentes a cada etapa do processo foi utilizado o código do gerado pelo Selenium IDE mas, como esta não captura todas as interações, a execução do teste falha. Para contornar esse problema, foi necessário estudar a estrutura das páginas que web, localizar os elementos faltantes e então adicionar o código para acessá-los nos respectivos métodos.
+%Na criação dos métodos correspondentes a cada etapa do processo foi utilizado o código do gerado pelo Selenium IDE mas, como esta não captura todas as interações, a execução do teste falha.
 
 \subsubsection{Resultados}
 
-O teste funcional da ferramenta Bonita Open Solution e da ferramenta Activiti mostrou-se mais viável do que o teste de carga, o teste funcional não utiliza chaves identificadoras ou \emph{ids}, como ocorre no teste com o Jmeter, já que uma boa parcela do teste é executada no lado cliente, o que facilita o processo de teste. Pode-se dizer que este teste atingiu todos seus objetivos pois permitiu executar a interação do usuário, bem como criar o código para simular diferentes entradas e testar o a aplicação de diversas formas.
+Os testes funcionais mostraram-se mais viáveis do que os testes de carga, pois uma boa parcela da interação é executada no lado cliente, sem necessidade de lidar explicitamente das interações com o servidor. Pode-se dizer que este teste atingiu todos seus objetivos, pois permitiu reproduzir a interação do usuário, bem como criar o código para testar as aplicações com diferentes entradas, num cenário envolvendo a tarefa inicial do processo.
 
-O teste funcional também não é dependente da implementação do BPMS, são necessárias poucas modificações no código gerado e a realização destas é possível apenas inspecionando a estrutura das páginas web.
+O teste funcional também é menos dependente do BPMS. Na tabela \ref{tab:testeFuncional} apresenta-se um resumo das principais semelhanças e diferenças encontradas. Em ambos os casos, foram necessárias poucas modificações no código gerado pelo Selenium e Cucumber, bastando para isso inspecionar a estrutura das páginas Web. O Cucumber torna a implementação dos testes mais rápida e menos trabalhosa do que se fosse usado apenas o Selenium, pois abrevia a geração de código alinhado com os cenários de teste. Mesmo assim, caso seja necessário estender os testes a muitas tarefas de um processo, as intervenções manuais no código de teste podem se tornar trabalhosas.
 
-O Cucumber-JVM torna a implementação dos testes mais rápida e menos trabalhosa, já que a utilização de cenários auxilia na implementação do teste de forma a diminuir a quantidade de código que precisaria ser escrita sem o uso de uma ferramenta como esta.
+\begin{table}
+{\scriptsize
+\begin{tabular}{p{5cm}|p{4cm}|p{4cm}}
+\hline
+ & BOS & Activiti \\\hline
+Componentes Web & HTML, CSS, Ajax & HTML, CSS, Ajax \\\hline
+Captura da interação do usuário utilizando o Selenium & Total & Parcial (necessitou de inserção manual de alguns campos) \\\hline
+Foi possível exportar o código gerado pelo Selenium? & Sim & Sim \\\hline
+Reconhecimento de todos os campos capturados SEM alteração de código & Parcial & Parcial \\\hline
+Reconhecimento de todos os campos capturados COM alteração de código & Total & Total \\\hline
+Foi possível criar o cenário e executar o teste? & Sim & Sim \\\hline
+\end{tabular}
+}
+\caption{Resumo comparativo sobre o teste funcional}
+\label{tab:testeFuncional}
+\end{table}
 
-O teste funcional com o Selenium+Cucumber pode encontrar problemas ao testar várias tarefas ou todos os possíveis fluxos do processo alvo pois, como já foi citado, é necessário fazer algumas modificações no código gerado pelo Selenium e essas modificações, dependendo do volume de tarefas/fluxos, podem ser muito trabalhosas ou até inviabilizar o teste.
+
+%O teste funcional com o Selenium+Cucumber pode encontrar problemas ao testar várias tarefas ou todos os possíveis fluxos do processo alvo pois, como já foi citado, é necessário fazer algumas modificações no código gerado pelo Selenium e essas modificações, dependendo do volume de tarefas/fluxos, podem ser muito trabalhosas ou até inviabilizar o teste.
+
+
+
 
 %\section{Trabalhos Relacionados}
 
