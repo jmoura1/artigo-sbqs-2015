@@ -102,7 +102,7 @@ Considerando que aplicações de BPMS são geralmente sistemas baseados na Web, 
 
 A aplicação alvo deste trabalho refere-se a um processo comum em instituições de ensino superior: a apreciação de Atividades Complementares de Graduação (ACGs), ou seja, atividades que formam a parte flexível do currículo de graduandos (participação em palestras, eventos, projetos, etc.). Em um trabalho anterior ~\cite{sbsi2013}, apresentou-se a modelagem, implementação e implantação desse processo. Sua representação em BPMN, na Figura \ref{fig:diagrama}, revela um total de 11 tarefas distribuídas em 5 divisões de responsabilidade (Aluno, Tutor, etc.).
 
-No trabalho anterior, implementou-se o processo com a ferramenta Bonita BPM\footnote{Bonita BPM (antes denominada Bonita Open Solution). Disponível em: www.bonitasoft.com.}, um BPMS de código aberto reconhecido no mundo corporativo~\cite{gartner, forrester}. A aplicação resultante possui vários formulários Web relativos a cada divisão de responsabilidade, sendo o primeiro deles destinado ao preenchimento de dados pelo aluno (Aluno solicita ACG). De acordo com o tipo de atividade complementar (eventos, projetos, etc.), o fluxo é direcionado para os responsáveis pela avaliação e validação da ACG. Nota-se, na Figura 1, que o processo possui diversos desvios condicionais, o que leva a mais de 15 caminhos possíveis no processo.
+No trabalho anterior, implementou-se o processo com a ferramenta Bonita BPM\footnote{Bonita BPM (antes denominado Bonita Open Solution). Disponível em: www.bonitasoft.com.}, um BPMS de código aberto reconhecido no mundo corporativo~\cite{forrester}. A aplicação resultante possui vários formulários Web relativos a cada divisão de responsabilidade, sendo o primeiro deles destinado ao preenchimento de dados pelo aluno (Aluno solicita ACG). De acordo com o tipo de atividade complementar (eventos, projetos, etc.), o fluxo é direcionado para os responsáveis pela avaliação e validação da ACG. Nota-se, na Figura 1, que o processo possui diversos desvios condicionais, o que leva a mais de 15 caminhos possíveis no processo.
 
 \begin{figure}[ht]
 \centering
@@ -116,8 +116,8 @@ A aplicação foi submetida a testes funcionais realizados manualmente, além de
 %, em especial testes de carga e testes funcionais, que supostamente poderiam ter evitado os problemas observados na implantação.
 
 Verificou-se, no entanto, que o BPMS utilizado não possuía suporte a nenhum tipo de teste automatizado. Buscou-se outros BPMS com licenças \emph{open source} ou \emph{freeware}, que pudessem implementar o processo em questão e que oferecessem suporte a testes. A preferência por este tipo de licença foi devida à sua flexibilidade e viabilidade financeira para o "cliente" deste projeto: uma instituição pública de ensino.
-Dentre as ferramentas analisadas (TIBCO\footnote{TIBCO. Disponível em: www.tibco.com.}, Sydle Seed\footnote{Sydle Seed. Disponível em: www.sydle.com/bpms.}, Activiti\footnote{Activiti. Disponível em: www.activiti.org.}, Process Maker\footnote{Process Maker. Disponível em: www.processmaker.com.}, Intalio\footnote{Intalio. Disponível em: www.intalio.com.}), nenhuma oferecia evidente suporte a testes automatizados. Apenas a ferramenta Activiti citava a possibilidade de testes de unidade aliados ao JUnit, porém sem muitas informações sobre essa alternativa. Por isso partiu-se para outra opção: utilizar ferramentas de teste externas ao BPMS. Mesmo assim, decidiu-se implementar a mesma aplicação usando outro BPMS, a fim de ampliar a experiência e, possivelmente, identificar semelhanças e diferenças no teste automatizado de implementações com diferentes BPMS.
-A ferramenta escolhida foi Activiti, um BPMS que trabalha com a mesma versão da notação BPMN usada no Bonita, permitindo importar na íntegra o processo originalmente criado. Os formulários Web, no entanto, não puderam ser importados e tiveram de ser recriados.
+Dentre as ferramentas analisadas (TIBCO\footnote{TIBCO. Disponível em: www.tibco.com.}, Sydle Seed\footnote{Sydle Seed. Disponível em: www.sydle.com/bpms.}, Activiti\footnote{Activiti. Disponível em: www.activiti.org.}, Process Maker\footnote{Process Maker. Disponível em: www.processmaker.com.}, Intalio\footnote{Intalio. Disponível em: www.intalio.com.}), nenhuma oferecia evidente suporte a testes automatizados. Apenas a ferramenta Activiti citava a possibilidade de testes de unidade aliados ao JUnit, porém sem muitas informações sobre essa alternativa. Por isso partiu-se para outra opção: utilizar ferramentas de teste externas ao BPMS. Adicionalmente, decidiu-se implementar a mesma aplicação usando outro BPMS, a fim de ampliar a experiência e, possivelmente, identificar semelhanças e diferenças no teste automatizado de implementações com diferentes BPMS.
+A ferramenta escolhida foi Activiti, um BPMS baseado em tecnologias Java, assim como Bonita, permitindo trabalhar com as mesmas tecnologias do lado servidor (Tomcat e MySQL, no caso em questão). Esse BPMS também trabalha com a mesma versão da notação BPMN usada no Bonita, permitindo importar na íntegra o processo originalmente criado. Os formulários Web criados com ajuda do Bonita, no entanto, não puderam ser importados e tiveram de ser recriados com Activiti.
 %, preservando-se as mesmas características.
 
 
@@ -171,7 +171,7 @@ A ferramenta escolhida foi Activiti, um BPMS que trabalha com a mesma versão da
 No planejamento de testes automatizados, priorizou-se o teste de aspectos que de fato revelaram problemas durante a implantação, no trabalho precedente.
 %Com isso, buscou-se verificar se os problemas poderiam ser facilmente identificados antes de colocar-se a aplicação em produção. 
 Os testes escolhidos foram: (a) testes de carga, que são um tipo de teste de desempenho, visando avaliar o comportamento do sistema frente a um grande número de solicitações e (b) testes funcionais, a fim de verificar as saídas do sistema produzidas a partir de entradas pré-definidas. \textbf{Nenhum destes tipos de teste possui suporte nos BPMS Bonita e Activiti}, que incluem somente funcionalidades limitadas de simulação e depuração de execução dos processos. Embora o Activiti citasse suporte a testes de unidade, não explorou-se esta opção por entender-se que seria menos prioritária frente aos problemas observados.
- Assim, realizou-se um levantamento de ferramentas externas aos BPMS, destinadas ao teste de aplicações Web. Selecionou-se as julgadas mais promissoras, antes de partir-se para o detalhamento e execução dos testes. Os \emph{scripts} que configuram os testes estão disponíveis para consulta em http://www.inf.ufsm.br/~andrea/bpmtest-scripts.zip.
+ Assim, realizou-se um levantamento de ferramentas destinadas ao teste de aplicações Web e selecionou-se as julgadas mais promissoras, antes de partir-se para o detalhamento e execução dos testes. Os \emph{scripts} que configuram os testes estão disponíveis para consulta em http://www.inf.ufsm.br/~andrea/bpmtest-scripts.zip.
 
 \subsection{Testes de Carga}
 
@@ -249,7 +249,7 @@ Usuários & Login & Pág. Inicial & Seleção Processo & Form. Inicial & Enviar 
 %\label{fig:carga200}
 %\end{figure}
 
-De forma geral, portanto, o teste de carga com JMeter atingiu seus objetivos e ajuda a explicar a sobrecarga que ocorreu com a aplicação em produção, quando muitos alunos tentaram acessar o formulário inicial numa data limite. No entanto, é importante ressaltar que este teste foi executado apenas em etapas iniciais do processo e, mesmo assim, já foi trabalhoso por exigir uma análise profunda das requisições HTTP para executar os testes com sucesso. Ao todo, foram capturadas cerca de 100 requisições só nestas etapas, portanto estima-se que o teste de uma tarefa mais ao final do processo possa se tornar inviável com JMeter, por exigir a identificação e interpretação de muitas requisições. Outra observação importante, nesta experiência, é que esta abordagem de teste sofre com a dependência das tecnologias Web empregadas pelo BPMS.
+De forma geral, portanto, o teste de carga com JMeter atingiu seus objetivos e ajuda a explicar a sobrecarga que ocorreu com a aplicação em produção, quando muitos alunos tentaram acessar o formulário inicial numa data limite. No entanto, é importante ressaltar que este teste foi executado apenas em etapas iniciais do processo e, mesmo assim, já foi trabalhoso e consumiu algumas horas de preparação, por exigir uma análise profunda das requisições HTTP para executar os testes com sucesso. Ao todo, foram capturadas cerca de 100 requisições só nestas etapas, portanto estima-se que o teste de uma tarefa mais ao final do processo possa se tornar inviável com JMeter, por demandar a identificação e interpretação de muitas requisições. Outra observação importante, nesta experiência, é que esta abordagem de teste sofre com a dependência das tecnologias Web empregadas pelo BPMS.
 
 %A captura destas etapas, utilizando o BlazeMeter\footnote{BlazeMeter. Disponível em: www.blazemeter.com.}, resultou em uma média de 100 requisições, considerando que deseja-se fazer o teste de outra etapa/gargalo que esteja localizada mais ao meio do processo a captura desta pode gerar muitas requisições o que tornaria difícil a análise de todas requisições para substituir as chaves geradas e, assim, tornaria inviável essa abordagem de teste. 
 
@@ -257,7 +257,7 @@ De forma geral, portanto, o teste de carga com JMeter atingiu seus objetivos e a
 
 \subsection{Testes Funcionais}
 
-Para executar os testes funcionais, escolheu-se a ferramenta Selenium Web Driver\footnote{Selenium. Disponível em: www.seleniumhq.org.}, aliada ao Cucumber-JVM\footnote{Cucumber-JVM. Disponível em:www.github.com/cucumber/cucumber-jvm.} para descrição dos testes. A escolha foi motivada por um trabalho que apresentou resultados satisfatórios no teste de aplicações Web com essas ferramentas~\cite{sbqs2013}.
+Para executar testes funcionais em aplicações Web, pode-se utilizar ferramentas livres como Selenium\footnote{Selenium. Disponível em: www.seleniumhq.org.}, Watir\footnote{Watir. Disponível em: www.watir.com.} ou Geb\footnote{Geb. Disponível em: www.gebish.org.}. Para este trabalho, escolheu-se a ferramenta Selenium, aliada ao Cucumber-JVM\footnote{Cucumber-JVM. Disponível em: www.github.com/cucumber/cucumber-jvm.} para descrição dos testes. A escolha foi motivada pelo grande número de referências ao Selenium na Web, confirmadas por um trabalho que apresentou resultados satisfatórios com essas ferramentas~\cite{sbqs2013}.
 
 %Esta ferramenta possui basicamente duas partes complementares: Selenium IDE e Selenium WebDriver. A primeira é um plugin para o navegador Firefox, capaz de registrar e reproduzir interações do usuário com o navegador, assim permitindo criar scripts de teste rapidamente, sem escrita de código.
 
@@ -293,12 +293,13 @@ Os testes funcionais mostraram-se mais viáveis do que os testes de carga, pois 
 O teste funcional também é menos dependente do BPMS. Na Tabela \ref{tab:testeFuncional} apresenta-se um resumo das principais semelhanças e diferenças encontradas. Em ambos os casos, foram necessárias poucas modificações no código gerado pelo Selenium e Cucumber, bastando para isso inspecionar a estrutura das páginas Web. O Cucumber torna a implementação dos testes mais rápida e menos trabalhosa do que se fosse usado apenas o Selenium, pois abrevia a geração de código alinhado com os cenários de teste. Mesmo assim, caso seja necessário estender os testes a muitas tarefas de um processo, as intervenções manuais no código de teste podem se tornar trabalhosas.
 
 \begin{table}
+\begin{center}
 {\scriptsize
-\begin{tabular}{p{5cm}|p{4cm}|p{4cm}}
+\begin{tabular}{p{6cm}|l|p{4.5cm}}
 \hline
  & Bonita & Activiti \\\hline
 Componentes Web & HTML, CSS, Ajax & HTML, CSS, Ajax \\\hline
-Captura da interação do usuário utilizando o Selenium & Total & Parcial (necessitou de inserção manual de alguns campos) \\\hline
+Captura da interação do usuário utilizando o Selenium & Total & Parcial (necessitou de inser\-ção manual de alguns campos) \\\hline
 Foi possível exportar o código gerado pelo Selenium? & Sim & Sim \\\hline
 Reconhecimento de todos os campos capturados SEM alteração de código & Parcial & Parcial \\\hline
 Reconhecimento de todos os campos capturados COM alteração de código & Total & Total \\\hline
@@ -307,6 +308,7 @@ Foi possível criar o cenário e executar o teste? & Sim & Sim \\\hline
 }
 \caption{Resumo comparativo sobre o teste funcional}
 \label{tab:testeFuncional}
+\end{center}
 \end{table}
 
 
@@ -344,7 +346,7 @@ Neste trabalho, explorou-se soluções de teste automatizado em uma aplicação 
 
 %Uma das abordagens adotadas foi de que, por aplicações BPM serem aplicações WEB, poderiam ser tratadas e testadas como um software em geral, utilizando ferramentas consagradas para tal. De fato, esta abordagem mostrou algumas desvantagens e dificuldades relacionadas a particularidades das aplicações BPM.
 
-No que diz respeito ao teste de carga, este mostrou-se útil para explicar falhas ocorridas na aplicação que foi implementada. Também mostrou-se um teste trabalhoso, ou até inviável, dependendo do BPMS utilizado. A experiência com dois BPMS fortaleceu essa conclusão, pois ocorreram duas situações distintas: com Bonita o teste foi bem sucedido, porém com Activiti o teste não pôde ser executado, já que não se conseguiu reproduzir requisições ao servidor. 
+No que concerne ao teste de carga, este mostrou-se útil para explicar falhas observadas no trabalho anterior. Também mostrou-se um teste trabalhoso, ou até inviável, dependendo do BPMS usado. A experiência com dois BPMS fortaleceu essa conclusão, pois ocorreram situações distintas: com Bonita o teste foi bem sucedido, porém com Activiti o teste não pôde ser executado, já que não se conseguiu reproduzir todas requisições. 
 %Assim, é prudente O BPMS deve ser avaliado antes da execução do teste para verificar se este é viável ou não.
 
 No teste funcional, com a abordagem adotada, obteve-se maior sucesso na execução dos testes e observou-se uma menor dependência dos BPMS, em comparação com o teste anterior. A tarefa de teste pode vir a ser trabalhosa, principalmente quando deseja-se testar muitas tarefas e fluxos que um processo de negócio pode ter.
