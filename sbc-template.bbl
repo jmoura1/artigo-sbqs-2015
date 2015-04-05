@@ -7,24 +7,37 @@
 \newblock Association of Business Process Management Professionals, 2nd
   edition.
 
+\bibitem[Bourque e Fairley 2014]{swebok14}
+Bourque, P. e Fairley, R.~E. (2014).
+\newblock {\em Guide to the Software Engineering Body of Knowledge ({SWEBOK}),
+  Version 3.0}.
+\newblock IEEE Computer Society.
+
+\bibitem[Chetty 2014]{evoke}
+Chetty, N.~K. (2014).
+\newblock How to perform workflow testing for {BPM} applications.
+\newblock Disponível em: http://www.evoketechnologies.com.
+
 \bibitem[Chiavegatto et~al. 2013]{sbqs2013}
-Chiavegatto, R., Pinheiro, V., Vieira, A.~F., Clineu, J., Oliveira, E.~H.,
-  Barroso, E., Amorim, A., e Conte, T. (2013).
+Chiavegatto, R. et~al. (2013).
 \newblock Especificação e automação colaborativas de testes utilizando a
   técnica {BDD}.
-\newblock In {\em XII Simpósio Brasileiro de Qualidade de Software}, pages
+\newblock In {\em XII Simpósio Brasileiro de Qualidade de Software}, pp.
   334--341.
 
 \bibitem[de~Moura et~al. 2013]{sbsi2013}
-de~Moura, J.~L., Lunardi, G.~M., Charão, A.~S., Barcelos, P.~P., e
-  de~Oliveira~Stein, B. (2013).
+de~Moura, J.~L. et~al. (2013).
 \newblock Gestão de processos de negócio em curso de sistemas de
   informação: Relato de experiência utilizando software livre.
-\newblock In {\em IX Simpósio Brasileiro de Sistemas de Informação}, pages
+\newblock In {\em IX Simpósio Brasileiro de Sistemas de Informação}, pp.
   206--217.
 
-\bibitem[Gartner 2010]{gartner}
-Gartner (2010).
+\bibitem[{Forrester Research} 2013]{forrester}
+{Forrester Research} (2013).
+\newblock The forrester wave: {BPM} suites, {Q1} 2013.
+
+\bibitem[{Gartner Group} 2010]{gartner}
+{Gartner Group} (2010).
 \newblock Magic quadrant for business process management suites.
 
 \bibitem[Graham e Fewster 2012]{graham2012experiences}
@@ -36,12 +49,8 @@ Graham, D. e Fewster, M. (2012).
 \bibitem[Ko 2009]{acmxrds2009}
 Ko, R. K.~L. (2009).
 \newblock A computer scientist's introductory guide to business process
-  management (bpm).
+  management ({BPM}).
 \newblock {\em Crossroads}, 15(4):4:11--4:18.
-
-\bibitem[Research 2013]{forrester}
-Research, F. (2013).
-\newblock The forrester wave: {BPM} suites, {Q1} 2013.
 
 \bibitem[van~der Aalst 2013]{aalst2013survey}
 van~der Aalst, W. M.~P. (2013).
@@ -53,5 +62,10 @@ Weske, M. (2012).
 \newblock {\em Business Process Management: Concepts, Languages,
   Architectures}.
 \newblock Springer, 2nd edition.
+
+\bibitem[{Winter Green Research} 2013]{greenresearch}
+{Winter Green Research} (2013).
+\newblock Business process management ({BPM}) cloud, mobile, and patterns:
+  Market shares, strategies, and forecasts, worldwide, 2013 to 2019.
 
 \end{thebibliography}
