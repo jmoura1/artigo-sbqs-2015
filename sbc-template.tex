@@ -222,10 +222,6 @@ No caso da aplicação criada com Bonita, verificou-se que existe uma chave iden
 Devido aos problemas relatados na seção anterior, os testes de carga só puderam ser realizados com a aplicação criada com Bonita. A fim de testar o comportamento do sistema com diferentes níveis de carga, foram executados testes com 1, 50, 100 e 200 usuários virtuais/acessos simultâneos e foram analisadas as requisições referentes às etapas: efetuar login, exibir a página inicial do Bonita, selecionar o processo, exibir o formulário inicial (Aluno solicita ACG) e enviar o formulário preenchido. Os testes foram executados em um servidor com 24 GB de RAM e 2 processadores Intel Xeon E5520, com 4 núcleos. 
 
 %Reproduzindo o teste com um usuário virtual, nas requisições correspondentes a login, exibição da página inicial, seleção do processo, exibição do formulário inicial e envio do formulário preenchido, a média do tempo de resposta foi de, respectivamente, 126, 32, 38, 80 e 73 milissegundos. A média do tempo de resposta total foi de 75 milissegundos e o desvio padrão foi igual a 21.  Aumentando o número de usuários virtuais para cinquenta os valores do tempo de resposta subiram para 597, 191, 179, 368 e 152 milissegundos, a média foi igual a 329 milissegundos e o desvio padrão 401. Com 100 usuários o aumento do tempo de resposta fica ainda mais visível, sendo 1972, 571, 552, 760 e 694 milissegundos, com média 774 milissegundos e desvio padrão de 1449.
-
-
-Os tempos de resposta de cada etapa, em função do número de usuários, podem ser vistos na Tabela \ref{tab:resultadoCarga}. Os resultados mais alarmantes são para 200 usuários virtuais, em que o tempo médio de resposta na requisição de login foi de 10.149 ms, ou seja, aproximadamente 10 s, o que é um tempo de resposta alto. A média de tempo de resposta para todas requisições foi de 3.111 ms (ou seja, 3 s), e o desvio padrão foi de 13.088. Além dos altos tempos de resposta, o teste com 200 usuários virtuais apresentou taxas de erro, em algumas requisições, que não foram encontradas com um número menor de usuários. Por exemplo, a requisição que executou login apresentou uma taxa de 2\% de erro e, ao todo, as requisições obtiveram uma taxa de erro de 7.82\%. Os erros ocorreram devido a requisições sem resposta. %Confrontando tais erros com logs do Bonita, estes indicam timeouts internos em alguns métodos, mas os dados não permitiram identificar precisamente a origem dos erros.
-
 \begin{table}
 {\scriptsize
 \centering
@@ -242,12 +238,17 @@ Usuários & Login & Pág. Inicial & Seleção Processo & Form. Inicial & Enviar 
 \label{tab:resultadoCarga}
 \end{table}
 
+Os tempos de resposta de cada etapa, em função do número de usuários, podem ser vistos na Tabela \ref{tab:resultadoCarga}. Os resultados mais alarmantes são para 200 usuários virtuais, em que o tempo médio de resposta na requisição de login foi de 10.149 ms, ou seja, aproximadamente 10 s, o que é um tempo de resposta alto. A média de tempo de resposta para todas requisições foi de 3.111 ms (ou seja, 3 s), e o desvio padrão foi de 13.088. Além dos altos tempos de resposta, o teste com 200 usuários virtuais apresentou taxas de erro, em algumas requisições, que não foram encontradas com um número menor de usuários. Por exemplo, a requisição que executou login apresentou uma taxa de 2\% de erro e, ao todo, as requisições obtiveram uma taxa de erro de 7.82\%. Os erros ocorreram devido a requisições sem resposta. %Confrontando tais erros com logs do Bonita, estes indicam timeouts internos em alguns métodos, mas os dados não permitiram identificar precisamente a origem dos erros.
+
+
 %\begin{figure}[ht]
 %\centering
 %\includegraphics[width=.99\textwidth]{figuras/grafico200.jpg}
 %\caption{Resultado dos testes de carga com 200 usuários no JMeter.}
 %\label{fig:carga200}
 %\end{figure}
+
+
 
 De forma geral, portanto, o teste de carga com JMeter atingiu seus objetivos e ajuda a explicar a sobrecarga que ocorreu com a aplicação em produção, quando muitos alunos tentaram acessar o formulário inicial numa data limite. No entanto, é importante ressaltar que este teste foi executado apenas em etapas iniciais do processo e, mesmo assim, já foi trabalhoso e consumiu algumas horas de preparação, por exigir uma análise profunda das requisições HTTP para executar os testes com sucesso. Ao todo, foram capturadas cerca de 100 requisições só nestas etapas, portanto estima-se que o teste de uma tarefa mais ao final do processo possa se tornar inviável com JMeter, por demandar a identificação e interpretação de muitas requisições. Outra observação importante, nesta experiência, é que esta abordagem de teste sofre com a dependência das tecnologias Web empregadas pelo BPMS.
 
