@@ -1,0 +1,427 @@
+\documentclass[12pt]{article}
+\usepackage{sbc-template}
+\usepackage{graphicx,url}
+\usepackage[export]{adjustbox}
+\usepackage[brazil]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{url}  % para usar URLs nas referencias
+\sloppy
+
+% Relatos de experiência: artigos de alta qualidade descrevendo e analisando a aplicação de processos, métodos ou ferramentas de qualidade de software, contextualizando a experiência e mostrando os resultados obtidos e lições aprendidas, em uma experiência prática com contribuição para a indústria de software
+% max de 8 paginas
+%http://www.softex.br/wp-content/uploads/2013/09/Como-escrever-um-relato-de-experi%C3%AAncia.pdf
+
+\title{Automação de Testes em Aplicações de BPMS:\\ um Relato de Experiência}
+
+\author{Jéssica Lasch de Moura\inst{1},
+Andrea Schwertner Charão\inst{1}}
+\address{Núcleo de Ciência da Computação\\
+Universidade Federal de Santa Maria -- UFSM
+\email{\{jmoura, andrea\}@inf.ufsm.br}}
+
+\begin{document}
+
+\maketitle
+
+\begin{resumo}
+Este artigo relata uma experiência de teste automatizado de uma aplicação desenvolvida com o apoio de sistemas de gestão de processos de negócio (Business Process Management Systems -- BPMS). Para isso, implementou-se um mesmo processo usando dois diferentes BPMS: Bonita e Activiti. Submeteu-se as aplicações Web resultantes a testes de carga e testes funcionais, utilizando-se as ferramentas Apache JMeter, Selenium e Cucumber. Os resultados evidenciam a viabilidade e as limitações na automação de testes deste tipo de aplicação.
+\end{resumo}
+% limitações, oportunidades e ... (o que deu certo e o que não deu)
+
+\begin{abstract}
+
+This article describes an experience of test automation of an application developed with the support of Business Process Management Systems - BPMS. For this purpose, we have implemented the same process using two different BPMS: Bonita and Activiti. We submit the resulting Web applications to two types of tests (load tests and functional tests), using test tools Apache JMeter, Selenium and Cucumber. The results show the feasibility and limitations of test automation for this type of application.
+\end{abstract}
+
+\section{Introdução}
+
+<<<<<<< .mine
+A gestão de processos de negócio (\emph{Business Process Management} -- BPM) tem suscitado o interesse de empresas e da comunidade científica, tanto por seus benefícios como por seus desafios. Designa-se por BPM o conjunto de conceitos, métodos e técnicas para suportar a modelagem, administração, configuração e análise de processos de negócio~\cite{weske}. Associados a isso, surgiram os sistemas de BPM (\emph{Business Process Management Systems} ou \emph{Suites} -- BPMS), que são ferramentas de software para apoio à gestão de processos de negócio. 
+=======
+A gestão de processos de negócio (\emph{Business Process Management} -- BPM) tem suscitado o interesse de empresas e da comunidade científica, tanto por seus benefícios como por seus desafios. Designa-se por BPM o conjunto de conceitos, métodos e técnicas para suportar a modelagem, administração, configuração e análise de processos de negócio~\cite{weske}. Associados a isso, surgiram os sistemas BPM (\emph{Business Process Management Systems} -- BPMS), que são ferramentas de software para apoio ao ciclo de vida da gestão de processos de negócio. 
+>>>>>>> .r42
+%Tais ferramentas, quando bem aplicadas, têm o potencial de alavancar aumentos de produtividade e redução de custos nos mais variados tipos de organizações. 
+
+Dentre os diversos BPMS disponíveis atualmente, é comum encontrar ferramentas com suporte à modelagem, configuração e execução de processos de negócio. Em muitos casos, os BPMS abreviam o desenvolvimento de software, entregando aplicações Web completas para execução dos processos, usando tecnologias atuais e exigindo pouca escrita de código. Por outro lado, algumas tarefas como verificação e testes ainda são consideradas um desafio nesta área~\cite{aalst2013survey}. Em particular, o teste automatizado de aplicações de BPMS é pouco abordado, tanto pela comunidade da área de BPM~\cite{weske} como da área de testes de software~\cite{graham2012experiences}. 
+%Diante disso, estima-se que muitas organizações se limitem a testes manuais em suas aplicações de BPMS. 
+No entanto, a falta de automação nos testes pode levar a problemas durante a implementação e execução de processos de negócio, ainda mais quando se tratam de processos com muitas tarefas e fluxos de trabalho, que levam facilmente a explosões combinatórias.
+%como baixa aderência aos requisitos, maior esforço dos desenvolvedores, desperdício de tempo e aumento do risco de duplicação de esforços e de erro humano. 
+O propósito deste trabalho foi explorar soluções para teste automatizado de um processo implementado em BPMS. Para isso, partiu-se de uma aplicação real, em que testes manuais se revelaram insuficientes~\cite{sbsi2013}. No presente artigo, relata-se a experiência com testes automáticos nesta aplicação, utilizando-se ferramentas \emph{open source}. A aplicação é apresentada na seção \ref{s:apli}, após uma discussão sobre BPM e testes na seção \ref{s:bpmtest}. Na sequência, a seção \ref{s:testes} apresenta os métodos, ferramentas e resultados obtidos em cada tipo de teste. Por fim, a seção \ref{s:conclu} resume as lições aprendidas.
+
+<<<<<<< .mine
+Visando explorar soluções de teste automatizado em aplicações de BPMS, este trabalho partiu de uma aplicação real, desenvolvida anteriormente, em que testes manuais se revelaram insuficientes~\cite{sbsi2013}. No presente artigo, relata-se a experiência com testes automatizados nesta aplicação, utilizando ferramentas \emph{open source}. A aplicação é apresentada na seção \ref{s:apli}, após uma discussão sobre BPM e testes na seção \ref{s:bpmtest}. Na sequência, a seção \ref{s:testes} apresenta os métodos, ferramentas e resultados obtidos em cada tipo de teste. Por fim, a seção \ref{s:conclu} resume as lições aprendidas.
+=======
+>>>>>>> .r42
+
+%O maior objetivo deste trabalho foi explorar soluções para teste automatizado de aplicações de BPMS. Pode se dizer que esse objetivo foi atingido pois, durante a execução do trabalho, foi possível obter várias conclusões sobre o teste automatizado deste tipo de software.
+
+\section{BPM e Testes}\label{s:bpmtest}
+
+%O termo BPM pode ser usado com significados diferentes~\cite{acmxrds2009}, às vezes com mais ênfase em tecnologia (software) e outras vezes mais associado a gestão. 
+O termo BPM pode ser usado com ênfases diferentes, às vezes com foco em tecnologia (software) e outras vezes em gestão. Mesmo assim, a área tem convergido no entendimento do ciclo de vida de aplicações de BPM, que envolve as atividades de análise, modelagem, execução, monitoramento e otimização~\cite{ABPMP}. Também há convergência sobre o padrão BPMN (\emph{Business Process Model and Notation}) para expressar a modelagem de processos.
+
+%Os sistemas de BPM (BPMS) têm se afirmado como ferramentas essenciais para suporte a atividades desse ciclo de vida. Atualmente, pode-se dizer que um típico BPMS oferece recursos para definição e modelagem gráfica de processos, controle da execução e monitoramento de atividades dos processos. Alguns exemplos de BPMS que se destacam neste cenário são IBM Websphere ~\cite{WEBSPHERE}, Oracle BPM Suite~\cite{ORACLEBPM}, Intalio~\cite{INTALIO}, Bizagi~\cite{BIZAGI}, TIBCO BPM~\cite{TIBCOBPM}, Activiti~\cite{ACTIVITI} e Bonita Open Solution ~\cite{BONITASOFT}.
+% Referencias acima foram retiradas por ocuparem muito espaco no final. Podem ser substituidas por notas de rodape, caso haja espaco.
+
+%Os sistemas de BPM (BPMS) têm se afirmado como ferramentas essenciais para suporte a atividades desse ciclo de vida. Atualmente, pode-se dizer que um típico BPMS oferece recursos para definição e modelagem gráfica de processos, controle da execução e monitoramento de atividades dos processos. Alguns exemplos de BPMS que se destacam neste cenário são IBM Websphere, Oracle BPM Suite, Intalio, Bizagi, TIBCO BPM, Activiti e Bonita Open Solution.
+
+Os sistemas de BPM (BPMS) têm se afirmado como ferramentas essenciais para suporte a atividades desse ciclo de vida. Atualmente, pode-se dizer que um típico BPMS oferece recursos para definição e modelagem de processos em BPMN, controle da execução e monitoramento de atividades dos processos~\cite{forrester}. Há uma tendência dos BPMS em abreviar o desenvolvimento de software, por exemplo através de geradores de formulários Web associados a tarefas dos processos~\cite{greenresearch}. Nota-se, no entanto, pouca preocupação com testes nas ferramentas BPMS. De fato, examinando-se o material promocional e a documentação disponível sobre os principais BPMS, observa-se uma ênfase em etapas de modelagem e execução.
+
+%Nota-se que a preocupação com testes não fica evidente na ferramentas BPMS. De fato, analisando-se o material promocional e a documentação publicamente disponível sobre os principais BPMS, observa-se uma ênfase em etapas de modelagem e execução. Visivelmente, tais recursos são um diferencial no desenvolvimento de aplicações de BPM, em comparação ao desenvolvimento de software em geral. No entanto, aplicações de BPM também estão sujeitas a defeitos e, por isso, podem se beneficiar de avanços na área de testes de software.
+
+%Em engenharia de software, o teste é tradicionalmente considerado uma prática importante~\cite{pressman, swebok}. Há uma vasta terminologia relacionada a testes de software, classificando-os de acordo com diferentes critérios (objetivos, técnicas, entre outros). Por exemplo, os testes podem abranger o sistema inteiro (teste de sistema), alguns componentes (teste de integração) ou unidades isoladas (teste unitários). Alguns autores também distinguem testes funcionais, que avaliam o comportamento do software frente a seus requisitos, dos testes ditos não-funcionais, que verificam atributos relacionados aos requisitos não-funcionais do software, como por exemplo desempenho e usabilidade~\cite{desikan2006software}. Técnicas de teste podem variar de acordo com a natureza da aplicação~\cite{swebok}, por exemplo: orientada a objetos, baseada na Web, com interface gráfica, etc.
+% citar livro do Cem Kaner
+
+Por outro lado, a importância dos testes é amplamente reconhecida em engenharia de software~\cite{swebok14}.
+%Por outro lado, o teste de software é uma atividade importante para garantir sua qualidade~\cite{myers}.
+%Além disso, a comunidade científica de BPM também se preocupa com aspectos de qualidade e ausência de erros em processos. 
+Considerando que aplicações de BPMS são geralmente sistemas baseados na Web, pode-se supor que sejam testadas com sucesso usando-se abordagens consagradas, como por exemplo testes de carga ou testes funcionais do tipo caixa-preta~\cite{myers}. Há também quem argumente que o teste de aplicações de BPM difira do teste de aplicações Web tradicionais~\cite{evoke}, porém não foram encontradas mais referências aprofundando esse ponto de vista. Essa constatação reforçou a motivação para o presente trabalho.
+
+
+%Em testes de software, há muitas tarefas que podem ser trabalhosas e propensas a erros quando realizadas manualmente. Por este fato, vários autores relatam a importância dos testes automatizados em ambientes de desenvolvimento~\cite{sbqs2013}. Assumindo que aplicações de BPM podem ser tratadas como software em geral, é possível testá-las sob diferentes aspectos, por meio de tipos de testes já consagrados em engenharia de software, como por exemplo testes funcionais do tipo caixa-preta ou teste de carga. Sob esta ótica, pode-se empregar ferramentas de automação de testes alinhadas com cada aspecto que se deseja testar. No entanto, a adoção esta abordagem pode ter limitações e dificuldades, pois não leva explicitamente em conta o ciclo de vida de aplicações de BPM.
+
+
+%Com a evolução das áreas de qualidade e teste de software, foi surgindo uma variedade de soluções para automação de testes. Ferramentas para testes unitários, por exemplo, são numerosas e costumam se integrar aos ambientes de desenvolvimento~\cite{unittesting}. Outro exemplo é o teste de aplicações baseadas em interfaces gráficas ou Web~\cite{webtesting}.
+
+%http://en.wikipedia.org/wiki/List_of_GUI_testing_tools
+
+%Pressman define quatro tipos de teste de software: teste de unidade, teste de integração, teste de validação, teste de sistema. Teste de unidade concentra-se em cada unidade do software, de acordo com o que é implementado no código fonte, utiliza as técnicas de teste de caixa branca e caixa preta. Teste de integração concentra-se no projeto e na construção da arquitetura de software, utilizando principalmente as técnicas de teste de caixa preta. No teste de validação os requisitos estabelecidos como parte da análise de requisitos de software são validados em relação ao software que foi construído. Por último, no teste de sistema, o software e outros elementos do sistema são testados como um todo. Teste de segurança e recuperação \cite{pressman1995engenharia}. O teste de sistema pode ser dividido em uma série de diferentes testes, cujo objetivo principal é por completamente à prova o sistema, dentre estes sub-tipos de testes está o teste de carga.
+
+%Assumindo que aplicações de BPM podem ser tratadas como software em geral, é possível testá-las sob diferentes aspectos, por meio de tipos de testes já consagrados em engenharia de software, como por exemplo testes funcionais do tipo caixa-preta ou teste de carga. Sob esta ótica, pode-se empregar ferramentas de automação de testes alinhadas com cada tipo de teste. No entanto, a adoção esta abordagem pode ter limitações e dificuldades, pois não leva explicitamente em conta o ciclo de vida de aplicações de BPM.
+
+%Há alguns anos, o termo \emph{Business Process Testing -- BPT} vem sendo empregado para designar testes de processos de negócio. Não há uma caracterização clara deste tipo de teste, sendo que em alguns contextos o termo refere-se a testes automatizados reusáveis criados por especialistas do domínio~\cite{hp}, portanto aderentes aos processos de negócio. Em outros contextos, o termo relaciona-se a automação de testes de processos implementados em arquiteturas orientadas a serviços (\emph{Service Oriented Architectures} -- SOA)~\cite{soatest2008, bpeltest2008}. Testes deste tipo possuem uma relação com BPM e são uma especialização de testes de software em geral. No entanto, pode-se dizer que essa relação com BPM é fraca, pois é principalmente focada na etapa de execução dos processos. Além disso, não costumam ser soluções integradas em sistemas BPM.
+
+
+% sistemas BPMS: simulação, monitoramento...
+%http://www8.hp.com/us/en/software-solutions/software.html?compURI=1174789#.UvTvdfjei1H
+
+
+%Aspectos comuns a qualquer tipo de software
+%- verificação (conformidade, corretude, ...)
+
+
+%Aspectos particulares
+%- verificação dos modelos BPMN
+%- caminhos críticos e gargalos (simulação)
+
+
+%Os desafios da homologação de Processos Automatizados
+%http://blog.iprocess.com.br/2013/04/os-desafios-da-homologacao-de-processos-automatizados/
+
+
+\section{Aplicação Alvo de Testes}\label{s:apli}
+
+A aplicação alvo deste trabalho refere-se a um processo comum em instituições de ensino superior: a apreciação de Atividades Complementares de Graduação (ACGs), ou seja, atividades que formam a parte flexível do currículo de graduandos (participação em palestras, eventos, projetos, etc.). Em um trabalho anterior ~\cite{sbsi2013}, apresentou-se a modelagem, implementação e implantação desse processo. Sua representação em BPMN, na Figura \ref{fig:diagrama}, revela um total de 11 tarefas distribuídas em 5 divisões de responsabilidade (Aluno, Tutor, etc.).
+
+No trabalho anterior, implementou-se o processo com a ferramenta Bonita BPM\footnote{Bonita BPM (antes denominado Bonita Open Solution). Disponível em: www.bonitasoft.com.}, um BPMS de código aberto reconhecido no mundo corporativo~\cite{forrester}. A aplicação resultante possui vários formulários Web relativos a cada divisão de responsabilidade, sendo o primeiro deles destinado ao preenchimento de dados pelo aluno (Aluno solicita ACG). De acordo com o tipo de atividade complementar (eventos, projetos, etc.), o fluxo é direcionado para os responsáveis pela avaliação e validação da ACG. Nota-se, na Figura 1, que o processo possui diversos desvios condicionais, o que leva a mais de 15 caminhos possíveis no processo.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[max size={14cm}{14cm}]{figuras/processo.png}
+\caption{Diagrama do processo em BPMN}
+\label{fig:diagrama}
+\end{figure}
+
+A aplicação foi submetida a testes funcionais realizados manualmente, além de testes de aceitação realizados com um grupo de usuários reais. Entretanto, com algumas semanas em operação, surgiram problemas: instâncias do processo falharam devido a entradas inesperadas, serviços não foram restabelecidos corretamente após serem interrompidos e houve sobrecarga devido ao grande número de casos abertos numa data limite. Essa experiência motivou a busca de soluções para automação de testes.
+
+%, em especial testes de carga e testes funcionais, que supostamente poderiam ter evitado os problemas observados na implantação.
+
+Verificou-se, no entanto, que o BPMS utilizado não possuía suporte a nenhum tipo de teste automatizado. Buscou-se outros BPMS com licenças \emph{open source} ou \emph{freeware}, que pudessem implementar o processo em questão e que oferecessem suporte a testes. A preferência por este tipo de licença foi devida à sua flexibilidade e viabilidade financeira para o ``cliente'' deste projeto: uma instituição pública de ensino.
+Dentre as ferramentas analisadas (TIBCO\footnote{TIBCO. Disponível em: www.tibco.com.}, Activiti\footnote{Activiti. Disponível em: www.activiti.org.}, Process Maker\footnote{Process Maker. Disponível em: www.processmaker.com.}, Intalio\footnote{Intalio. Disponível em: www.intalio.com.}), nenhuma oferecia evidente suporte a testes automatizados. Apenas a ferramenta Activiti citava a possibilidade de testes de unidade aliados ao JUnit, porém sem muitas informações sobre essa alternativa. Por isso partiu-se para outra opção: utilizar ferramentas de teste externas ao BPMS. 
+
+<<<<<<< .mine
+Adicionalmente, implementou-se a mesma aplicação usando outro BPMS, a fim de ampliar a experiência e, possivelmente, identificar semelhanças e diferenças no teste das implementações com BPMS distintos.
+A ferramenta escolhida foi Activiti, um BPMS que, assim como Bonita, é baseado em Java e permite trabalhar com as mesmas tecnologias do lado servidor (Tomcat e MySQL, no caso em questão). Esse BPMS também trabalha com a mesma versão da notação BPMN usada no Bonita, permitindo importar na íntegra o processo originalmente criado. Os formulários Web criados com ajuda do Bonita, no entanto, não puderam ser importados e tiveram de ser recriados com Activiti.
+=======
+Adicionalmente, decidiu-se implementar a mesma aplicação usando outro BPMS, a fim de ampliar a experiência e, possivelmente, identificar semelhanças e diferenças no teste automatizado de implementações com diferentes BPMS. Porém, não tinha-se como objetivo eleger o melhor BPMS, mas sim avaliar suporte aos testes considerados. 
+
+A ferramenta escolhida foi Activiti, um BPMS baseado em tecnologias Java, assim como Bonita, permitindo trabalhar com as mesmas tecnologias do lado servidor (Tomcat e MySQL, no caso em questão). Esse BPMS também trabalha com a mesma versão da notação BPMN usada no Bonita, permitindo importar na íntegra o processo originalmente criado. Os formulários Web criados com ajuda do Bonita, no entanto, não puderam ser importados e tiveram de ser recriados com Activiti.
+>>>>>>> .r42
+%, preservando-se as mesmas características.
+
+
+% capaz de apoiar desde a modelagem até a implantação do processo.
+
+%a ferramenta Bonita Open Solution. Como mostra a Figura \ref{fig:diagrama}. É um processo complexo que permite analisar diversas funcionalidades dos BPMS e, justamente por já ter sido alvo de um trabalho, é um processo no qual já se tem uma grande experiência.
+
+
+
+%Devido ao tempo limitado para a conclusão deste trabalho, decidiu-se por escolher duas ferramentas para o estudo. Primeiramente, foi escolhida a ferramenta Bonita Open Solution, devido a esta já ter sido usada em um trabalho anterior ~\cite{sbsi2013} e, por isso, tem se uma vasta experiência nesta ferramenta. O Bonita Open Solution (BOS) é uma ferramenta distribuída sob uma licença de software livre, desenvolvida em Java, pela empresa BonitaSoft~\cite{BONITASOFT}.% A ferramenta BOS oferece componentes tanto para a modelagem como para a implementação e transformação de processos. A modelagem e customização de processos é realizada através do Bonita Studio, um componente com interface gráfica tipo desktop que agrupa ferramentas de desenvolvimento. Também é possível agregar funcionalidades aos processos através de conectores que podem, inclusive, receber personalizações feitas através de códigos.
+
+%Analisando as ferramentas disponíveis e levando em conta os trabalhos e livros publicados ~\cite{rademakers2012activiti} que abordam o uso da ferramenta, o segundo software escolhido foi o Activiti. O Activiti ~\cite{ACTIVITI} é um BPMS de código aberto, distribuído sob uma licença Apache, criado em Java e usa  BPMN 2.0 para a modelagem dos processos, ele pode ser executado em qualquer plataforma, servidor, cluster ou na nuvem. %A ferramenta Activiti oferece componentes distintos para modelagem, implementação e execução de processos. A modelagem e customização dos processos é feita no Activiti Designer que é um plugin para a plataforma Eclipse, o que torna o ambiente de criação fácil de ser usado, a execução é feita no componente chamado Activiti Explorer.
+
+%Na Tabela \ref{tab:tabelaCaminhos} são exibidos todos os possíveis caminhos pelos quais o processo alvo dos testes poderia passar, sendo 'x' a representação de que o caminho passou pela determinada etapa do processo. Esta tabela foi criada durante a implantação da aplicação citada neste trabalho para auxiliar na execução dos testes (que foram executados manualmente quando a aplicação foi implantada).
+
+
+%\begin{table}
+%{\scriptsize
+%\begin{tabular}{|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}
+%\hline
+%Aluno Solicita ACG & Anexar parecer tutor & Tutor avalia & Avisa aluno (indeferido) & Rela\-tor avalia & Cole\-giado avalia & Atu\-aliza BD & Secre\-taria avalia & Coorde\-nador avalia & Reuni\-ão presencial & Avisa aluno (indeferido) & Avisa aluno (aprovado) \\\hline
+%x & x & - & - & x & x & x & - & - & - & - & x\\\hline
+%x & x & - & - & x & x & - & - & - & x & x & -\\\hline
+%x & x & - & - & x & x & - & - & - & x & - & x\\\hline
+%x & x & - & - & x & - & - & - & - & x & - & x\\\hline
+%x & x & - & - & x & - & - & - & - & x & x & -\\\hline
+%x & - & x & x & - & - & - & - & - & - & - & -\\\hline
+%x & - & x & - & x & x & x & - & - & - & - & x\\\hline
+%x & - & x & - & x & x & - & - & - & x & x & -\\\hline
+%x & - & x & - & x & x & - & - & - & x & - & x\\\hline
+%x & - & x & - & x & - & - & - & - & x & - & x\\\hline
+%x & - & x & - & x & - & - & - & - & x & x & -\\\hline
+%x & - & - & - & x & x & x & - & - & - & - & x\\\hline
+%x & - & - & - & x & x & - & - & - & x & x & -\\\hline
+%x & - & - & - & x & x & - & - & - & x & - & x\\\hline
+%x & - & - & - & x & - & - & - & - & x & - & x\\\hline
+%x & - & - & - & x & - & - & - & - & x & x & -\\\hline
+%x & - & - & - & - & - & - & x & - & - & - & x\\\hline
+%x & - & - & - & - & - & - & x & x & - & - & x\\\hline
+%x & - & - & - & - & - & - & x & x & x & - & x\\\hline
+%x & - & - & - & - & - & - & x & x & x & x & -\\\hline
+%\end{tabular}
+%}
+%\caption{Caminhos possíveis}
+%\label{tab:tabelaCaminhos}
+%\end{table}
+
+
+\section{Descrição e Execução dos Testes}\label{s:testes}
+
+No planejamento de testes automatizados, priorizou-se o teste de aspectos que de fato revelaram problemas durante a implantação, no trabalho precedente. Os testes escolhidos foram: (a) testes de carga, que são um tipo de teste de desempenho, visando avaliar o comportamento do sistema frente a um grande número de solicitações e (b) testes funcionais, a fim de verificar as saídas do sistema produzidas a partir de entradas pré-definidas. Nenhum destes tipos de teste possui suporte nos BPMS Bonita e Activiti, que incluem somente funcionalidades limitadas de simulação e depuração de execução dos processos. Embora o Activiti citasse suporte a testes de unidade, não explorou-se esta opção por entender-se que seria menos prioritária frente aos problemas observados.
+ Assim, realizou-se um levantamento de ferramentas destinadas ao teste de aplicações Web e selecionou-se as julgadas mais promissoras, antes de partir-se para o detalhamento e execução dos testes. Os \emph{scripts} que configuram os testes estão disponíveis para consulta em \url{https://bitbucket.org/ascharao/bpmtest-scripts}.
+
+\subsection{Testes de Carga}
+
+<<<<<<< .mine
+Testes de carga em aplicações Web são tipicamente realizados gerando-se múltiplas requisições HTTP ao servidor, de forma controlada. Para isso, uma etapa crítica é a identificação das requisições que devem ser reproduzidas. Existem diversas ferramentas que se propõem a facilitar este tipo de teste, dentre as quais pode-se citar: JMeter\footnote{Apache JMeter. Disponível em: jmeter.apache.org.}, The Grinder\footnote{The Grinder. Disponível em: grinder.sourceforge.net.} e Gatling\footnote{Gatling. Disponível em: gatling.io.}. Todas são ferramentas \emph{open source} e possuem diversas opções, mas escolheu-se a ferramenta JMeter pela sua funcionalidade de captura de requisições, por meio da opção ``proxy server''.
+=======
+Testes de carga em aplicações Web são tipicamente realizados gerando-se múltiplas requisições HTTP ao servidor, de forma controlada. Para isso, uma etapa crítica é a identificação das requisições que devem ser reproduzidas. Existem diversas ferramentas que se propõem a facilitar este tipo de teste, dentre as quais pode-se citar: JMeter\footnote{Apache JMeter. Disponível em: www.jmeter.apache.org.}, The Grinder\footnote{The Grinder. Disponível em: www.grinder.sourceforge.net/.} e WebLOAD\footnote{WebLOAD. Disponível em: radview.com/webload-download/.}. Todas são ferramentas \emph{open source} e possuem diversas opções, mas escolheu-se a ferramenta JMeter pela sua funcionalidade ``proxy server'' que é de grande auxílio à captura das requisições.% Nas demais ferramentas, essa funcionalidade não é tão desenvolvida/documentada.
+>>>>>>> .r42
+
+%a maior desvantagem dessas ferramentas é que não existe a possibilidade de capturar as requisições que devemos testar de uma forma automática, todas requisições precisam ser inseridas manualmente no plano de teste. No JMeter existe a opção 'Servidor de Proxy' que permite capturar o tráfico de requisições e este é automaticamente transformado em requisições no plano de teste.
+%Para executar os testes de carga foi selecionada a ferramenta JMeter ~\cite{JMETER}, e escolha desta ferramenta para testar aplicações BPM deu-se por diversos motivos.
+
+
+Um teste da aplicação com JMeter consiste em quatro etapas: capturar as requisições HTTP, exportar as requisições (formato .jrxml para JMeter), configurar o plano de teste e, por fim, executar o teste no JMeter. A aplicação gera diferentes requisições HTTP que precisam ser identificadas e interpretadas, para serem reproduzidas automaticamente. O emprego de tecnologias Web com processamento assíncrono, do lado do cliente, pode dificultar esta etapa, pois uma ação do usuário pode não gerar imediatamente uma requisição ao servidor. Além disso, em aplicações de BPMS, diversos usuários atuam sobre diferentes tarefas de um mesmo processo, de modo que as requisições HTTP carregam chaves identificando usuários e processos.
+
+<<<<<<< .mine
+Um teste com JMeter consiste em quatro etapas: capturar as requisições HTTP, exportar as requisições (formato .jrxml para JMeter), configurar o plano de teste e, por fim, executar o teste no JMeter. Dependendo do BPMS utilizado, a aplicação gera diferentes requisições HTTP que precisam ser identificadas e interpretadas, para serem reproduzidas automaticamente. O emprego de tecnologias Web com processamento assíncrono no cliente (Ajax), pode dificultar esta etapa, pois uma ação do usuário pode não gerar imediatamente uma requisição ao servidor. Além disso, em aplicações de BPMS, diversos usuários atuam sobre diferentes tarefas de um mesmo processo, de modo que as requisições HTTP carregam chaves identificando usuários e processos.
+
+=======
+>>>>>>> .r42
+%Ocorrem dois principais problemas na execução do teste de carga em ambas as ferramentas: (a) Captura e interpretação das requisições que utilizam a tecnologia GWT e (b) dependência entre as tarefas do processo, cuja implementação muda conforme o BPMS. 
+
+No caso da aplicação criada com Bonita, verificou-se que existe uma chave identificadora de sessão que é gerada no momento em que usuário acessa o sistema e outra chave identificadora de instância, ou seja, que identifica cada execução do processo como única, sendo criada pelo servidor no momento em que o usuário inicia o processo. Para executar os testes, portanto, foi necessário localizar a requisição em que essas chaves são geradas e utilizar a ferramenta ``Extrator de Expressão Regular'' do JMeter para obter seus valores. Já na aplicação criada com Activiti, foi inviável identificar a requisição em que as chaves são geradas, pois não há uma requisição cujo retorno (resposta do servidor) contenha valores de chaves. Esta situação leva a crer que a geração das chaves identificadoras é feita internamente pelo BPMS, ou seja, não em uma requisição HTTP e, por consequência, esta não pôde ser capturada e reproduzida no JMeter.
+
+%\begin{table}
+%{\scriptsize
+%\begin{tabular}{|p{5cm}|p{4cm}|p{4cm}|}
+%\hline
+% & BOS & Activiti \\\hline
+%Captura das requisições usando apenas JMeter & Problemas com GWT & Problemas com GWT\\\hline
+%Foi possível capturar e exportar as requisições HTTP? & Sim (Utilizando BlazeMeter) & Sim (Utilizando BlazeMeter)\\\hline
+%Ocorreu problema com dependência das tarefas do processo? & Sim & Sim \\\hline
+%Foi possível identificar a solução para a dependência das tarefas? & Sim & Não\\\hline
+%Foi possível configurar e executar os testes? & Sim & Não\\\hline
+%\end{tabular}
+%}
+%\caption{Teste de carga}
+%\label{tab:testeCarga}
+%\end{table}
+
+
+
+%No caso do teste de carga, foi encontrado um problema para capturar e interpretar requisições que utilizavam a tecnologia GWT (Google Web Toolkit), este problema foi a causa do teste de diferentes ferramentas de captura de requisições e, nesse caso, obteve-se sucesso por meio do uso combinado do servidor proxy do JMeter, com seu recurso de visualização do cabeçalho das requisições e com o BlazeMeter Chrome Extension para capturar as requisições. Outros softwares utilizados para capturar as requisições não suportavam o tratamento a requisições que utilizavam GWT e/ou não permitiam exportar as requisições capturadas diretamente para o formato aceito pelo JMeter (precisavam se inseridas manualmente).
+
+%Outro problema, também exibido na Tabela \ref{tab:bpms2}, ocorreu devido a uma particularidade de sistemas BPM, em que várias tarefas de um processo são dependentes entre si e a forma como isso é implementado muda conforme o sistema. No BOS existe uma chave identificadora de sessão que é gerada no momento em que usuário acessa o sistema e outra chave identificadora de instância, ou seja, identifica cada execução do processo como única, e é criada no momento em que o usuário inicia o processo. Para executar o teste com sucesso, foi necessário localizar a requisição em que essas chaves são geradas, utilizar a ferramenta "Extrator de Expressão Regular" do JMeter para obter o valor da chave, guardar o valor obtido em uma variável do JMeter e então substituir os valores por esta variável em todas as requisições que utilizam as chaves, esta etapa exigiu um estudo mais aprofundado da implementação do processo no BOS e também foi trabalhosa.
+
+%No caso da ferramenta Activiti, as chaves identificadoras também foram encontradas, no entanto, foi impossível identificar em que requisição as mesmas eram geradas, de fato na primeira requisição capturada as chaves já são utilizadas/enviadas ao servidor no contéudo da requisição, ou seja, não havia uma requisição cujo o retorno (resposta do servidor) contivesse as chaves utilizadas. Esta situação leva a crer que a geração das chaves identificadoras é feita internamente pelo BPMS, ou seja, não em uma requisição HTTP e, por sequência, esta não pode ser capturada e importada no Jmeter.
+
+
+%pode testar com o bonita e com o activiti não
+%resultados
+\subsubsection{Resultados dos Testes de Carga}
+
+<<<<<<< .mine
+Devido aos problemas relatados na seção anterior, os testes de carga só puderam ser realizados na aplicação criada com Bonita. A fim de testar o comportamento do sistema com diferentes níveis de carga, foram executados testes com 1, 50, 100 e 200 usuários virtuais e foram analisadas requisições referentes a etapas essenciais para iniciar o processo: efetuar login, exibir a página inicial do Bonita, selecionar o processo, exibir o formulário inicial (Aluno solicita ACG) e enviar o formulário preenchido. A aplicação foi hospedada em um servidor SGI Altix XE 210 com 24 GB de RAM, acessível por uma rede Fast Ethernet.
+=======
+Devido aos problemas relatados na seção anterior, os testes de carga só puderam ser realizados com a aplicação criada com Bonita. A fim de testar o comportamento do sistema com diferentes níveis de carga, foram executados testes com 1, 50, 100 e 200 usuários virtuais/acessos simultâneos e foram analisadas as requisições referentes às etapas: efetuar login, exibir a página inicial do Bonita, selecionar o processo, exibir o formulário inicial (Aluno solicita ACG) e enviar o formulário preenchido. Os testes foram executados em um servidor com 24 GB de RAM e 2 processadores Intel Xeon E5520, com 4 núcleos. 
+>>>>>>> .r42
+
+%Reproduzindo o teste com um usuário virtual, nas requisições correspondentes a login, exibição da página inicial, seleção do processo, exibição do formulário inicial e envio do formulário preenchido, a média do tempo de resposta foi de, respectivamente, 126, 32, 38, 80 e 73 milissegundos. A média do tempo de resposta total foi de 75 milissegundos e o desvio padrão foi igual a 21.  Aumentando o número de usuários virtuais para cinquenta os valores do tempo de resposta subiram para 597, 191, 179, 368 e 152 milissegundos, a média foi igual a 329 milissegundos e o desvio padrão 401. Com 100 usuários o aumento do tempo de resposta fica ainda mais visível, sendo 1972, 571, 552, 760 e 694 milissegundos, com média 774 milissegundos e desvio padrão de 1449.
+
+
+Os tempos de resposta de cada etapa, em função do número de usuários, podem ser vistos na Tabela \ref{tab:resultadoCarga}. Os resultados mais alarmantes são para 200 usuários virtuais, em que o tempo médio de resposta na requisição de login foi de 10.149 ms, ou seja, aproximadamente 10 s, o que é um tempo de resposta alto. A média de tempo de resposta para todas requisições foi de 3.111 ms (ou seja, 3 s), e o desvio padrão foi de 13.088. Além dos altos tempos de resposta, o teste com 200 usuários virtuais apresentou taxas de erro, em algumas requisições, que não foram encontradas com um número menor de usuários. Por exemplo, a requisição que executou login apresentou uma taxa de 2\% de erro e, ao todo, as requisições obtiveram uma taxa de erro de 7.82\%. Os erros ocorreram devido a requisições sem resposta. %Confrontando tais erros com logs do Bonita, estes indicam timeouts internos em alguns métodos, mas os dados não permitiram identificar precisamente a origem dos erros.
+
+<<<<<<< .mine
+
+Os tempos de resposta de cada etapa, em função do número de usuários, podem ser vistos na Tabela \ref{tab:resultadoCarga}. Os resultados mais alarmantes são para 200 usuários virtuais, em que o tempo médio de resposta na requisição de login foi de 10.149 ms, ou seja, aproximadamente 10 s, o que é um tempo de resposta alto. Além dos altos tempos de resposta, o teste com 200 usuários virtuais apresentou taxas de erro, em algumas requisições, que não foram encontradas com um número menor de usuários. Por exemplo, a requisição que executou login apresentou uma taxa de 2\% de erro e, ao todo, as requisições obtiveram uma taxa de erro de 7.82\%.
+
+=======
+>>>>>>> .r42
+\begin{table}
+{\scriptsize
+\centering
+\begin{tabular}{p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}}
+\hline
+Usuários & Login & Pág. Inicial & Seleção Processo & Form. Inicial & Enviar form. \\\hline
+1 & 126 & 32 & 38 & 80 & 73\\\hline
+50 & 597 & 191 & 179 & 368 & 152\\\hline
+100 & 1972 & 571 & 552 & 760 & 694\\\hline
+200 & 10.149 & 3.239 & 934 & 2.122 & 1.918\\\hline
+\end{tabular}
+}
+\caption{Tempos médios de resposta, em milissegundos}
+\label{tab:resultadoCarga}
+\end{table}
+
+%\begin{figure}[ht]
+%\centering
+%\includegraphics[width=.99\textwidth]{figuras/grafico200.jpg}
+%\caption{Resultado dos testes de carga com 200 usuários no JMeter.}
+%\label{fig:carga200}
+%\end{figure}
+
+De forma geral, portanto, o teste de carga com JMeter atingiu seus objetivos e ajuda a explicar a sobrecarga que ocorreu com a aplicação em produção, quando muitos alunos tentaram acessar o formulário inicial numa data limite. No entanto, é importante ressaltar que este teste foi executado apenas em etapas iniciais do processo e, mesmo assim, já foi trabalhoso e consumiu algumas horas de preparação, por exigir uma análise profunda das requisições HTTP para executar os testes com sucesso. Ao todo, foram capturadas cerca de 100 requisições só nestas etapas, portanto estima-se que o teste de uma tarefa mais ao final do processo possa se tornar inviável com JMeter, por demandar a identificação e interpretação de muitas requisições. Outra observação importante, nesta experiência, é que esta abordagem de teste sofre com a dependência das tecnologias Web empregadas pelo BPMS.
+
+%A captura destas etapas, utilizando o BlazeMeter\footnote{BlazeMeter. Disponível em: www.blazemeter.com.}, resultou em uma média de 100 requisições, considerando que deseja-se fazer o teste de outra etapa/gargalo que esteja localizada mais ao meio do processo a captura desta pode gerar muitas requisições o que tornaria difícil a análise de todas requisições para substituir as chaves geradas e, assim, tornaria inviável essa abordagem de teste. 
+
+%Um fator importante também é que, pelo fato das requisições terem de ser analisadas para ser possível executar o teste e também ser necessário localizar a forma como a ferramenta BPMS implementa a dependência entre as etapas do processo, essa abordagem de teste pode tornar-se muito dependente do BPMS. Esta ideia é fortalecida pela impossibilidade de executar o teste na ferramenta Activiti afinal, dependendo da ferramenta, pode ser muito trabalhoso executar o teste, pode não ser possível executar o teste ou ainda pode ser possível e vantajoso, como ocorreu com o Bonita Open Solution.
+
+\subsection{Testes Funcionais}
+
+Para executar testes funcionais em aplicações Web, pode-se utilizar ferramentas livres como Selenium\footnote{Selenium. Disponível em: www.seleniumhq.org.}, Watir\footnote{Watir. Disponível em: www.watir.com.} ou Geb\footnote{Geb. Disponível em: www.gebish.org.}. Para este trabalho, escolheu-se a ferramenta Selenium, aliada ao Cucumber-JVM\footnote{Cucumber-JVM. Disponível em: www.github.com/cucumber/cucumber-jvm.} para descrição dos testes. A escolha foi motivada pelo grande número de referências ao Selenium na Web, confirmadas por um trabalho que apresentou resultados satisfatórios com Selenium e Cucumber~\cite{sbqs2013}.
+
+%Esta ferramenta possui basicamente duas partes complementares: Selenium IDE e Selenium WebDriver. A primeira é um plugin para o navegador Firefox, capaz de registrar e reproduzir interações do usuário com o navegador, assim permitindo criar scripts de teste rapidamente, sem escrita de código.
+
+
+%Durante a revisão bibliográfica, encontrou-se um trabalho apresentado no Simpósio Brasileiro de Qualidade de Software de 2013 \cite{sbqs2013} que utilizava o Selenium WebDriver aliado ao Cucumber-JVM\footnote{Cucumber-JVM. Disponível em:www.github.com/cucumber/cucumber-jvm.} para testar uma aplicação web, a partir desse trabalho decidiu-se utilizar a última na execução dos testes funcionais. O Cucumber é uma ferramenta que executa descrições de teste, em texto simples, como testes automatizados.
+
+
+Com estas ferramentas, o processo para a execução de um teste funcional é composto de: captura da interação do usuário com o navegador (Selenium IDE), exportação do código gerado (Selenium IDE), criação do cenário de teste (Cucumber), criação das definições dos passos do teste (Cucumber), criação dos métodos para cada passo (Java) e execução do teste (Selenium WebDriver). O cenário de teste é a definição, em ordem de execução, dos passos que são executados na aplicação, bem como dos resultados esperados. Para este trabalho, definiu-se um cenário em que o aluno faz login e preenche 2 formulários referentes à primeira tarefa do processo (Aluno solicita ACG). Para este cenário, foram criados métodos variando as entradas nos formulários. Como o processo testado é o mesmo em ambos os BPMS, o cenário de teste também é o mesmo. 
+
+%A captura
+%Algumas personalizações são necessárias para a execução com sucesso do teste funcional, a maioria delas ocorre nas etapas de exportação/execução do teste. 
+
+Para as aplicações de ambos os BPMS, inicialmente ocorreram erros na execução dos testes, relativos à localização de campos nos formulários Web. Verificou-se que os campos estavam localizados em um \emph{iframe} e, embora a captura da interação ocorresse sem problemas, o código gerado não selecionava o \emph{iframe} e por isso não encontrava os campos. Assim, foi necessário utilizar um método do Selenium para acessar o \emph{iframe} antes de selecionar o elemento desejado.
+
+%A Figura \ref{fig:codigobos} exibe duas "personalizações" no código gerado pelo Selenium IDE, a primeira (em vermelho) é uma linha de código que faz com que o driver "aguarde"  60 segundos antes de procurar pelo campo a ser selecionado. Isto evita que o driver busque por um campo, antes da página ser carregada, e não o encontre (o que causa erro na execução dos teste). A segunda linha de código, em verde, exibe o código que "acessa" o \emph{iframe}, através da ID, antes de executar a ação e isto também evita que o driver não encontre o elemento no momento do teste.
+
+
+%\begin{figure}[ht]
+%\centering
+%\includegraphics[width=.50\textwidth]{figuras/cenario.png}
+%\caption{Cenário de teste}
+%\label{fig:cenariobos}
+%\end{figure}
+
+Na aplicação com Activiti, ocorreu também outro problema. Diferente do que ocorreu com os formulários Web gerados pelo Bonita, o Selenium IDE não capturou toda a interação do usuário com a aplicação. De fato, na etapa de login, o Selenium capturou apenas o acesso à página e o ``clique'' ao botão de login, ou seja, não capturou o preenchimento dos campos ``Usuário'' e ``Senha''. Este problema se repetiu com alguns outros elementos do formulário Web durante a gravação da interação. Acredita-se que o problema ocorra devido à estrutura das página Web, que pode conter elementos que o Selenium não identifique automaticamente, tais como \emph{divs}, \emph{frames} e \emph{scripts}, por exemplo. No entanto, isso não impossibilita a criação e execução dos testes. Para contornar o problema, foi necessário estudar a estrutura das páginas Web em questão, localizar os elementos faltantes e então adicionar o código para acessá-los nos respectivos métodos.
+
+%Na criação dos métodos correspondentes a cada etapa do processo foi utilizado o código do gerado pelo Selenium IDE mas, como esta não captura todas as interações, a execução do teste falha.
+
+\subsubsection{Resultados dos Testes Funcionais}
+
+<<<<<<< .mine
+Os testes funcionais mostraram-se mais viáveis do que os testes de carga, por não exigir análise (trabalhosa) das interações com o servidor. Pode-se dizer que este teste atingiu todos seus objetivos, pois permitiu reproduzir a interação do usuário, bem como criar o código para testar as aplicações com diferentes entradas, num cenário envolvendo a tarefa inicial do processo.
+=======
+Os testes funcionais mostraram-se mais viáveis do que os testes de carga, pois uma boa parcela da interação é executada no lado cliente, sem necessidade de lidar explicitamente das interações com o servidor. Pode-se dizer que este teste atingiu todos seus objetivos, pois permitiu reproduzir a interação do usuário, bem como criar o código para testar as aplicações com diferentes entradas, num cenário envolvendo a tarefa inicial do processo, ampliando a cobertura dos testes. O  teste funcional também reproduziu erros encontrados em produção e que tinham passado despercebidos nos testes manuais (entradas não previstas corretamente nos formulários), esses erros foram os mesmos em ambas as ferramentas BPMS, pois os formulários foram configurados de modo equivalente. %Assim, ampliou-se a cobertura no que se refere à quantidade de entradas testadas, ao mesmo tempo que aumentou-se a agilidade na execução dos testes.
+>>>>>>> .r42
+
+O teste funcional também foi menos dependente do BPMS. Na Tabela \ref{tab:testeFuncional} apresenta-se um resumo das principais semelhanças e diferenças encontradas. Em ambos os casos, foram necessárias poucas modificações no código gerado pelo Selenium e Cucumber, bastando para isso inspecionar a estrutura das páginas Web. O Cucumber torna a implementação dos testes mais rápida e menos trabalhosa do que se fosse usado apenas o Selenium, abreviando a geração de código alinhado com os cenários de teste. Mesmo assim, caso seja necessário estender os testes a muitas tarefas de um processo, as modificações no código de teste podem se tornar trabalhosas.
+
+<<<<<<< .mine
+\begin{table}[bht]
+=======
+
+\begin{table}
+>>>>>>> .r42
+\begin{center}
+{\scriptsize
+\begin{tabular}{p{6cm}|l|p{4.5cm}}
+\hline
+ & Bonita & Activiti \\\hline
+Tecnologias Web & HTML, CSS, Ajax & HTML, CSS, Ajax \\\hline
+Captura da interação do usuário utilizando o Selenium & Total & Parcial (necessitou de inser\-ção manual de alguns campos) \\\hline
+Foi possível exportar o código gerado pelo Selenium? & Sim & Sim \\\hline
+Reconhecimento de todos os campos capturados SEM alteração de código & Parcial & Parcial \\\hline
+Reconhecimento de todos os campos capturados COM alteração de código & Total & Total \\\hline
+\end{tabular}
+}
+\caption{Resumo comparativo sobre o teste funcional}
+\label{tab:testeFuncional}
+\end{center}
+\end{table}
+
+
+%O teste funcional com o Selenium+Cucumber pode encontrar problemas ao testar várias tarefas ou todos os possíveis fluxos do processo alvo pois, como já foi citado, é necessário fazer algumas modificações no código gerado pelo Selenium e essas modificações, dependendo do volume de tarefas/fluxos, podem ser muito trabalhosas ou até inviabilizar o teste.
+
+
+
+
+%\section{Trabalhos Relacionados}
+
+%artigos sbqs 2014
+%artigos sbqs 2013 -
+
+%O teste de software voltado especificamente a aplicações de BPM é um assunto que pode ser considerado ainda em aberto. Atualmente, muitos trabalhos de pesquisa têm focado em etapas de monitoramento e otimização em BPM~\cite{Gambini:2011:AEC:2040283.2040300, Liu:2011:BAM:2040283.2040307, deLeoni:2012:AEL:2413516.2413525, Ramezani:2012:DIM:2413516.2413545}, que são etapas dedicadas a identificar e corrigir problemas. Embora exista alguma relação com testes em BPM, tratam-se geralmente de abordagens mais voltadas a aspectos de gestão, não de software . Por outro lado, um assunto que tem sido bastante abordado é o teste automatizado de aplicações orientadas a serviços Web~\cite{soatest2008}. Embora se trate de um nicho de teste de software, e mesmo que haja uma relação entre BPMS e serviços Web, acredita-se que esta abordagem não abarque toda a problemática do teste de aplicações de BPM. Na aplicação alvo deste trabalho, em particular, a abordagem orientada a serviços Web não poderia ser usada, pois o BPMS empregado baseia-se numa arquitetura que não expõe seus serviços.
+
+%No que diz respeito a relatos de experiência e estudos de caso, costuma haver espaço para isso em conferências internacionais sobre BPM e engenharia de software. Conforme van der Aalst (2013), em uma análise de várias edições da International Conference on Business Process Management, há muitos artigos que descrevem esforços de implementação e estudos de caso. No entanto, vários deles envolvem software que não é disponível ao leitor ou casos que são deliberadamente vagos~\cite{aalst2013survey}. No Brasil, conferências como o Simpósio Brasileiro de Sistemas de Informação e o Simpósio Brasileiro de Engenharia de Software incluem BPM e testes de software entre seus tópicos de interesse mas, até onde foi possível verificar, ainda não foram publicados trabalhos associando esses dois tópicos.
+
+%Embora o termo ``teste'' não seja frequente na literatura sobre BPM, o ciclo de vida de aplicações de BPM inclui as etapas de monitoramento e otimização, que se dedicam a identificar e corrigir problemas~\cite{weske}. Tal visão do ciclo de vida é comumente voltada a aspectos de gestão, não de tecnologia (software). Mesmo assim, acreditamos que o teste de software relacione-se particularmente com essas etapas e, de forma geral, possa contribuir significativamente para o sucesso de aplicações de BPM.
+
+%O artigo 'Um estudo sobre testes de desempenho com aplicação prática utilizando a ferramenta JMeter' (referencia) descreve o resultado de um estudo sobre testes de desempenho aplicado teste de desempenho aplicado em uma arquitetura e-commerce hipotética utilizando o JMeter. Diferentemente do presente trabalho, este artigo não possui usuários e um sistema real para ser analisado, sendo seu o objetivo analisar os dados para o desenvolvimento de um aplicativo, não para a melhoria do sistema.
+
+%selenium e JMeter
+%No trabalho “A Test Automation Framework Based on Web” \cite{wang2012test} é relatada a criação de um framework para teste automatizado de aplicações web, utilizando as ferramentas Selenium e JMeter. Os resultados do trabalho demonstram que as ferramentas ajudam, bem como o framework, ajudam a melhorar a qualidade do software e a aumentar a eficiência do desenvolvimento.
+
+%testes com Selenium;
+%O artigo “Automating functional tests using Selenium”\cite{holmes2006automating} é um relato de experiência utilizando o Selenium para testes automatizados e descreve as dificuldades e aprendizados com esta ferramenta, como tempo para escrever os scripts de teste bem como integração. Entretanto, os testes são baseados em aplicações Web simples e não em BPM. De fato não foram encontrados artigos que unissem BPM e a ferramenta Selenium para testar processos.
+
+%trabalhos mais teoricos sobre teste de BPM (possivelmente citar na Seção 2)
+%No white-paper “Performance Testing of Business Process Management (BPM) aplications using JMeter” \cite{} é um artigo teórico que defende a importância do teste de performance nas aplicações baseadas em BPM, para evitar a falha dos processos no ambiente de produção, bem como defende o uso do JMeter para implementar os testes levantando várias justificativas, dentre elas o fato de ser uma ferramenta gratuita que tem tantas funcionalidades quanto ferramentas pagas. Diferente do nosso trabalho, este não possui um ambiente em produção ou um processo real, com problemas reais, para efetuar o teste com o JMeter. O trabalho apenas trata da importância dos testes e sobre a potencialidade do JMeter.
+
+\section{Considerações Finais}\label{s:conclu}
+Neste trabalho, explorou-se soluções de teste automatizado em uma aplicação de BPMS. Na ausência de suporte a testes de carga e funcionais nos BPMS Bonita e Activiti, aplicou-se ferramentas de teste voltadas a aplicações Web em geral. 
+
+%Pode-se dizer que esse objetivo foi atingido pois, durante a execução do trabalho, foi possível obter várias conclusões sobre o teste automatizado deste tipo de software.
+
+%Uma das abordagens adotadas foi de que, por aplicações BPM serem aplicações WEB, poderiam ser tratadas e testadas como um software em geral, utilizando ferramentas consagradas para tal. De fato, esta abordagem mostrou algumas desvantagens e dificuldades relacionadas a particularidades das aplicações BPM.
+
+No que concerne ao teste de carga, este mostrou-se útil para explicar falhas observadas no trabalho anterior. Também mostrou-se um teste trabalhoso, ou até inviável, dependendo do BPMS usado. A experiência com dois BPMS fortaleceu essa conclusão, pois ocorreram situações distintas: com Bonita o teste foi bem sucedido, porém com Activiti o teste não pôde ser executado, já que não se conseguiu reproduzir todas requisições. 
+%Assim, é prudente O BPMS deve ser avaliado antes da execução do teste para verificar se este é viável ou não.
+
+No teste funcional, com a abordagem adotada, obteve-se maior sucesso na execução dos testes e observou-se uma menor dependência dos BPMS, em comparação com o teste anterior. A tarefa de teste pode vir a ser trabalhosa, principalmente quando deseja-se testar muitas tarefas e fluxos que um processo de negócio pode ter.
+%\begin{figure}[ht]
+%\centering
+%\includegraphics[width=.99\textwidth]{figuras/tabelaCaminhos.png}
+%\caption{Possíveis caminhos}
+%\label{fig:tabelaCaminhos}
+%\end{figure}
+%Nas ferramentas abordadas no neste trabalho ou nas ferramentas estudadas e tabeladas, não foi encontrado nenhum tipo de suporte a teste automatizado dos processos, uma particularidade dos processos é que estes podem possuir diversos caminhos e estes caminhos precisam ser testados. Na Tabela \ref{tab:tabelaCaminhos} foram exibidos cujos testes foram executados manualmente e, com base no estudo executado neste trabalho e nas ferramentas estudadas, pode-se afirmar que atualmente é muito difícil encontrar um BPMS com suporte a este tipo de teste.
+
+<<<<<<< .mine
+De modo geral, a experiência mostrou que, sob certas condições, é viável testar aplicações de BPMS com ferramentas de teste para sistemas Web. A principal condição, no caso considerado, foi o direcionamento dos testes a uma tarefa inicial do processo, identificada como gargalo. Como o tempo e esforço para uma única tarefa foi significativo, essa abordagem pode se tornar inviável caso seja necessário aumentar a cobertura dos testes.
+=======
+De modo geral, como lições aprendidas temos que, sob certas condições, é viável testar aplicações de BPMS com ferramentas de teste para sistemas Web. A principal condição, no caso considerado, foi o direcionamento dos testes a uma tarefa inicial do processo, identificada como gargalo. Como o tempo e esforço para uma única tarefa foi significativo, essa abordagem pode se tornar inviável caso seja necessário estender os testes a muitas tarefas de um processo.
+>>>>>>> .r42
+
+Outro aspecto a ser considerado é que, quando o BPMS implementa a interação com o usuário e/ou com servidores, o desenvolvedor deixa de escolher e controlar todas as tecnologias utilizadas. Essa facilidade, no entanto, pode dificultar a automação de testes com ferramentas externas, que se beneficiam de conhecimento sobre a implementação (por exemplo, uso de \emph{iframes}, Ajax, na experiência em questão).
+
+Embora a experiência deste trabalho não tenha sido exaustiva, pôde-se notar que o suporte a testes automatizados é pouco explorado em BPMS. Entende-se que esta seria uma funcionalidade bem-vinda, supondo-se que abreviaria uma etapa essencial para garantir a qualidade do software resultante. 
+%Na ausência desse
+
+%Com o aprofundamento nas ferramentas abordadas nesse trabalho, pode se afirmar que o campo de teste automatizado em ferramentas BPMS ainda é pouco explorado mas, como foi visto na aplicação citada, aplicações BPM estão suscetíveis a erros tanto quanto outras aplicações e poderiam se beneficiar com o avanço desta área.
+
+%Como trabalhos futuros, pode-se destacar a continuação exploração de ferramentas de geração de casos de teste, na hipótese de que possam ajudar a alinhar os testes com as saídas e entradas do processo. Outra via que merece ser explorada são os testes de regressão, para auxiliar a encontrar possíveis problemas após alterações no processo, que podem ser frequentes dependendo do caso.
+
+
+\bibliographystyle{sbc}
+\bibliography{sbc-template}
+
+
+\end{document}
+
+
+
+
+
