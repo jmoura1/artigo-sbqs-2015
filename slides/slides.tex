@@ -4,6 +4,7 @@
 \usepackage[latin1]{inputenc}
 \usepackage[absolute,overlay]{textpos}
 \usepackage{array}
+\usepackage{tikz}
 
 % Coisas adicionadas pelo Alberto.
 \usepackage{proof}
@@ -134,6 +135,131 @@
     \caption{BPMS analisados}
   \end{figure}
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Descrição e Execução dos Testes} 
+\begin{enumerate}
+\item Testes de carga: um tipo de teste de desempenho, visando avaliar o comportamento do sistema frente a um grande número de solicitações;
+\item Testes funcionais: verificar as saídas do sistema produzidas a partir de entradas pré-definidas. 
+\end{enumerate}
+\begin{tikzpicture}[remember picture,overlay]
+  \tikzset{inner sep=0pt,outer sep=0pt}
+  %Primeiro plano (foreground)
+  %Nó posicionado acima e a esquerda do canto sul leste da página.
+  \node[above left] at (current page.south east) {
+    \includegraphics[width=4cm]{figuras/software-test.jpg}
+  };
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+\frametitle{Testes de carga} 
+\begin{itemize}
+\item Realizados gerando-se múltiplas requisições HTTP ao servidor, de forma controlada;
+\item Exemplos de ferramentas: JMeter, The Grinder e Gatling  
+\end{itemize}
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\paperwidth]{figuras/fluxogramaCarga.png}
+    %\includegraphics[height=6cm]{figCoordEsf02}
+    \caption{Etapas para teste de carga utilizando o JMeter}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Testes de carga} 
+\begin{itemize}
+\item As requisições HTTP carregam chaves identificando usuários e processos;
+\begin{itemize}
+\item Bonita = chave identificadora de sessão gerada no momento em que o usuário acessa o sistema e outra chave identificadora de instância.
+\end{itemize}
+\end{itemize}
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\paperwidth]{figuras/extrator.png}
+    %\includegraphics[height=6cm]{figCoordEsf02}
+    \caption{Obtendo chave identificadora utilizando o Extrator de Express\~ao Regular}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Resultados dos Testes de Carga} 
+\begin{table}
+%{\scriptsize
+\centering
+\begin{tabular}{p{1.5cm}|p{1cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}}
+\hline
+Usuários & Login & Pág. Inicial & Seleção Processo & Form. Inicial & Enviar form. \\\hline
+1 & 126 & 32 & 38 & 80 & 73\\\hline
+50 & 597 & 191 & 179 & 368 & 152\\\hline
+100 & 1972 & 571 & 552 & 760 & 694\\\hline
+200 & 10.149 & 3.239 & 934 & 2.122 & 1.918\\\hline
+\end{tabular}
+%}
+\caption{Tempos médios de resposta, em milissegundos}
+\label{tab:resultadoCarga}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Testes funcionais} 
+\begin{itemize}
+\item Para executar testes funcionais em aplicações Web, pode-se utilizar ferramentas livres como Selenium, Watir ou Geb;
+\item Para este trabalho, escolheu-se a ferramenta Selenium, aliada ao Cucumber-JVM para descrição dos testes. 
+\end{itemize}
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\paperwidth]{figuras/fluxogramaFuncional.png}
+    %\includegraphics[height=6cm]{figCoordEsf02}
+    \caption{Etapas para teste funcional utilizando o Selenium e Cucumber-jvm}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Testes funcionais} 
+\begin{itemize}
+\item Para a execução dos testes com sucesso, foram necessarias algumas alteraçoes nos codigos gerados.
+\end{itemize}
+  %\begin{figure}[h]
+   % \centering
+   % \includegraphics[width=0.5\paperwidth]{figuras/codigo.png}
+    %\includegraphics[height=6cm]{figCoordEsf02}
+   % \caption{Etapas para teste funcional utilizando o Selenium e Cucumber-jvm}
+  %\end{figure}
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\paperwidth]{figuras/codigoAct.png}
+    %\includegraphics[height=6cm]{figCoordEsf02}
+    \caption{Exemplo de alteração no codigo gerado pelo Selenium}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Resultados dos testes funcionais} 
+\begin{table}
+\begin{center}
+{\scriptsize
+\begin{tabular}{p{4cm}|l|p{3cm}}
+\hline
+ & Bonita & Activiti \\\hline
+Componentes Web & HTML, CSS, Ajax & HTML, CSS, Ajax \\\hline
+Captura da interação do usuário utilizando o Selenium & Total & Parcial (necessitou de inser\-ção manual de alguns campos) \\\hline
+Foi possível exportar o código gerado pelo Selenium? & Sim & Sim \\\hline
+Reconhecimento de todos os campos capturados SEM alteração de código & Parcial & Parcial \\\hline
+Reconhecimento de todos os campos capturados COM alteração de código & Total & Total \\\hline
+Foi possível criar o cenário e executar o teste? & Sim & Sim \\\hline
+\end{tabular}
+}
+\caption{Resumo comparativo sobre o teste funcional}
+\label{tab:testeFuncional}
+\end{center}
+\end{table}
+\end{frame}
+
 
 
 %Seção 15.4 e 16.4
