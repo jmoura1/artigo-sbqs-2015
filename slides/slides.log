@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.5.6)  24 JUL 2015 13:50
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.5.6)  27 JUL 2015 15:35
 entering extended mode
  %&-line parsing enabled.
 **slides.tex
@@ -1078,40 +1078,38 @@ Overfull \vbox (4.18053pt too high) detected at line 105
 
 [3
 
- <./figuras/bpm-lyfe-cycle.png>] [4
-
-]
-<figuras/processo.png, id=45, 526.96875pt x 449.42906pt>
+ <./figuras/bpm-lyfe-cycle.png>]
+<figuras/processo.png, id=40, 526.96875pt x 449.42906pt>
 File: figuras/processo.png Graphic file (type png)
 
 <use figuras/processo.png>
 Overfull \vbox (8.83588pt too high) detected at line 122
  []
 
-[5
+[4
 
- <./figuras/processo.png>] <figuras/bpms.png, id=52, 739.76375pt x 104.39pt>
+ <./figuras/processo.png>] <figuras/bpms.png, id=47, 739.76375pt x 104.39pt>
 File: figuras/bpms.png Graphic file (type png)
 
-<use figuras/bpms.png> [6
+<use figuras/bpms.png> [5
 
  <./figuras/bpms.png>]
-<figuras/software-test.jpg, id=59, 381.425pt x 286.06876pt>
+<figuras/software-test.jpg, id=54, 381.425pt x 286.06876pt>
 File: figuras/software-test.jpg Graphic file (type jpg)
 
-<use figuras/software-test.jpg> [7
+<use figuras/software-test.jpg> [6
 
  <./figuras/software-test.jpg>]
-<figuras/fluxogramaCarga.png, id=67, 510.40688pt x 165.61874pt>
+<figuras/fluxogramaCarga.png, id=61, 510.40688pt x 165.61874pt>
 File: figuras/fluxogramaCarga.png Graphic file (type png)
 
-<use figuras/fluxogramaCarga.png> [8
+<use figuras/fluxogramaCarga.png> [7
 
  <./figuras/fluxogramaCarga.png>]
-<figuras/extrator.png, id=73, 605.26125pt x 219.82124pt>
+<figuras/extrator.png, id=68, 605.26125pt x 219.82124pt>
 File: figuras/extrator.png Graphic file (type png)
 
-<use figuras/extrator.png> [9
+<use figuras/extrator.png> [8
 
  <./figuras/extrator.png (PNG copy)>]
 LaTeX Font Info:    Try loading font information for U+msa on input line 204.
@@ -1148,60 +1146,47 @@ Overfull \hbox (8.55846pt too wide) in paragraph at lines 204--204
  [] 
  []
 
-[10
+[9
 
-] <figuras/fluxogramaFuncional.png, id=85, 768.62157pt x 158.09062pt>
+] <figuras/fluxogramaFuncional.png, id=80, 768.62157pt x 158.09062pt>
 File: figuras/fluxogramaFuncional.png Graphic file (type png)
 
-<use figuras/fluxogramaFuncional.png> [11
+<use figuras/fluxogramaFuncional.png> [10
 
  <./figuras/fluxogramaFuncional.png>]
-<figuras/codigoAct.png, id=92, 423.08063pt x 274.77657pt>
+<figuras/codigoAct.png, id=87, 423.08063pt x 274.77657pt>
 File: figuras/codigoAct.png Graphic file (type png)
 
-<use figuras/codigoAct.png> [12
+<use figuras/codigoAct.png> [11
 
  <./figuras/codigoAct.png (PNG copy)>]
-Underfull \hbox (badness 2582) in paragraph at lines 264--264
+Underfull \hbox (badness 2582) in paragraph at lines 261--261
 []|\OT1/cmss/m/n/8 Parcial (ne-ces-si-tou de
  []
 
 
-Underfull \hbox (badness 2409) in paragraph at lines 264--264
+Underfull \hbox (badness 2409) in paragraph at lines 261--261
 []|\OT1/cmss/m/n/8 Reconhecimento de to-dos os
  []
 
 
-Underfull \hbox (badness 3417) in paragraph at lines 264--264
+Underfull \hbox (badness 3417) in paragraph at lines 261--261
 \OT1/cmss/m/n/8 cam-pos cap-tu-ra-dos SEM al-
  []
 
 
-Underfull \hbox (badness 2409) in paragraph at lines 264--264
+Underfull \hbox (badness 2409) in paragraph at lines 261--261
 []|\OT1/cmss/m/n/8 Reconhecimento de to-dos os
  []
 
 
-Underfull \hbox (badness 2197) in paragraph at lines 264--264
+Underfull \hbox (badness 2197) in paragraph at lines 261--261
 \OT1/cmss/m/n/8 cam-pos cap-tu-ra-dos COM al-
  []
 
-[13
+[12
 
-]
-! Undefined control sequence.
-<recently read> \frametitile 
-                             
-l.273 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-No file slides.bbl.
-[14
+] [13
 
 ]
 \tf@nav=\write6
@@ -1220,8 +1205,8 @@ LaTeX Font Warning: Size substitutions with differences
 
  ) 
 Here is how much of TeX's memory you used:
- 19767 strings out of 493848
- 364414 string characters out of 1152824
+ 19764 strings out of 493848
+ 364388 string characters out of 1152824
  451438 words of memory out of 3000000
  22486 multiletter control sequences out of 15000+50000
  13408 words of font info for 49 fonts, out of 3000000 for 9000
@@ -1232,9 +1217,9 @@ are/texmf-texlive/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texmf-t
 exlive/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texmf-texlive/fonts
 /type1/public/amsfonts/cm/cmss9.pfb></usr/share/texmf-texlive/fonts/type1/publi
 c/amsfonts/cm/cmssbx10.pfb>
-Output written on slides.pdf (14 pages, 370133 bytes).
+Output written on slides.pdf (13 pages, 370232 bytes).
 PDF statistics:
- 136 PDF objects out of 1000 (max. 8388607)
- 31 named destinations out of 1000 (max. 500000)
+ 130 PDF objects out of 1000 (max. 8388607)
+ 29 named destinations out of 1000 (max. 500000)
  102 words of extra memory for PDF output out of 10000 (max. 10000000)
 
