@@ -5,6 +5,7 @@
 \usepackage[absolute,overlay]{textpos}
 \usepackage{array}
 \usepackage{tikz}
+\usepackage{color}
 
 % Coisas adicionadas pelo Alberto.
 \usepackage{proof}
@@ -38,7 +39,7 @@
 \end{textblock}
 }
 
-\title{\footnotesize Automação de Testes em Aplicações de BPMS: um Relato de Experiência}
+\title{Automação de Testes em Aplicações de BPMS: um Relato de Experiência}
 
 % \usepackage{framed} % utilizado para codigo fonte
 \definecolor{shadecolor}{named}{LightGray}
@@ -77,15 +78,17 @@
 \begin{frame}
 \frametitle{Introdução} 
 \begin{itemize}
-\item BPM e BPMS;
+\item BPM = "Business Process Management" ou "Gestão de Processos de Negocio";
+\item BPMS = "Business Process Management Software";
 \item Verificação e testes = desafio;
 \begin{itemize}
-\item Falta de automação nos testes pode levar a problemas.
+\item Falta de automação nos testes pode levar a problemas;
 \end{itemize}
+\item Objetivo: explorar soluções para teste automatizado de um processo implementado em um BPMS.
 \end{itemize}
   \begin{figure}[h]
     \centering
-    \includegraphics[height=0.3\paperheight]{figuras/bpm-engine.jpg}
+    \includegraphics[height=0.4\paperheight]{figuras/diagramIcon.jpg}
     %\includegraphics[height=6cm]{figCoordEsf02}
 %    \caption{}
   \end{figure}
@@ -111,20 +114,15 @@
 %\end{itemize}
 %\end{frame}
 
-\begin{frame}
-\frametitle{Aplicação alvo dos testes} 
-  \begin{figure}[h]
-    \centering
-    \includegraphics[height=0.65\paperheight]{figuras/processo.png}
-    %\includegraphics[height=6cm]{figCoordEsf02}
-    \caption{Processo alvo dos testes: Solicitação de Atividade Complementar de Graduação}
-  \end{figure}
-\end{frame}
 
 \begin{frame}
-\frametitle{Aplicação alvo dos testes} 
+\frametitle{O que foi feito} 
 \begin{itemize}
+\item Em um trabalho anterior, foi criada uma aplicaçao utilizando o BPMS "Bonita Soft";
 \item A aplicação foi submetida a testes funcionais realizados manualmente;
+\begin{itemize}
+\item Problemas!
+\end{itemize}
 \item BPMS utilizado não possuía suporte a nenhum tipo de teste automatizado;
 \item Buscou-se outros BPMS com licenças open source ou freeware, que pudessem implementar o processo em questão e que oferecessem suporte a testes.
 \end{itemize}
@@ -136,13 +134,25 @@
   \end{figure}
 \end{frame}
 
+\begin{frame}
+\frametitle{O que foi feito} 
+  \begin{figure}[h]
+    \centering
+    \includegraphics[height=0.65\paperheight]{figuras/processo.png}
+    %\includegraphics[height=6cm]{figCoordEsf02}
+    \caption{Processo alvo dos testes: Solicitação de Atividade Complementar de Graduação}
+  \end{figure}
+\end{frame}
+
 
 \begin{frame}
 \frametitle{Descrição e Execução dos Testes} 
+
 \begin{enumerate}
-\item Testes de carga: um tipo de teste de desempenho, visando avaliar o comportamento do sistema frente a um grande número de solicitações;
-\item Testes funcionais: verificar as saídas do sistema produzidas a partir de entradas pré-definidas. 
+\item \textbf{Testes de carga:} um tipo de teste de desempenho, visando avaliar o comportamento do sistema frente a um grande número de solicitações;
+\item \textbf{Testes funcionais:} verificar as saídas do sistema produzidas a partir de entradas pré-definidas. 
 \end{enumerate}
+
 \begin{tikzpicture}[remember picture,overlay]
   \tikzset{inner sep=0pt,outer sep=0pt}
   %Primeiro plano (foreground)
@@ -195,7 +205,7 @@ Usuários & Login & Pág. Inicial & Seleção Processo & Form. Inicial & Enviar form
 1 & 126 & 32 & 38 & 80 & 73\\\hline
 50 & 597 & 191 & 179 & 368 & 152\\\hline
 100 & 1972 & 571 & 552 & 760 & 694\\\hline
-200 & 10.149 & 3.239 & 934 & 2.122 & 1.918\\\hline
+\textbf{\color{red}200} & \textbf{\color{red}10.149} & \textbf{\color{red}3.239} & \textbf{\color{red}934} & \textbf{\color{red}2.122} & \textbf{\color{red}1.918}\\\hline
 \end{tabular}
 %}
 \caption{Tempos médios de resposta, em milissegundos}
@@ -221,7 +231,7 @@ Usuários & Login & Pág. Inicial & Seleção Processo & Form. Inicial & Enviar form
 \begin{frame}
 \frametitle{Testes funcionais} 
 \begin{itemize}
-\item Para a execução dos testes com sucesso, foram necessarias algumas alteraçoes nos codigos gerados.
+\item Para a execução dos testes com sucesso, foram necessárias algumas alterações nos códigos gerados.
 \end{itemize}
   %\begin{figure}[h]
    % \centering
@@ -233,7 +243,7 @@ Usuários & Login & Pág. Inicial & Seleção Processo & Form. Inicial & Enviar form
     \centering
     \includegraphics[width=0.6\paperwidth]{figuras/codigoAct.png}
     %\includegraphics[height=6cm]{figCoordEsf02}
-    \caption{Exemplo de alteração no codigo gerado pelo Selenium}
+    \caption{Exemplo de alteração no código gerado pelo Selenium}
   \end{figure}
 \end{frame}
 
